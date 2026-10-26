@@ -7,7 +7,7 @@ This repository has two equal products:
 - **Data** — daily raw source snapshots, normalized indicators, time series, quality metadata, and machine-readable reports.
 - **Articles** — a continuously monitored, categorized index of primary-source research, engineering publications, business reports, and industry evidence. We store metadata and brief descriptions with attribution and original links; we do **not** mirror copyrighted articles.
 
-The public website is intended to be published at **https://bestnathan.github.io/ai-industry-research/** via GitHub Pages.
+The public website is published via GitHub Pages at **https://bestnathan.github.io/ai-industry-research/** via GitHub Pages.
 
 ## Research questions
 
@@ -67,7 +67,8 @@ Official RSS / Atom         Public APIs                 Licensed/manual reports
 config/sources.json           tracked APIs, feeds and research-only sources
 config/taxonomy.json          common article / data categories
 data/raw/                    gzip-compressed response snapshots partitioned by date
-data/metrics/YYYY-MM-DD.jsonl normalized indicator observations
+data/metrics/YYYY-MM-DD.jsonl normalized daily API snapshots
+data/datasets/{source}.jsonl    genuine survey-year observations, no daily duplication
 data/articles/YYYY-MM-DD.jsonl article metadata with source links / tags
 data/reports/daily/          JSON + Markdown daily summaries
 data/status/latest.json      per-source collection success, freshness and errors
@@ -83,7 +84,8 @@ For observations, always preserve **source, entity, metric, observation time, va
 
 - **Articles:** OpenAI News, Google DeepMind, Hugging Face Blog, selected engineering/research feeds, and arXiv. An **unofficial** community feed is used for Anthropic Engineering/Research where the publisher does not expose an RSS feed; those records are marked accordingly.
 - **Metrics:** GitHub repository public statistics, Hugging Face model download signals, and OpenRouter public model price listings.
-- **Tracked / not automatically scraped:** Stanford AI Index, Ramp AI Index, McKinsey, Menlo Ventures, US Census, OECD, Eurostat, Similarweb, Sensor Tower, QuestMobile, CNNIC, CAICT, SEC EDGAR, Epoch AI, IEA, METR, LinkedIn, and other primary sources.
+- **Historical enterprise adoption:** OWID/McKinsey/Stanford AI Index survey series and Eurostat official EU enterprise AI-use statistics, each labeled with its **original survey year** and population caveats. An annual statistic is not refreshed every day just because its CSV is downloaded daily.
+- **Tracked / not automatically scraped:** Stanford AI Index, Ramp AI Index, McKinsey, Menlo Ventures, US Census, OECD, Similarweb, Sensor Tower, QuestMobile, CNNIC, CAICT, SEC EDGAR, Epoch AI, IEA, METR, LinkedIn, and other primary sources.
 
 This is a **minimum honest data foundation**, not a claim to comprehensive coverage. Some of the most important commercial indicators require a licensed feed, careful manual publication-level extraction, or explicit permission.
 
@@ -128,3 +130,7 @@ Open http://localhost:8000. Set `GITHUB_TOKEN` to raise GitHub API rate limits w
 See [docs/ROADMAP.md](docs/ROADMAP.md) for planned research coverage and implementation priorities.
 
 **North star:** an evidence-based account of the AI industry's transition from investment and experimentation to deployment, revenue, and control over the future work/commerce interface.
+
+## Economic indicators
+
+Historical enterprise AI-use series are in [`data/datasets/`](data/datasets/) and are normalized by **source reporting year**. The OWID series is based on a McKinsey survey curated via Stanford's AI Index; it includes experimentation and does **not** represent US Census adoption or full production deployment. Eurostat has a different official EU business survey population (enterprises with 10+ employed persons). Do not directly compare their percentages or merge their denominators. See [economic dataset methodology](docs/ECONOMIC_DATASETS.md).

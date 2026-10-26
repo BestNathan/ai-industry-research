@@ -34,6 +34,18 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Validate stored evidence
         run: python scripts/pipeline.py validate
+      - name: Build Pages and assert dashboard contract
+        run: |
+          python scripts/pipeline.py build
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          dashboard = json.loads(Path("_site/data/dashboard.json").read_text())
+          assert all(k in dashboard for k in ("stats", "sources", "series", "reports", "articles"))
+          assert Path("_site/index.html").exists()
+          assert Path("_site/app.js").exists()
+          print("Dashboard build contract valid")
+          PY
   publish:
     if: github.event_name != 'pull_request'
     needs: checks
@@ -59,9 +71,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          # Bootstrap a newly created repository on the first main-branch deploy.
-          # Later pushes only rebuild Pages; schedule/manual always refresh data.
-          if [ "$EVENT_NAME" = "push" ] && [ -f data/status/latest.json ]; then
+          # Recollect after a source/collector change; otherwise lightweight Pages build.
+          if [ "$EVENT_NAME" = "push" ] && [ -f data/status/latest.json ] &&
+             ! git diff-tree --no-commit-id --name-only -r HEAD | grep -Eq '^(config/sources.json|scripts/(pipeline|economic)\.py)$'; then
             echo "collected=false" >> "$GITHUB_OUTPUT"
           else
             python scripts/pipeline.py collect
