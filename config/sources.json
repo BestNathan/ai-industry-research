@@ -89,7 +89,7 @@
       "publisher": "arXiv",
       "mode": "feed",
       "access": "public",
-      "priority": "core",
+      "priority": "supplemental",
       "homepage": "https://rss.arxiv.org/rss/cs.AI",
       "notes": "Official publisher feed; available formats can change."
     },
@@ -115,7 +115,7 @@
       "publisher": "Community mirror of Anthropic",
       "mode": "feed",
       "access": "public",
-      "priority": "supplemental",
+      "priority": "core",
       "homepage": "https://www.anthropic.com/",
       "notes": "Unofficial index of primary-source publications; verify original article URLs."
     },
@@ -128,7 +128,7 @@
       "publisher": "Community mirror of Anthropic",
       "mode": "feed",
       "access": "public",
-      "priority": "supplemental",
+      "priority": "core",
       "homepage": "https://www.anthropic.com/",
       "notes": "Unofficial index of primary-source publications; verify original article URLs."
     }
