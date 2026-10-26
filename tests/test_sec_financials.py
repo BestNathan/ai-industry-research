@@ -6,7 +6,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from sec_financials import annual_financials, annual_financials_adapter
-from analytics import financial_aggregation, make_analysis
+from analytics import financial_aggregation, make_analysis, build_financial_directory
 
 
 class SECAnnualTests(unittest.TestCase):
@@ -123,6 +123,52 @@ class SECAnnualTests(unittest.TestCase):
         self.assertIn("AMZN",capex["omitted_issuers"])
         self.assertEqual(ratio["points"][0]["value"],34.68)
         self.assertTrue(any("coverage" in f["kind"] for f in findings))
+
+    def test_fiscal_directory_includes_all_issuers_without_mixing_periods(self):
+        registry={"financials":[
+            {"id":"sec_amzn_companyfacts","ticker":"AMZN",
+             "title":"Amazon consolidated SEC financials",
+             "homepage":"https://www.sec.gov/edgar/browse/?CIK=1018724"},
+            {"id":"sec_meta_companyfacts","ticker":"META",
+             "title":"Meta Platforms consolidated SEC financials",
+             "homepage":"https://www.sec.gov/edgar/browse/?CIK=1326801"}
+        ]}
+        def fact(ticker, period, metric, value, start):
+            return {"ticker":ticker,"period":period,"period_type":"fiscal_year_end",
+                "metric_id":metric,"value":value,"unit":"USD","filed_at":"2026-02-03",
+                "accession":"0001018724-26-000004","xbrl_tag":"TestTag",
+                "start":start,"source_url":"https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/"}
+        rows=[
+            fact("AMZN","2024-12-31","company.revenue_usd",638e9,"2024-01-01"),
+            fact("AMZN","2025-12-31","company.revenue_usd",717e9,"2025-01-01"),
+            fact("AMZN","2025-12-31","company.operating_cashflow_usd",139e9,"2025-01-01"),
+            fact("META","2024-12-31","company.revenue_usd",165e9,"2024-01-01"),
+            fact("META","2025-12-31","company.revenue_usd",201e9,"2025-01-01"),
+            fact("META","2024-12-31","company.capex_ppe_usd",37e9,"2024-01-01")
+        ]
+        dashboard=build_financial_directory(rows,registry)
+        self.assertEqual(dashboard["schema_version"],1)
+        self.assertEqual(dashboard["coverage"]["companies_registered"],2)
+        self.assertEqual(dashboard["coverage"]["with_revenue"],2)
+        self.assertEqual(dashboard["coverage"]["with_cash_ppe"],0)
+        amazon,meta=dashboard["companies"]
+        self.assertEqual(amazon["fiscal_year_end"],"2025-12-31")
+        self.assertNotIn("company.capex_ppe_usd",amazon["metrics"])
+        self.assertNotIn("company.capex_ppe_usd",meta["metrics"])
+        self.assertIn("Cash purchases of PPE",meta["missing_metrics"])
+        self.assertEqual(len(meta["history"]),2)
+        self.assertIn("company.capex_ppe_usd",meta["history"][0]["metrics"])
+        self.assertEqual(amazon["metrics"]["company.revenue_usd"]["value_usd"],717e9)
+        self.assertEqual(meta["metrics"]["company.revenue_usd"]["period"],"2025-12-31")
+
+    def test_fiscal_directory_shows_registered_but_uncollected_issuer(self):
+        registry={"financials":[{"id":"sec_unknown","ticker":"TEST",
+            "title":"Test consolidated SEC financials","homepage":"https://www.sec.gov/"}]}
+        result=build_financial_directory([],registry)
+        self.assertEqual(result["companies"][0]["metrics"],{})
+        self.assertEqual(result["companies"][0]["history"],[])
+        self.assertIsNone(result["companies"][0]["fiscal_year_end"])
+        self.assertEqual(result["coverage"]["with_revenue"],0)
 
     def test_missing_financials_preserve_coverage_gap(self):
         registry={"feeds":[],"apis":[],"datasets":[],"financials":[],"research":[]}
