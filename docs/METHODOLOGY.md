@@ -52,3 +52,12 @@ Store title/link/publisher/date/tags and a bounded feed excerpt, not complete ar
 5. Labor and value capture: occupational task automation, net productivity and profits by value chain.
 
 Compare these metrics **only with explicit compatible sampling and attribution**.
+
+
+## Reporting-period datasets (introduced P1)
+
+The normalized daily `data/metrics/YYYY-MM-DD.jsonl` snapshots are **not** historical statistics. True annual enterprise adoption observations live under `data/datasets/{source_id}.jsonl` and carry the original `period`, `reporting_period`, `period_type=calendar_year`, `geography`, `source_url`, `evidence_type`, `denominator`, `raw_path`, and `raw_sha256`. An unchanged re-fetch preserves first observed provenance; revisions replace the current value while keeping its immutable raw payload archived.
+
+OWID/Stanford/McKinsey's reported use in **any business function** can include trials/pilots; Eurostat is a different **official ICT-in-enterprises survey of 10+ person enterprises**. Differences in methodology mean percentages cannot be mechanically compared.
+
+See [docs/ECONOMIC_DATASETS.md](ECONOMIC_DATASETS.md) for the pinned sources, licenses, economic limitations and next steps.
