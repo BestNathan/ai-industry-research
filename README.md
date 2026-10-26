@@ -4,7 +4,7 @@
 
 This repository has two equal products:
 
-- **Data** — daily raw source snapshots, normalized indicators, time series, quality metadata, and machine-readable reports.
+- **Data** — daily raw snapshots, normalized time series, multi-angle analytical charts, evidence-labeled findings and reproducible JSON/Markdown reports.
 - **Articles** — a continuously monitored, categorized index of primary-source research, engineering publications, business reports, and industry evidence. We store metadata and brief descriptions with attribution and original links; we do **not** mirror copyrighted articles.
 
 The public website is published via GitHub Pages at **https://bestnathan.github.io/ai-industry-research/** via GitHub Pages.
@@ -70,7 +70,8 @@ data/raw/immutable/          content-addressed gzip upstream snapshots (no daily
 data/metrics/YYYY-MM-DD.jsonl normalized daily API snapshots
 data/datasets/{source}.jsonl    genuine survey-year observations, no daily duplication
 data/articles/YYYY-MM-DD.jsonl article metadata with source links / tags
-data/reports/daily/          JSON + Markdown daily summaries
+data/reports/daily/          JSON + Markdown daily acquisition summaries
+data/reports/analysis/       JSON + Markdown analytical findings and charts
 data/status/latest.json      per-source collection success, freshness and errors
 docs/                        source access, research methodology, roadmap
 scripts/pipeline.py          collect, validate and static-site build
@@ -96,6 +97,7 @@ Requires **Python 3.11+**, no third-party Python packages for the baseline colle
 ```bash
 python3 -m unittest discover -s tests -v
 python3 scripts/pipeline.py collect      # network access: fetch raw + normalized + daily report
+python3 scripts/pipeline.py analyze      # offline: synthesize source-bound analyses and reports
 python3 scripts/pipeline.py build        # offline: build web/data and the _site directory
 python3 -m http.server 8000 -d _site
 ```
@@ -138,3 +140,18 @@ Historical enterprise AI-use series are in [`data/datasets/`](data/datasets/) an
 ## Publisher coverage and collection health
 
 The feed index includes OpenAI, DeepMind, Hugging Face, Anthropic (explicitly unofficial mirror), AWS, Microsoft, Google Research, **Google AI**, **NVIDIA**, **SemiAnalysis** and AI/industry media. Bulk arXiv records are preserved but are not the default essential-read view. The status JSON includes each source's **last successful collection** alongside current failures. Identical raw responses use the same immutable SHA-256 address across days, avoiding duplicate archives in Git.
+
+## Analysis and charts (evidence-backed, not invented)
+
+The **Data** entry point is organized from interpretation to evidence:
+
+1. **AI adoption:** two deliberately separate trend charts (Eurostat EU official firm survey and the multi-geography OWID/McKinsey organization survey). Display original survey years and **percentage-point** changes; do not overlay incomparable samples.
+2. **Model economics:** sampled OpenRouter input/output *listed* prices, by provider, with unweighted medians, model sample counts, and clear warnings against interpreting those as transaction-weighted prices or revenue.
+3. **Industry attention:** topic mix of primary-source publication records, excluding bulk arXiv from the default publisher analysis. These counts show *index coverage*, not global market demand.
+4. **Engineering ecology:** tracked GitHub repository star counts, clearly labeled selected popularity proxies.
+5. **Conclusions & blind spots:** rule-based observations with source evidence, API day-over-day changes **only after two actual comparable collection dates**, unavailable commercial metrics, method and freshness caveats.
+
+The structured report is generated from saved data at `data/reports/analysis/latest.json`; the archived Markdown brief is `data/reports/analysis/YYYY-MM-DD.md`. These data products are committed by GitHub Actions and exposed through Pages, with no generative numerical inference. `python3 scripts/pipeline.py analyze` rebuilds them offline. See [analysis methodology](docs/ANALYSIS.md).
+
+**What this does not prove:** genuine AI revenue, enterprise paying adoption, employment substitution, agent transaction conversion and infrastructure returns still need licensed datasets or audited filings. The site deliberately names these gaps rather than fabricating charts.
+

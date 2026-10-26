@@ -32,6 +32,108 @@ function showView(view) {
   if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view);
 }
 
+
+function formatMeasure(value, unit) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "—";
+  const decimals = unit === "percent" ? 2 : unit === "USD per 1M tokens" ? 4 : 0;
+  return n.toLocaleString("en-US", {maximumFractionDigits: decimals});
+}
+function renderAnalysisLine(holder, chart) {
+  const points = chart.series?.[0]?.points || [];
+  if (!points.length) {holder.append(dom("div","empty","No comparable observations yet."));return;}
+  const W=560,H=220,l=45,r=14,t=15,b=32;
+  const svg=createSvg("svg",{viewBox:"0 0 "+W+" "+H,role:"img",
+    "aria-label":chart.title+" values by reporting year"});
+  const x=i=>l+(points.length===1?(W-l-r)/2:i*(W-l-r)/(points.length-1));
+  // Percentages always retain a genuine 0%-100% axis. No exaggerated growth.
+  const y=v=>t+(100-v)*(H-t-b)/100;
+  for(const tick of [0,25,50,75,100]){
+    const yy=y(tick);
+    svg.append(createSvg("line",{x1:l,y1:yy,x2:W-r,y2:yy,class:"line-grid"}));
+    svg.append(createSvg("text",{x:l-8,y:yy+4,"text-anchor":"end",class:"line-axis"},tick+"%"));
+  }
+  const path=points.map((p,i)=>(i===0?"M":"L")+x(i)+","+y(Number(p.value))).join(" ");
+  svg.append(createSvg("path",{d:path,class:"line-path"}));
+  for(const [i,p] of points.entries()){
+    const dot=createSvg("circle",{cx:x(i),cy:y(Number(p.value)),r:5,class:"line-dot"});
+    dot.append(createSvg("title",{},p.period+": "+formatMeasure(p.value,"percent")+"%"));
+    svg.append(dot);
+    svg.append(createSvg("text",{x:x(i),y:H-9,"text-anchor":"middle",class:"line-axis"},p.period));
+  }
+  holder.append(svg);
+}
+function renderAnalysisBars(holder, chart) {
+  const points=chart.points || [];
+  if(!points.length){holder.append(dom("div","empty","No data available for this breakdown."));return;}
+  const maximum=Math.max(1,...points.map(p=>Number(p.value)||0));
+  const stack=dom("div","vbar-stack");
+  for(const row of points){
+    const item=dom("div","hbar");
+    const label=dom("span","hbar-label",row.label);
+    label.title=row.label+(row.n?" ("+row.n+" selected listed models)":"");
+    const track=dom("div","hbar-track"),fill=dom("div","hbar-fill");
+    fill.style.width=Math.max(0,Math.min(100,(Number(row.value)||0)/maximum*100))+"%";
+    track.append(fill);
+    const value=dom("span","hbar-value",formatMeasure(row.value,chart.unit));
+    value.title=row.n?"Median of "+row.n+" sampled prices":"";
+    item.append(label,track,value);
+    stack.append(item);
+  }
+  holder.append(stack);
+}
+function renderAnalysis() {
+  const analysis=db.analysis || {};
+  const cards=el("analysis-cards"), grid=el("analysis-charts"),
+        findings=el("analysis-findings"), gaps=el("analysis-gaps");
+  [cards,grid,findings,gaps].forEach(clear);
+  if(!analysis.charts?.length){
+    cards.append(dom("div","empty","Analysis has not been generated from the stored evidence yet."));
+    return;
+  }
+  el("analysis-link").href="https://github.com/BestNathan/ai-industry-research/blob/main/data/reports/analysis/"+analysis.report_date+".md";
+  for(const card of analysis.cards || []){
+    const box=dom("article","analysis-card");
+    box.append(dom("div","analysis-card-label",card.label));
+    const number=dom("div","analysis-card-value",formatMeasure(card.value,card.suffix==="%"?"percent":"count")+card.suffix);
+    box.append(number,dom("div","analysis-card-period",card.period+" · "+card.delta));
+    box.append(dom("div","analysis-card-detail",card.description));
+    cards.append(box);
+  }
+  for(const chart of analysis.charts || []){
+    const wrap=dom("article","analysis-chart");
+    const heading=dom("div","analysis-chart-header");
+    const name=dom("div");
+    name.append(dom("h4","",chart.title),dom("div","analysis-chart-sub",chart.scope || chart.unit));
+    heading.append(name);wrap.append(heading);
+    const plot=dom("div","analysis-chart-plot");
+    if(chart.type==="line") renderAnalysisLine(plot,chart);
+    else renderAnalysisBars(plot,chart);
+    wrap.append(plot);
+    const foot=dom("div","analysis-chart-foot");
+    foot.append(dom("span","",chart.caveat+" "));
+    if(chart.source_url) foot.append(link(chart.source_url,"View original source ↗"));
+    wrap.append(foot);
+    grid.append(wrap);
+  }
+  for(const f of analysis.findings||[]){
+    const row=dom("article","insight-row");
+    row.append(dom("div","insight-eyebrow",f.kind.replaceAll("_"," ")));
+    row.append(dom("strong","",f.title),dom("p","",f.text));
+    for(const id of f.source_ids||[]){
+      const item=source(id);
+      if(item?.homepage || item?.url)row.append(link(item.homepage||item.url,"Evidence: "+item.title+" ↗"));
+    }
+    findings.append(row);
+  }
+  for(const gap of analysis.coverage_gaps||[]){
+    const row=dom("article","insight-row");
+    row.append(dom("strong","",gap.title),dom("p","",gap.reason));
+    gaps.append(row);
+  }
+  el("analysis-note").textContent=analysis.research_note||"";
+}
+
 function renderStats() {
   const labels = [
     ["Collected articles", db.stats.articles],
@@ -226,7 +328,7 @@ async function start() {
     el("health").textContent = "Failed to load dashboard data: " + error.message;
     return;
   }
-  renderStats(); renderHealth(); renderSeries(); renderReports(); renderFilters(); renderSources(); renderArticles();
+  renderStats(); renderAnalysis(); renderHealth(); renderSeries(); renderReports(); renderFilters(); renderSources(); renderArticles();
   el("source-filter").addEventListener("change", (e) => {sourceMode = e.target.value;shownSources=24;renderSources();});
   el("source-more").addEventListener("click", () => {shownSources += 24;renderSources();});
   for (const id of ["article-search","article-scope","article-category","article-source"])
