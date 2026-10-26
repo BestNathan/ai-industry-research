@@ -47,8 +47,104 @@ def _display_delta(change):
     return ("%+.2f pp" % change["change_pp"]) + " versus " + change["previous_period"]
 
 
+def financial_aggregation(rows, registry):
+    """Evidence-anchored company-wide annual financials, not AI revenue.
+
+    Latest comparable *within each issuer* requires the exact same fiscal-end
+    period and USD unit; cross-company bars describe each issuer's latest FY,
+    not one synchronized calendar window.
+    """
+    by_company = defaultdict(lambda: defaultdict(dict))
+    for row in rows:
+        if row.get("period_type") != "fiscal_year_end" or row.get("unit") != "USD":
+            continue
+        ticker, period, metric = row.get("ticker"), row.get("period"), row.get("metric_id")
+        if not ticker or not period:
+            continue
+        previous = by_company[ticker][period].get(metric)
+        if previous is None or row.get("filed_at", "") > previous.get("filed_at", ""):
+            by_company[ticker][period][metric] = row
+    revenue_points, capex_points, ratio_points = [], [], []
+    growth = []
+    latest_rows = {}
+    for ticker in sorted(by_company):
+        periods = by_company[ticker]
+        # Same period used for both numerator and denominator.
+        complete = sorted(p for p, metrics in periods.items()
+                          if "company.revenue_usd" in metrics and "company.capex_ppe_usd" in metrics
+                          and metrics["company.revenue_usd"]["value"] > 0)
+        if not complete:
+            continue
+        period = complete[-1]
+        item = periods[period]
+        rev, cap = item["company.revenue_usd"], item["company.capex_ppe_usd"]
+        if cap["value"] < 0:
+            continue
+        latest_rows[ticker] = item
+        label = ticker + " · FY end " + period
+        revenue_points.append({"label": label, "value": round(rev["value"] / 1e9, 3),
+                               "period": period, "accession": rev["accession"],
+                               "source_url": rev["source_url"]})
+        capex_points.append({"label": label, "value": round(cap["value"] / 1e9, 3),
+                             "period": period, "accession": cap["accession"],
+                             "source_url": cap["source_url"]})
+        ratio_points.append({"label": label, "value": round(cap["value"] / rev["value"] * 100, 2),
+                             "period": period, "capex_accession": cap["accession"],
+                             "revenue_accession": rev["accession"],
+                             "source_url": cap["source_url"]})
+        if len(complete) >= 2:
+            earlier = periods[complete[-2]]["company.capex_ppe_usd"]
+            if earlier["value"] > 0:
+                growth.append({
+                    "ticker": ticker, "current_period": period,
+                    "previous_period": complete[-2],
+                    "current_capex_usd_b": round(cap["value"] / 1e9, 3),
+                    "previous_capex_usd_b": round(earlier["value"] / 1e9, 3),
+                    "capex_change_pct": round((cap["value"] / earlier["value"] - 1) * 100, 2),
+                    "source_url": cap["source_url"]
+                })
+    if not capex_points:
+        return [], [], []
+
+    meta = {
+        "source_id": "sec_edgar",
+        "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+        "period_type": "latest_available_fiscal_year_by_issuer"
+    }
+    charts = [
+        dict(meta, id="sec_company_revenue", type="bar",
+             title="Consolidated revenue · latest reported fiscal year",
+             unit="USD billions", points=revenue_points,
+             caveat="Audited consolidated company revenue, NOT AI product revenue. Fiscal year-ends differ across issuers; each bar is labeled with its period."),
+        dict(meta, id="sec_company_capex", type="bar",
+             title="Cash payments for property & equipment · annual",
+             unit="USD billions", points=capex_points,
+             caveat="Consolidated US-GAAP PaymentsToAcquirePropertyPlantAndEquipment. Not AI-only or data-center-only infrastructure spend; excludes some lease financing. Different fiscal periods."),
+        dict(meta, id="sec_company_capex_to_sales", type="bar",
+             title="PPE cash investment as a share of consolidated revenue",
+             unit="percent", points=ratio_points,
+             caveat="Ratio of company-wide annual cash PPE purchases / revenue from the SAME fiscal-year end. This is neither AI ROI nor profit and cannot isolate data centers."),
+    ]
+    # Choose issuer with largest observed *relative* increase in reported
+    # absolute capex, but don't claim this rise is caused by AI demand.
+    findings = []
+    if growth:
+        entry = max(growth, key=lambda x: abs(x["capex_change_pct"]))
+        findings.append({
+            "kind": "observed", "topic": "infrastructure",
+            "title": "%s reported PPE cash purchases changed %+.1f%%" % (
+                entry["ticker"], entry["capex_change_pct"]),
+            "text": "Latest reported fiscal year ended %s versus %s: $%.2fb vs $%.2fb company-wide PPE cash payments. Source: audited SEC 10-K US-GAAP concept. This is not AI-attributable CAPEX." % (
+                entry["current_period"], entry["previous_period"],
+                entry["current_capex_usd_b"], entry["previous_capex_usd_b"]),
+            "source_ids": ["sec_edgar"],
+            "source_url": entry["source_url"]
+        })
+    return charts, findings, growth
+
+
 def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
-                  as_of=None):
+                  as_of=None, financial_rows=None):
     """Build a pure deterministic report from real stored records.
 
     as_of defaults to collection health timestamp, not machine/build time.
@@ -56,7 +152,7 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
     """
     as_of = as_of or status.get("generated_at") or datetime.now(timezone.utc).isoformat()
     report_date = as_of[:10]
-    sources = {s["id"]: s for section in ("feeds", "apis", "datasets", "research")
+    sources = {s["id"]: s for section in ("feeds", "apis", "datasets", "financials", "research")
                for s in registry.get(section, [])}
     datasets = defaultdict(list)
     for row in annual_rows:
@@ -323,11 +419,13 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
             "source_ids": []
         })
 
+    company_charts, company_findings, company_growth = financial_aggregation(financial_rows or [], registry)
+    findings.extend(company_findings)
     missing = [
         {"id": "actual_ai_revenue", "title": "Verified AI-specific revenue", "reason": "No audited AI-only revenue series is connected. Cloud segment revenue is not equivalent to AI revenue."},
         {"id": "paid_enterprise_use", "title": "Representative enterprise AI payments", "reason": "Ramp and private purchase/payment data remain licensed or sample-limited."},
         {"id": "agent_transactions", "title": "Completed agent actions and transactions", "reason": "No comparable transaction/fulfillment outcomes dataset is connected."},
-        {"id": "infrastructure_roi", "title": "AI infrastructure return on invested capital", "reason": "Capex and disclosed revenue/profit series still require audited filing ingestion and segmentation."},
+        {"id": "infrastructure_roi", "title": "AI infrastructure return on invested capital", "reason": "Even with company-wide audited PPE cash spending, AI-specific expenditure, leasing, contribution profits and segment revenue are not isolated."},
     ]
     health = {
         "registered_automatic": total_sources, "successful": successes,
@@ -342,8 +440,9 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
         "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
         "cards": cards, "findings": findings,
         "charts": adoption_charts + ([regional_chart] if regional_chart else []) +
-                  price_charts + ([multiple_chart] if multiple_chart else []) +
+                  company_charts + price_charts + ([multiple_chart] if multiple_chart else []) +
                   [article_chart] + ([repo_chart] if repo_chart else []),
+        "company_fiscal_capex_changes": company_growth,
         "daily_changes": changes[:30],
         "coverage_gaps": missing,
         "health": health,
@@ -357,7 +456,7 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
 
 
 def markdown_report(report, registry):
-    sources = {s["id"]: s for section in ("feeds", "apis", "datasets", "research")
+    sources = {s["id"]: s for section in ("feeds", "apis", "datasets", "financials", "research")
                for s in registry.get(section, [])}
     lines = [
         "# AI Industry Evidence Monitor — " + report["report_date"], "",
@@ -371,6 +470,9 @@ def markdown_report(report, registry):
             src = sources.get(source_id)
             if src:
                 lines.append("Source: [" + src["title"] + "](" + src.get("homepage", src.get("url", "")) + ")")
+            elif source_id == "sec_edgar":
+                lines.append("Source: " + f.get("source_url", "https://www.sec.gov/"))
+
         if f["source_ids"]:
             lines.append("")
     lines += ["## Comparable observations", ""]
