@@ -45,7 +45,8 @@ def owid_business_adoption(payload: bytes, source: dict, observed_at: str,
     """
     rows = list(csv.DictReader(io.StringIO(payload.decode("utf-8-sig"))))
     if not rows or not {"Entity", "Code", "Year"}.issubset(rows[0]):
-        raise ValueError("OWID chart lacks Entity, Code, Year")
+        preview = payload[:180].decode("utf-8", errors="replace").replace("\\n", " ")
+        raise ValueError("OWID schema: expected Entity, Code, Year; received " + preview[:140])
     cols = [key for key in rows[0] if key not in ("Entity", "Code", "Year")]
     if len(cols) != 1:
         raise ValueError("OWID expected one adoption indicator, got " + str(cols))
