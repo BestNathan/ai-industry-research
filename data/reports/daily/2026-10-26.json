@@ -1,6 +1,6 @@
 {
   "date": "2026-10-26",
-  "generated_at": "2026-10-26T04:58:13+00:00",
+  "generated_at": "2026-10-26T04:59:45+00:00",
   "source_count": 22,
   "sources_ok": 21,
   "sources_failed": 1,
@@ -9,7 +9,7 @@
   ],
   "new_articles": 274,
   "metric_observations": 184,
-  "historical_dataset_rows_added_or_revised": 4,
+  "historical_dataset_rows_added_or_revised": 0,
   "articles_by_category": {
     "capital": 7,
     "china": 2,
