@@ -92,6 +92,21 @@ class PipelineTests(unittest.TestCase):
         r = p.observation(src, "entity", "metric", float("nan"), "count", "test", self.checked_at, "raw", "hash")
         self.assertIsNone(r)
 
+    def test_feed_fallback_after_malformed_provider_response(self):
+        valid = b"<rss><channel><item><title>DeepMind research</title><link>https://example.org/research</link></item></channel></rss>"
+        source = dict(self.feed)
+        source["url"] = "https://example.org/primary"
+        source["fallback_urls"] = ["https://example.org/backup"]
+        with tempfile.TemporaryDirectory() as folder:
+            fake_root = Path(folder)
+            with patch.object(p, "DATA", fake_root / "data"), patch.object(p, "ROOT", fake_root), patch.object(p, "fetch", side_effect=[b"<html>Unavailable", valid]) as get:
+                articles, metrics, status = p.process_source(source, "2026-10-26", self.checked_at, self.taxonomy)
+                self.assertEqual(get.call_count, 2)
+                self.assertEqual(status["status"], "ok")
+                self.assertTrue(status["fallback_used"])
+                self.assertEqual(status["effective_url"], source["fallback_urls"][0])
+                self.assertEqual(len(articles), 1)
+
     def test_content_addressed_raw_archive_deduplicates_across_days(self):
         xml = b"<rss><channel><item><title>AI research</title><link>https://example.org/p</link></item></channel></rss>"
         source = dict(self.feed)
