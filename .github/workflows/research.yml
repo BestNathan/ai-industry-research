@@ -32,6 +32,8 @@ jobs:
           python-version: "3.12"
       - name: Unit tests
         run: python -m unittest discover -s tests -v
+      - name: Validate client JavaScript syntax
+        run: node --check web/app.js
       - name: Validate stored evidence
         run: python scripts/pipeline.py validate
       - name: Generate analytical report and validate Pages contract
@@ -50,7 +52,21 @@ jobs:
           assert dashboard["quality"]["schema_version"] == 1
           assert Path("_site/index.html").exists()
           assert Path("_site/app.js").exists()
-          print("Dashboard build contract valid")
+          assert dashboard["financial_data"]["schema_version"] == 1
+          issuers = dashboard["financial_data"]["companies"]
+          assert len(issuers) == len(dashboard["sources"]["financials"])
+          for issuer in issuers:
+              assert "fiscal_year_end" in issuer
+              assert "history" in issuer
+              assert all(value["period"] == issuer["fiscal_year_end"]
+                         for value in issuer["metrics"].values())
+          site = Path("_site/index.html").read_text()
+          for section in ("overview", "financials", "adoption", "models", "ecosystem", "sources"):
+              assert f'id="data-{section}"' in site
+              assert f'data-data-tab="{section}"' in site
+          for target in ("finance-charts", "adoption-charts", "model-charts", "ecosystem-charts", "finance-table-body"):
+              assert f'id="{target}"' in site
+          print("Dashboard categories, SEC directory and accessible tab contracts valid")
           PY
   publish:
     if: github.event_name != 'pull_request'
