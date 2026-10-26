@@ -47,3 +47,14 @@ No fabricated "live" numbers, no bypassing commercial data licenses, no mirrorin
 - All API/feed/dataset raw inputs use content-addressed archives for incremental space savings, and the UI exposes the last successful source collection.
 - New official and independent article feeds cover compute, distribution and industry economics (NVIDIA, Google AI, SemiAnalysis, TechCrunch).
 - Still open: SEC filings, US Census BTOS, article ranking/China coverage, anomalous values, storage capacity thresholds, and Agent/transaction datasets.
+
+## Analytics convergence — 2026-10-26
+
+- [x] Multi-angle research report generator: primary-source adoption history, model catalog price sample, publisher coverage, selected open-source ecosystem, source health and explicit data gaps.
+- [x] One-run JSON + Markdown analytical daily brief, provenance-aware chart records and source-linked deterministic evidence findings.
+- [x] Pages Data front page presents industrial insight panels above raw indicator selectors.
+- [x] Guard against growth conclusions from a single daily platform snapshot.
+- [ ] Audited company-specific AI/cloud financials and capex (#3).
+- [ ] Representative consumer/enterprise payment and agent transaction measures (#6).
+- [ ] Multi-week snapshot trend significance and data quality anomalies (#5).
+- [ ] Independent article importance scoring and primary China market feeds (#4).
