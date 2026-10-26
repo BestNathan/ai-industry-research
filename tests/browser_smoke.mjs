@@ -35,16 +35,21 @@ async function connect(uri){
 async function main(){
   await new Promise((resolve,reject)=>{server.once("error",reject);server.listen(0,"127.0.0.1",resolve);});
   dir=await mkdtemp(join(tmpdir(),"industry-chrome-"));
-  chrome=spawn(chromePath(),["--headless=new","--no-sandbox","--disable-gpu",
+  const binary=chromePath();
+  console.log("Launching browser", binary);
+  let browserLogs="";
+  chrome=spawn(binary,["--headless=new","--no-sandbox","--disable-gpu",
     "--disable-dev-shm-usage","--no-first-run","--disable-background-networking",
     "--user-data-dir="+dir,"--remote-debugging-port=0",
-    "--remote-allow-origins=*","about:blank"],{stdio:"ignore"});
+    "--remote-allow-origins=*","about:blank"],{stdio:["ignore","pipe","pipe"]});
+  chrome.stdout.on("data",b=>{browserLogs+=(String(b)).slice(-8000);});
+  chrome.stderr.on("data",b=>{browserLogs+=(String(b)).slice(-8000);});
   let port;
   for(let i=0;i<100;i++){
     try{port=Number((await readFile(join(dir,"DevToolsActivePort"),"utf8")).split("\n")[0]);break;}
     catch{await pause(100);}
   }
-  assert(port,"Chrome DevToolsActivePort not available");
+  assert(port,"Chrome DevToolsActivePort not available; exit="+chrome.exitCode+"; logs="+browserLogs.slice(-5000));
   const pages=await(await fetch("http://127.0.0.1:"+port+"/json/list")).json();
   const page=pages.find(p=>p.type==="page");
   assert(page?.webSocketDebuggerUrl,"Chrome CDP target not found");
