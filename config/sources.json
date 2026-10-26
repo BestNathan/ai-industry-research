@@ -26,7 +26,10 @@
       "access": "public",
       "priority": "core",
       "homepage": "https://deepmind.google/blog/rss.xml",
-      "notes": "Official publisher feed; available formats can change."
+      "notes": "Official Google DeepMind feed; fallback to the publisher's alternate basic RSS/Atom feed when the primary endpoint returns a malformed response.",
+      "fallback_urls": [
+        "https://deepmind.com/blog/feed/basic/"
+      ]
     },
     {
       "id": "huggingface_blog",

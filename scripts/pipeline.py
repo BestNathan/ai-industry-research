@@ -267,33 +267,37 @@ def process_source(source: dict, day: str, checked_at: str,
     status = {"source_id": source["id"], "mode": source["mode"],
               "checked_at": checked_at, "status": "ok", "records": 0}
     try:
-        payload = fetch(source["url"])
-        checksum = hashlib.sha256(payload).hexdigest()
-        suffix = ("xml.gz" if source["mode"] == "feed" else
-                  "csv.gz" if source["mode"] == "dataset" and source["kind"].startswith("owid") else "json.gz")
-        # Annual datasets are content-addressed globally, not downloaded anew
-        # into daily archive paths when their statistics have not changed.
-        # All upstream payloads are immutable, content-addressed objects.
-        # Daily metric/article records reference the exact hash and fetch time,
-        # while identical responses across days do not bloat Git storage.
-        path = DATA / "raw" / "immutable" / (source["id"] + "-" + checksum[:16] + "." + suffix)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        if not path.exists():
-            path.write_bytes(gzip.compress(payload, compresslevel=6, mtime=0))
-        raw_path = path.relative_to(ROOT).as_posix()
-        if source["mode"] == "feed":
-            articles = parse_feed(payload, source, checked_at, raw_path, checksum, taxonomy)
-            metrics = []
-        elif source["mode"] == "dataset":
-            articles = []
-            metrics = parse_dataset(payload, source, checked_at, raw_path, checksum)
-        else:
-            articles = []
-            metrics = parse_metrics(payload, source, checked_at, raw_path, checksum)
-        status.update({"records": len(articles) + len(metrics), "raw_path": raw_path,
-                       "raw_sha256": checksum})
-        return articles, metrics, status
-    except (Exception) as exc:  # Source isolation: one provider must not fail the whole batch.
+        endpoints = [source["url"], *source.get("fallback_urls", [])]
+        errors = []
+        for url in endpoints:
+            try:
+                payload = fetch(url)
+                checksum = hashlib.sha256(payload).hexdigest()
+                suffix = ("xml.gz" if source["mode"] == "feed" else
+                          "csv.gz" if source["mode"] == "dataset" and source["kind"].startswith("owid") else "json.gz")
+                # Deduplicate identical upstream evidence across collection days.
+                path = DATA / "raw" / "immutable" / (source["id"] + "-" + checksum[:16] + "." + suffix)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                if not path.exists():
+                    path.write_bytes(gzip.compress(payload, compresslevel=6, mtime=0))
+                raw_path = path.relative_to(ROOT).as_posix()
+                if source["mode"] == "feed":
+                    articles = parse_feed(payload, source, checked_at, raw_path, checksum, taxonomy)
+                    metrics = []
+                elif source["mode"] == "dataset":
+                    articles = []
+                    metrics = parse_dataset(payload, source, checked_at, raw_path, checksum)
+                else:
+                    articles = []
+                    metrics = parse_metrics(payload, source, checked_at, raw_path, checksum)
+                status.update({"records": len(articles) + len(metrics), "raw_path": raw_path,
+                               "raw_sha256": checksum, "effective_url": url,
+                               "fallback_used": url != source["url"]})
+                return articles, metrics, status
+            except Exception as exc:
+                errors.append(url + ": " + type(exc).__name__ + " " + str(exc)[:130])
+        raise RuntimeError(" | ".join(errors))
+    except Exception as exc:
         status.update({"status": "failed", "error": (type(exc).__name__ + ": " + str(exc))[:300]})
         return [], [], status
 
