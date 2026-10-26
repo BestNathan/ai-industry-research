@@ -331,17 +331,6 @@
       "automated": false
     },
     {
-      "id": "eurostat_ai",
-      "title": "Eurostat Digital Economy",
-      "url": "https://ec.europa.eu/eurostat",
-      "category": "enterprise",
-      "cadence": "annual",
-      "access": "download",
-      "notes": "EU business AI adoption definitions",
-      "mode": "reference",
-      "automated": false
-    },
-    {
       "id": "oecd_ai",
       "title": "OECD AI",
       "url": "https://oecd.ai/",
@@ -606,17 +595,6 @@
       "automated": false
     },
     {
-      "id": "ourworldindata",
-      "title": "Our World in Data AI",
-      "url": "https://ourworldindata.org/artificial-intelligence",
-      "category": "enterprise",
-      "cadence": "periodic",
-      "access": "download",
-      "notes": "Curated historical metrics with downloadable data",
-      "mode": "reference",
-      "automated": false
-    },
-    {
       "id": "a16z_consumer",
       "title": "a16z Top 100 Consumer AI Apps",
       "url": "https://a16z.com/100-gen-ai-apps-7/",
@@ -648,6 +626,38 @@
       "notes": "Documented AI incidents, reporting bias",
       "mode": "reference",
       "automated": false
+    }
+  ],
+  "datasets": [
+    {
+      "id": "owid_business_ai_adoption",
+      "title": "OWID / McKinsey / Stanford enterprise AI adoption",
+      "mode": "dataset",
+      "kind": "owid_business_adoption",
+      "url": "https://ourworldindata.org/grapher/share-companies-using-artificial-intelligence.csv?v=1&csvType=full&useColumnShortNames=true",
+      "homepage": "https://ourworldindata.org/grapher/share-companies-using-artificial-intelligence",
+      "category": "enterprise",
+      "official": false,
+      "access": "public",
+      "publisher": "Our World in Data / Stanford AI Index / McKinsey",
+      "cadence": "annual",
+      "priority": "core",
+      "notes": "Survey of AI use in any business function; may include pilots, not fully scaled deployment. Actual observation year maintained."
+    },
+    {
+      "id": "eurostat_enterprise_ai_adoption",
+      "title": "Eurostat official enterprise AI adoption",
+      "mode": "dataset",
+      "kind": "eurostat_business_adoption",
+      "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_eb_ai?geo=EU27_2020",
+      "homepage": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",
+      "category": "enterprise",
+      "official": true,
+      "access": "public",
+      "publisher": "Eurostat",
+      "cadence": "annual",
+      "priority": "core",
+      "notes": "EU27 percentage of enterprises with 10+ persons employed using at least one AI technology; official EU ICT enterprise survey."
     }
   ]
 }
