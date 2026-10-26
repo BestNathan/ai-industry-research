@@ -22,6 +22,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
+from economic import parse_dataset
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -268,9 +269,12 @@ def process_source(source: dict, day: str, checked_at: str,
     try:
         payload = fetch(source["url"])
         checksum = hashlib.sha256(payload).hexdigest()
-        suffix = "xml.gz" if source["mode"] == "feed" else "json.gz"
-        # Content-addressed filenames make same-day retries genuinely immutable.
-        path = DATA / "raw" / day / (source["id"] + "-" + checksum[:16] + "." + suffix)
+        suffix = ("xml.gz" if source["mode"] == "feed" else
+                  "csv.gz" if source["mode"] == "dataset" and source["kind"].startswith("owid") else "json.gz")
+        # Annual datasets are content-addressed globally, not downloaded anew
+        # into daily archive paths when their statistics have not changed.
+        archive = "immutable" if source["mode"] == "dataset" else day
+        path = DATA / "raw" / archive / (source["id"] + "-" + checksum[:16] + "." + suffix)
         path.parent.mkdir(parents=True, exist_ok=True)
         if not path.exists():
             path.write_bytes(gzip.compress(payload, compresslevel=6, mtime=0))
@@ -278,6 +282,9 @@ def process_source(source: dict, day: str, checked_at: str,
         if source["mode"] == "feed":
             articles = parse_feed(payload, source, checked_at, raw_path, checksum, taxonomy)
             metrics = []
+        elif source["mode"] == "dataset":
+            articles = []
+            metrics = parse_dataset(payload, source, checked_at, raw_path, checksum)
         else:
             articles = []
             metrics = parse_metrics(payload, source, checked_at, raw_path, checksum)
@@ -298,14 +305,18 @@ def collect() -> int:
     day = checked_at[:10]
     sources = read_json(ROOT / "config" / "sources.json")
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")["categories"]
-    enabled = sources["feeds"] + sources["apis"]
-    statuses, incoming_articles, incoming_metrics = [], [], []
+    enabled = sources["feeds"] + sources["apis"] + sources.get("datasets", [])
+    dataset_ids = {s["id"] for s in sources.get("datasets", [])}
+    statuses, incoming_articles, incoming_metrics, incoming_datasets = [], [], [], []
     with concurrent.futures.ThreadPoolExecutor(max_workers=7) as pool:
         futures = [pool.submit(process_source, source, day, checked_at, taxonomy) for source in enabled]
         for source, future in zip(enabled, futures):
             articles, metrics, status = future.result()
             incoming_articles.extend(articles)
-            incoming_metrics.extend(metrics)
+            if source["id"] in dataset_ids:
+                incoming_datasets.extend(metrics)
+            else:
+                incoming_metrics.extend(metrics)
             statuses.append(status)
             print("{}: {} ({} records)".format(source["id"], status["status"], status["records"]))
 
@@ -328,6 +339,26 @@ def collect() -> int:
     metrics = sorted(by_key.values(), key=lambda x: (x["metric_id"], x["entity_id"], x["source_id"]))
     write_jsonl(article_path, articles)
     write_jsonl(metric_path, metrics)
+
+    # Annual data is keyed by its original statistical reporting year.
+    # Preserve unchanged records (including first-observed timestamp and raw
+    # provenance), and replace only when the provider revises a value.
+    datasets_updated = 0
+    for source in sources.get("datasets", []):
+        fresh = [m for m in incoming_datasets if m["source_id"] == source["id"]]
+        if not fresh:
+            continue
+        dataset_path = DATA / "datasets" / (source["id"] + ".jsonl")
+        previous_dataset = {metric_key(m): m for m in read_jsonl(dataset_path)}
+        for row in fresh:
+            key = metric_key(row)
+            old = previous_dataset.get(key)
+            if old and old["value"] == row["value"] and old["unit"] == row["unit"] and old["methodology"] == row["methodology"]:
+                continue
+            previous_dataset[key] = row
+            datasets_updated += 1
+        updated_rows = sorted(previous_dataset.values(), key=lambda r: (r["metric_id"], r["entity_id"], r["period"]))
+        write_jsonl(dataset_path, updated_rows)
 
     successful = sum(s["status"] == "ok" for s in statuses)
     failed = [s["source_id"] for s in statuses if s["status"] != "ok"]
@@ -364,6 +395,7 @@ def collect() -> int:
         "source_count": len(enabled), "sources_ok": successful, "sources_failed": len(failed),
         "failed_source_ids": failed, "new_articles": len(articles),
         "metric_observations": len(metrics),
+        "historical_dataset_rows_added_or_revised": datasets_updated,
         "articles_by_category": dict(sorted(Counter(x["primary_category"] for x in articles).items())),
         "headline_articles": [
             {"title": row["title"], "url": row["url"], "source_id": row["source_id"],
@@ -378,7 +410,8 @@ def collect() -> int:
              "Collected " + checked_at + " (UTC).", "",
              "- Sources: {} succeeded, {} failed".format(successful, len(failed)),
              "- New articles: " + str(len(articles)),
-             "- Metric observations: " + str(len(metrics)), "",
+             "- Metric observations: " + str(len(metrics)),
+             "- Historical dataset rows added/revised: " + str(datasets_updated), "",
              "## New article links", ""]
     lines.extend("- [{}]({}) — {}".format(a["title"].replace("[", "").replace("]", ""),
                                             a["url"], a["source_id"]) for a in report["headline_articles"])
@@ -411,7 +444,7 @@ def build() -> None:
     sources = read_json(ROOT / "config" / "sources.json")
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")
     status = read_json(DATA / "status" / "latest.json", {})
-    metrics = all_rows("metrics")
+    metrics = all_rows("metrics") + all_rows("datasets")
     articles = all_rows("articles")
     article_map = {a["id"]: a for a in articles}
     articles = sorted(article_map.values(),
@@ -422,19 +455,26 @@ def build() -> None:
     for m in metrics:
         key = (m["metric_id"], m["entity_id"])
         series_groups[key].append({"date": m["period"], "value": m["value"]})
-        if key not in latest_by_key or m["observed_at"] > latest_by_key[key]["observed_at"]:
+        if key not in latest_by_key or m["period"] > latest_by_key[key]["period"] or (
+            m["period"] == latest_by_key[key]["period"] and m["observed_at"] > latest_by_key[key]["observed_at"]
+        ):
             latest_by_key[key] = m
     # Limit public page JSON size, but retain every raw and normalized observation in Git.
     prioritized = sorted(latest_by_key, key=lambda k: (
-        0 if k[0] == "github.stars" else
-        1 if k[0] == "huggingface.downloads" else
-        2 if k[0].startswith("openrouter.") else 3,
+        0 if k[0] == "enterprise.ai_adoption_share_pct" else
+        1 if k[0] == "github.stars" else
+        2 if k[0] == "huggingface.downloads" else
+        3 if k[0].startswith("openrouter.") else 4,
         k[1]))
     selected = prioritized[:140]
     series = [{
         "metric_id": key[0], "entity_id": key[1],
         "unit": latest_by_key[key]["unit"],
         "source_id": latest_by_key[key]["source_id"],
+        "geography": latest_by_key[key]["geography"],
+        "period_type": latest_by_key[key].get("period_type", "collection_day"),
+        "evidence_type": latest_by_key[key]["evidence_type"],
+        "source_url": latest_by_key[key].get("source_url", ""),
         "methodology": latest_by_key[key]["methodology"],
         "points": sorted(series_groups[key], key=lambda x: x["date"])[-180:]
     } for key in selected]
@@ -444,7 +484,7 @@ def build() -> None:
     payload = {
         "built_at": iso(now_utc()),
         "stats": {"articles": len(articles), "observations": len(metrics),
-                  "sources_automated": len(sources["feeds"]) + len(sources["apis"]),
+                  "sources_automated": len(sources["feeds"]) + len(sources["apis"]) + len(sources.get("datasets", [])),
                   "sources_reference": len(sources["research"])},
         "taxonomy": taxonomy["categories"], "sources": sources,
         "source_health": status,
@@ -461,19 +501,25 @@ def validate() -> None:
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")
     categories = {c["id"] for c in taxonomy["categories"]}
     registered_ids = set()
-    for src in sources["feeds"] + sources["apis"] + sources["research"]:
+    for src in sources["feeds"] + sources["apis"] + sources.get("datasets", []) + sources["research"]:
         if src["id"] in registered_ids or src["category"] not in categories:
             raise AssertionError("duplicate source ID or invalid category " + src["id"])
         registered_ids.add(src["id"])
-    for file in sorted((DATA / "metrics").glob("*.jsonl")):
+    for file in sorted((DATA / "metrics").glob("*.jsonl")) + sorted((DATA / "datasets").glob("*.jsonl")):
         rows = read_jsonl(file)
         keys = set()
         for row in rows:
             key = metric_key(row)
             if key in keys or not isinstance(row["value"], (int, float)) or not math.isfinite(row["value"]):
                 raise AssertionError("invalid metric record in " + str(file))
-            if not (ROOT / row["raw_path"]).exists():
+            raw_file = ROOT / row["raw_path"]
+            if not raw_file.exists():
                 raise AssertionError("raw snapshot missing for " + str(file))
+            if file.parent.name == "datasets":
+                if row.get("period_type") != "calendar_year" or not re.fullmatch(r"20[0-9]{2}", row["period"]):
+                    raise AssertionError("dataset reporting year is invalid")
+                if hashlib.sha256(gzip.decompress(raw_file.read_bytes())).hexdigest() != row["raw_sha256"]:
+                    raise AssertionError("dataset raw provenance mismatch: " + str(raw_file))
             keys.add(key)
     article_ids = set()
     for file in sorted((DATA / "articles").glob("*.jsonl")):
