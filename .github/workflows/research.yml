@@ -32,6 +32,9 @@ jobs:
           python-version: "3.12"
       - name: Unit tests
         run: python -m unittest discover -s tests -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Validate client JavaScript syntax
         run: node --check web/app.js
       - name: Validate stored evidence
@@ -68,6 +71,8 @@ jobs:
               assert f'id="{target}"' in site
           print("Dashboard categories, SEC directory and accessible tab contracts valid")
           PY
+      - name: Exercise real browser interactions
+        run: node tests/browser_smoke.mjs
   publish:
     if: github.event_name != 'pull_request'
     needs: checks
