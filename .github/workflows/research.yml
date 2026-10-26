@@ -71,12 +71,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          # Bootstrap a newly created repository on the first main-branch deploy.
-          # Later pushes only rebuild Pages; schedule/manual always refresh data.
-          # A merge that adds/changes source adapters must refresh immediately.
-          # Ordinary content/style-only pushes keep their lightweight Pages rebuild.
+          # Recollect after a source/collector change; otherwise lightweight Pages build.
           if [ "$EVENT_NAME" = "push" ] && [ -f data/status/latest.json ] &&
-             ! git diff-tree --no-commit-id --name-only -r HEAD | grep -Eq '^(config/sources.json|scripts/(pipeline|economic)\.py)
+             ! git diff-tree --no-commit-id --name-only -r HEAD | grep -Eq '^(config/sources.json|scripts/(pipeline|economic)\.py)$'; then
+            echo "collected=false" >> "$GITHUB_OUTPUT"
+          else
             python scripts/pipeline.py collect
             echo "collected=true" >> "$GITHUB_OUTPUT"
           fi
