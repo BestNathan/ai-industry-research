@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "enterprise",
+      "label": "Enterprise adoption",
+      "keywords": [
+        "adoption",
+        "enterprise",
+        "deployment",
+        "roi",
+        "pilot",
+        "productivity",
+        "enterprise ai"
+      ]
+    },
+    {
+      "id": "consumer",
+      "label": "Consumer & distribution",
+      "keywords": [
+        "consumer",
+        "mobile",
+        "app",
+        "traffic",
+        "search",
+        "monthly active",
+        "users",
+        "interface",
+        "distribution"
+      ]
+    },
+    {
+      "id": "commercialization",
+      "label": "Commercialization",
+      "keywords": [
+        "revenue",
+        "arr",
+        "pricing",
+        "subscription",
+        "paid",
+        "spending",
+        "monetization",
+        "sales",
+        "profit",
+        "economic"
+      ]
+    },
+    {
+      "id": "usage-agents",
+      "label": "Usage & agents",
+      "keywords": [
+        "agent",
+        "agentic",
+        "tools",
+        "workflow",
+        "computer use",
+        "automation",
+        "token",
+        "mcp",
+        "orchestration"
+      ]
+    },
+    {
+      "id": "models-research",
+      "label": "Models & research",
+      "keywords": [
+        "research",
+        "benchmark",
+        "model",
+        "reasoning",
+        "multimodal",
+        "training",
+        "evaluation",
+        "paper",
+        "foundation"
+      ]
+    },
+    {
+      "id": "infrastructure",
+      "label": "Infrastructure",
+      "keywords": [
+        "gpu",
+        "chip",
+        "data center",
+        "cloud",
+        "inference",
+        "serving",
+        "energy",
+        "power",
+        "compute",
+        "cuda"
+      ]
+    },
+    {
+      "id": "capital",
+      "label": "Capital & markets",
+      "keywords": [
+        "funding",
+        "investment",
+        "valuation",
+        "venture",
+        "merger",
+        "capital",
+        "ipo"
+      ]
+    },
+    {
+      "id": "workforce",
+      "label": "Workforce & productivity",
+      "keywords": [
+        "job",
+        "labor",
+        "labour",
+        "hiring",
+        "wage",
+        "skills",
+        "worker",
+        "employment"
+      ]
+    },
+    {
+      "id": "verticals",
+      "label": "Vertical industries",
+      "keywords": [
+        "healthcare",
+        "banking",
+        "manufacturing",
+        "education",
+        "retail",
+        "government",
+        "medicine"
+      ]
+    },
+    {
+      "id": "china",
+      "label": "China",
+      "keywords": [
+        "china",
+        "chinese",
+        "qwen",
+        "deepseek",
+        "doubao",
+        "baidu",
+        "alibaba",
+        "tencent"
+      ]
+    },
+    {
+      "id": "policy",
+      "label": "Policy & safety",
+      "keywords": [
+        "policy",
+        "safety",
+        "governance",
+        "regulation",
+        "risk",
+        "security",
+        "incident",
+        "copyright"
+      ]
+    },
+    {
+      "id": "engineering",
+      "label": "Engineering ecosystem",
+      "keywords": [
+        "open source",
+        "developer",
+        "coding",
+        "github",
+        "sdk",
+        "engineering",
+        "infrastructure software"
+      ]
+    }
+  ]
+}
