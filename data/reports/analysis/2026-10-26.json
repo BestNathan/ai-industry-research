@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "report_date": "2026-10-26",
-  "generated_at": "2026-10-26T05:26:28+00:00",
+  "generated_at": "2026-10-26T05:49:18+00:00",
   "title": "AI Industry Evidence Monitor",
   "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
   "cards": [
@@ -380,7 +380,7 @@
       "points": [
         {
           "label": "openclaw/openclaw",
-          "value": 393072
+          "value": 393075
         },
         {
           "label": "huggingface/transformers",
@@ -388,7 +388,7 @@
         },
         {
           "label": "anthropics/claude-code",
-          "value": 153378
+          "value": 153382
         },
         {
           "label": "langchain-ai/langchain",
@@ -396,11 +396,11 @@
         },
         {
           "label": "openai/codex",
-          "value": 130919
+          "value": 130924
         },
         {
           "label": "vllm-project/vllm",
-          "value": 95529
+          "value": 95530
         },
         {
           "label": "sgl-project/sglang",
@@ -414,6 +414,7 @@
       "caveat": "Cumulative developer-interest signal in a selected set of repositories, not unique users, adoption, revenue, or an unbiased ecosystem ranking."
     }
   ],
+  "company_fiscal_capex_changes": [],
   "daily_changes": [],
   "coverage_gaps": [
     {
@@ -434,14 +435,45 @@
     {
       "id": "infrastructure_roi",
       "title": "AI infrastructure return on invested capital",
-      "reason": "Capex and disclosed revenue/profit series still require audited filing ingestion and segmentation."
+      "reason": "Even with company-wide audited PPE cash spending, AI-specific expenditure, leasing, contribution profits and segment revenue are not isolated."
     }
   ],
   "health": {
     "registered_automatic": 26,
     "successful": 26,
     "failed": 0,
-    "failures": [],
+    "failures": [
+      {
+        "source_id": "sec_msft_companyfacts",
+        "error": null,
+        "last_success_at": null
+      },
+      {
+        "source_id": "sec_googl_companyfacts",
+        "error": null,
+        "last_success_at": null
+      },
+      {
+        "source_id": "sec_amzn_companyfacts",
+        "error": null,
+        "last_success_at": null
+      },
+      {
+        "source_id": "sec_meta_companyfacts",
+        "error": null,
+        "last_success_at": null
+      },
+      {
+        "source_id": "sec_nvda_companyfacts",
+        "error": null,
+        "last_success_at": null
+      },
+      {
+        "source_id": "sec_orcl_companyfacts",
+        "error": null,
+        "last_success_at": null
+      }
+    ],
     "distinct_snapshot_days": 1
   },
   "research_note": "Adoption surveys, API model list prices, selected repository popularity, and publisher article counts measure different populations and outcomes. No causal claims or cross-dataset market shares can be made without compatible denominators."
