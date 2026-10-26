@@ -25,3 +25,9 @@ Data source is official primary SEC filing extraction. Source path `data/raw/imm
 - Respect access rules and contact; if missing, status reports a visible `skipped_config` instead of fetching.
 - Prefer actual future revenue/capex series available through issuer filings; do not forecast in the collector.
 - If the SEC blocks requests, source failures are recorded and charts remain sourced from previously collected facts, with freshness noted.
+
+## First live ingestion verified (2026-10-26)
+
+After the GitHub repository variable `SEC_USER_AGENT` was configured, [research run 40283505242](https://github.com/BestNathan/ai-industry-research/actions/runs/40283505242) successfully ingested all **six** issuer Company Facts feeds, adding **165 SEC normalized annual records**. The SEC input snapshots are archived and fiscal facts are auditable by filing accession. The raw-data acquisition is successful even if a specific issuer does not report a particular comparable GAAP concept.
+
+The source audit found that AMZN and NVDA currently lack the preferred standard `PaymentsToAcquirePropertyPlantAndEquipment` concept in the normalized annual Company Facts result. They nevertheless have usable annual revenue and operating cash-flow facts. Dashboard revenue and operating-cash-flow charts **include them**; PPE cash outlay and PPE/revenue ratios **omit them**, explicitly naming missing coverage. Do not inject Amazon's net capital outlays or NVIDIA's PPE-plus-intangibles expenditures into the same metric: they require distinct source-backed definitions and compatible denominators.
