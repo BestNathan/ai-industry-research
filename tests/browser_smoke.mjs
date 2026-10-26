@@ -45,7 +45,7 @@ async function main(){
   chrome.stdout.on("data",b=>{browserLogs+=(String(b)).slice(-8000);});
   chrome.stderr.on("data",b=>{browserLogs+=(String(b)).slice(-8000);});
   let port;
-  for(let i=0;i<100;i++){
+  for(let i=0;i<250;i++){
     try{port=Number((await readFile(join(dir,"DevToolsActivePort"),"utf8")).split("\n")[0]);break;}
     catch{await pause(100);}
   }
