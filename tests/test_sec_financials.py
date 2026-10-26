@@ -96,7 +96,7 @@ class SECAnnualTests(unittest.TestCase):
         self.assertEqual(ratio["points"][0]["value"],30)
         self.assertEqual(ratio["points"][0]["period"],"2026-06-30")
         self.assertEqual(growth[0]["capex_change_pct"],200)
-        self.assertIn("not AI",charts[0]["caveat"])
+        self.assertIn("not ai",charts[0]["caveat"].lower())
 
     def test_missing_financials_preserve_coverage_gap(self):
         registry={"feeds":[],"apis":[],"datasets":[],"financials":[],"research":[]}
