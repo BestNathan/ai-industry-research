@@ -1,18 +1,16 @@
 {
   "date": "2026-10-26",
-  "generated_at": "2026-10-26T07:04:19+00:00",
+  "generated_at": "2026-10-26T07:07:57+00:00",
   "source_count": 32,
-  "sources_ok": 31,
-  "sources_failed": 1,
+  "sources_ok": 32,
+  "sources_failed": 0,
   "sources_skipped_configuration": 0,
   "skipped_source_ids": [],
-  "failed_source_ids": [
-    "deepmind_blog"
-  ],
+  "failed_source_ids": [],
   "new_articles": 317,
   "metric_observations": 184,
   "historical_dataset_rows_added_or_revised": 0,
-  "sec_financial_rows_added_or_revised": 165,
+  "sec_financial_rows_added_or_revised": 0,
   "articles_by_category": {
     "capital": 14,
     "china": 3,

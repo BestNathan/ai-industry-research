@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "report_date": "2026-10-26",
-  "generated_at": "2026-10-26T07:04:19+00:00",
+  "generated_at": "2026-10-26T07:07:57+00:00",
   "title": "AI Industry Evidence Monitor",
   "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
   "cards": [
@@ -25,10 +25,10 @@
     },
     {
       "label": "Daily data source health",
-      "value": 31,
+      "value": 32,
       "suffix": "/32",
       "period": "2026-10-26",
-      "delta": "1 failures · 0 awaiting setup",
+      "delta": "0 failures · 0 awaiting setup",
       "source_id": "collection_status",
       "description": "Only registered automatic sources, not all AI research websites."
     },
@@ -87,10 +87,20 @@
       "source_ids": []
     },
     {
+      "kind": "coverage",
+      "topic": "infrastructure",
+      "title": "SEC cash PPE coverage: 4 of 6 tracked issuers",
+      "text": "Available revenue and operating cash-flow statements remain visible. No directly equivalent US-GAAP PPE-cash-payments concept was captured for AMZN, NVDA; company-specific cash investment definitions need separate research before comparison.",
+      "source_ids": [
+        "sec_edgar"
+      ],
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces"
+    },
+    {
       "kind": "observed",
       "topic": "infrastructure",
       "title": "ORCL reported PPE cash purchases changed +162.4%",
-      "text": "Latest reported fiscal year ended 2026-05-31 versus 2025-05-31: $55.66b vs $21.21b company-wide PPE cash payments. Source: audited SEC 10-K US-GAAP concept. This is not AI-attributable CAPEX.",
+      "text": "Latest reported fiscal year ended 2026-05-31 versus 2025-05-31: $55.66b vs $21.21b company-wide PPE cash payments. Source: SEC 10-K US-GAAP concept. This is not AI-attributable CAPEX.",
       "source_ids": [
         "sec_edgar"
       ],
@@ -223,6 +233,13 @@
       "unit": "USD billions",
       "points": [
         {
+          "label": "AMZN · FY end 2025-12-31",
+          "value": 716.924,
+          "period": "2025-12-31",
+          "accession": "0001018724-26-000004",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/"
+        },
+        {
           "label": "GOOGL · FY end 2025-12-31",
           "value": 402.836,
           "period": "2025-12-31",
@@ -244,6 +261,13 @@
           "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
         },
         {
+          "label": "NVDA · FY end 2026-01-25",
+          "value": 215.938,
+          "period": "2026-01-25",
+          "accession": "0001045810-26-000021",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/"
+        },
+        {
           "label": "ORCL · FY end 2026-05-31",
           "value": 67.357,
           "period": "2026-05-31",
@@ -251,7 +275,61 @@
           "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
         }
       ],
-      "caveat": "Audited consolidated company revenue, NOT AI product revenue. Fiscal year-ends differ across issuers; each bar is labeled with its period."
+      "caveat": "Issuer-wide SEC reported revenue, NOT AI product revenue. Fiscal year ends may differ; original filing and periods are linked."
+    },
+    {
+      "source_id": "sec_edgar",
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "period_type": "latest_available_fiscal_year_by_issuer",
+      "id": "sec_company_operating_cashflow",
+      "type": "bar",
+      "title": "Consolidated operating cash flow · latest fiscal year",
+      "unit": "USD billions",
+      "points": [
+        {
+          "label": "AMZN · FY end 2025-12-31",
+          "value": 139.514,
+          "period": "2025-12-31",
+          "accession": "0001018724-26-000004",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/"
+        },
+        {
+          "label": "GOOGL · FY end 2025-12-31",
+          "value": 164.713,
+          "period": "2025-12-31",
+          "accession": "0001652044-26-000018",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+        },
+        {
+          "label": "META · FY end 2025-12-31",
+          "value": 115.8,
+          "period": "2025-12-31",
+          "accession": "0001628280-26-003942",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+        },
+        {
+          "label": "MSFT · FY end 2026-06-30",
+          "value": 182.935,
+          "period": "2026-06-30",
+          "accession": "0001193125-26-323660",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+        },
+        {
+          "label": "NVDA · FY end 2026-01-25",
+          "value": 102.718,
+          "period": "2026-01-25",
+          "accession": "0001045810-26-000021",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/"
+        },
+        {
+          "label": "ORCL · FY end 2026-05-31",
+          "value": 31.977,
+          "period": "2026-05-31",
+          "accession": "0001193125-26-277521",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+        }
+      ],
+      "caveat": "Issuer-wide annual cash generated by operating activities (US GAAP). Includes non-AI activities and changes in working capital; not AI profit."
     },
     {
       "source_id": "sec_edgar",
@@ -291,7 +369,11 @@
           "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
         }
       ],
-      "caveat": "Consolidated US-GAAP PaymentsToAcquirePropertyPlantAndEquipment. Not AI-only or data-center-only infrastructure spend; excludes some lease financing. Different fiscal periods."
+      "omitted_issuers": [
+        "AMZN",
+        "NVDA"
+      ],
+      "caveat": "Company-wide GAAP PaymentsToAcquirePropertyPlantAndEquipment, not AI-only/data-center spend. Excludes some lease financing; missing concept is not zero. Excluded without an equivalent verified US-GAAP PPE-purchases tag: AMZN, NVDA."
     },
     {
       "source_id": "sec_edgar",
@@ -335,7 +417,11 @@
           "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
         }
       ],
-      "caveat": "Ratio of company-wide annual cash PPE purchases / revenue from the SAME fiscal-year end. This is neither AI ROI nor profit and cannot isolate data centers."
+      "omitted_issuers": [
+        "AMZN",
+        "NVDA"
+      ],
+      "caveat": "PPE cash payments divided by same-year consolidated revenue for the same issuer; not AI ROI. Missing ratios are omitted, never imputed. Excluded without an equivalent verified US-GAAP PPE-purchases tag: AMZN, NVDA."
     },
     {
       "id": "price_input",
@@ -526,11 +612,11 @@
         },
         {
           "label": "langchain-ai/langchain",
-          "value": 148472
+          "value": 148473
         },
         {
           "label": "openai/codex",
-          "value": 130935
+          "value": 130936
         },
         {
           "label": "vllm-project/vllm",
@@ -611,16 +697,10 @@
   ],
   "health": {
     "registered_automatic": 32,
-    "successful": 31,
-    "failed": 1,
+    "successful": 32,
+    "failed": 0,
     "skipped_config": 0,
-    "failures": [
-      {
-        "source_id": "deepmind_blog",
-        "error": "RuntimeError: https://deepmind.google/blog/rss.xml: ParseError not well-formed (invalid token): line 1, column 0 | https://deepmind.com/blog/feed/basic/: ParseError not well-formed (invalid token): line 1, column 0",
-        "last_success_at": "2026-10-26T05:55:41+00:00"
-      }
-    ],
+    "failures": [],
     "distinct_snapshot_days": 1
   },
   "research_note": "Adoption surveys, API model list prices, selected repository popularity, and publisher article counts measure different populations and outcomes. No causal claims or cross-dataset market shares can be made without compatible denominators."
