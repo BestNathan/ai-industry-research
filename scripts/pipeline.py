@@ -269,9 +269,11 @@ def process_source(source: dict, day: str, checked_at: str,
         payload = fetch(source["url"])
         checksum = hashlib.sha256(payload).hexdigest()
         suffix = "xml.gz" if source["mode"] == "feed" else "json.gz"
-        path = DATA / "raw" / day / (source["id"] + "." + suffix)
+        # Content-addressed filenames make same-day retries genuinely immutable.
+        path = DATA / "raw" / day / (source["id"] + "-" + checksum[:16] + "." + suffix)
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(gzip.compress(payload, compresslevel=6, mtime=0))
+        if not path.exists():
+            path.write_bytes(gzip.compress(payload, compresslevel=6, mtime=0))
         raw_path = path.relative_to(ROOT).as_posix()
         if source["mode"] == "feed":
             articles = parse_feed(payload, source, checked_at, raw_path, checksum, taxonomy)
@@ -329,6 +331,34 @@ def collect() -> int:
 
     successful = sum(s["status"] == "ok" for s in statuses)
     failed = [s["source_id"] for s in statuses if s["status"] != "ok"]
+    source_by_id = {s["id"]: s for s in enabled}
+    # Prioritize official/primary industry engineering publications in the daily digest.
+    # This is deterministic source-based ordering, NOT a model-generated quality claim.
+    digest_articles = sorted(
+        articles,
+        key=lambda a: (
+            source_by_id[a["source_id"]].get("priority") != "core",
+            a["source_id"] == "arxiv_ai",
+            -dt.datetime.fromisoformat(a.get("published_at") or a["discovered_at"]).timestamp()
+        )
+    )[:20]
+    past_files = sorted(f for f in (DATA / "metrics").glob("*.jsonl") if f != metric_path)
+    previous = read_jsonl(past_files[-1]) if past_files else []
+    previous_by_key = {(m["source_id"], m["entity_id"], m["metric_id"]): m for m in previous}
+    changes = []
+    for row in metrics:
+        key = (row["source_id"], row["entity_id"], row["metric_id"])
+        old = previous_by_key.get(key)
+        if old is None or old["unit"] != row["unit"]:
+            continue
+        delta = row["value"] - old["value"]
+        changes.append({
+            "source_id": row["source_id"], "entity_id": row["entity_id"],
+            "metric_id": row["metric_id"], "unit": row["unit"],
+            "current": row["value"], "previous": old["value"],
+            "previous_period": old["period"], "absolute_change": delta,
+            "relative_change_pct": round(100 * delta / old["value"], 4) if old["value"] else None
+        })
     report = {
         "date": day, "generated_at": checked_at,
         "source_count": len(enabled), "sources_ok": successful, "sources_failed": len(failed),
@@ -338,8 +368,9 @@ def collect() -> int:
         "headline_articles": [
             {"title": row["title"], "url": row["url"], "source_id": row["source_id"],
              "category": row["primary_category"]}
-            for row in articles[:20]
+            for row in digest_articles
         ],
+        "comparable_metric_changes": changes,
         "note": "Metrics are platform/API snapshots collected on this date; articles may have earlier publication dates."
     }
     write_json(DATA / "reports" / "daily" / (day + ".json"), report)
