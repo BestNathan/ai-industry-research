@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Open AI industry intelligence: time-series evidence, adoption, commercialization, models, infrastructure and primary research articles.">
+  <title>AI Industry Research — Data & Articles</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="AI Industry Research home"><span class="brand-mark">AI</span><span>Industry<span class="brand-muted"> Research</span></span></a>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-button active" data-view="data" aria-current="page">Data</button>
+        <button class="nav-button" data-view="articles">Articles</button>
+      </nav>
+      <a class="repo-link" href="https://github.com/BestNathan/ai-industry-research" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span class="pulse"></span> OPEN AI INDUSTRY INTELLIGENCE <span id="updated-label">· AWAITING FIRST RUN</span></div>
+        <h1>Where AI capability<br><em>becomes economic value.</em></h1>
+        <p>A continuously evolving, citation-first view of AI adoption, real-world usage, commercialization, infrastructure, labor and the shift from answering questions to executing work.</p>
+        <div class="hero-meta"><span>Daily source snapshots</span><span>Traceable evidence</span><span>Independent research</span></div>
+      </section>
+
+      <section class="view active" id="view-data" aria-label="Data dashboard">
+        <div class="section-title"><div><div class="kicker">01 / MEASUREMENT</div><h2>Industry data</h2><p>Platform observations and source-linked metrics — not market-wide estimates.</p></div></div>
+        <div class="stat-grid" id="stats">
+          <div class="stat"><span class="stat-label">Collected articles</span><strong>—</strong></div>
+          <div class="stat"><span class="stat-label">Metric observations</span><strong>—</strong></div>
+          <div class="stat"><span class="stat-label">Automated sources</span><strong>—</strong></div>
+          <div class="stat"><span class="stat-label">Research sources</span><strong>—</strong></div>
+        </div>
+        <section class="chart-layout">
+          <div class="panel chart-panel">
+            <div class="panel-top"><div><div class="kicker">TIME SERIES</div><h3>Observable signals</h3></div><span class="little-tag">RAW API SNAPSHOTS</span></div>
+            <label for="metric-select" class="control-label">Indicator & entity</label>
+            <select id="metric-select" aria-label="Choose a measurement time series"><option>Waiting for data</option></select>
+            <div class="chart-area" id="chart-area"><div class="empty">No measurements yet. The next collector run will populate the chart.</div></div>
+            <div class="chart-footer" id="chart-note">Values are stored with original source and methodology. Single-day snapshots cannot establish a trend.</div>
+          </div>
+          <div class="panel">
+            <div class="panel-top"><div><div class="kicker">SOURCE TRANSPARENCY</div><h3>Collection health</h3></div></div>
+            <div id="health"><div class="empty">No automated collection has run yet.</div></div>
+            <div class="panel-foot">A source failure never means zero usage. No unavailable values are imputed.</div>
+          </div>
+        </section>
+        <div class="section-title spaced"><div><div class="kicker">DAILY RECORD</div><h2>Research reports</h2><p>Auditable counts of new links, normalized observations and ingestion errors.</p></div></div>
+        <div id="reports" class="report-grid"><div class="empty">Reports will appear after the first collection.</div></div>
+        <div class="section-title spaced"><div><div class="kicker">EVIDENCE DIRECTORY</div><h2>Sources & coverage</h2><p>Includes both automated and tracked-only sources. Being listed does not imply API access.</p></div></div>
+        <div class="source-controls"><label for="source-filter" class="sr-only">Filter sources</label><select id="source-filter"><option value="all">All source modes</option><option value="feed">Article feeds</option><option value="api">Public data APIs</option><option value="reference">Research / licensed sources</option></select><span id="source-count" class="minor"></span></div>
+        <div class="source-list" id="source-list"></div>
+        <button class="outline-btn" id="source-more" hidden>Show more sources</button>
+      </section>
+
+      <section class="view" id="view-articles" aria-label="Article library">
+        <div class="section-title"><div><div class="kicker">02 / PUBLICATIONS</div><h2>Research & articles</h2><p>New primary-source publications, engineering posts and research links. Titles and brief feed excerpts only; full articles stay with the publisher.</p></div></div>
+        <div class="article-filters">
+          <label class="search-wrap" for="article-search"><span aria-hidden="true">⌕</span><input id="article-search" type="search" placeholder="Search article titles, publishers, topics..." autocomplete="off"></label>
+          <label for="article-category" class="sr-only">Topic</label><select id="article-category"><option value="all">All topics</option></select>
+          <label for="article-source" class="sr-only">Publisher</label><select id="article-source"><option value="all">All publishers</option></select>
+        </div>
+        <div class="article-toolbar"><span id="article-count">0 articles</span><span>Sorted by original publication date where available</span></div>
+        <div id="article-list" class="article-list"><div class="empty">No publications yet. Run the collector to populate this view.</div></div>
+        <button class="outline-btn" id="article-more" hidden>Show more articles</button>
+      </section>
+    </main>
+    <footer><div><strong>AI Industry Research</strong><span>Evidence over narratives. Methodology over headline numbers.</span></div><div><a href="https://github.com/BestNathan/ai-industry-research/blob/main/docs/METHODOLOGY.md">Methodology</a><a href="https://github.com/BestNathan/ai-industry-research/blob/main/docs/SOURCES.md">Source policy</a><a href="https://github.com/BestNathan/ai-industry-research/blob/main/data/">Raw data</a></div></footer>
+  </div>
+  <script src="./app.js" defer></script>
+</body>
+</html>
