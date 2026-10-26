@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import sys
 import unittest
+import tempfile
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -89,6 +91,22 @@ class PipelineTests(unittest.TestCase):
         src = {"id": "test"}
         r = p.observation(src, "entity", "metric", float("nan"), "count", "test", self.checked_at, "raw", "hash")
         self.assertIsNone(r)
+
+    def test_content_addressed_raw_archive_deduplicates_across_days(self):
+        xml = b"<rss><channel><item><title>AI research</title><link>https://example.org/p</link></item></channel></rss>"
+        source = dict(self.feed)
+        source["url"] = "https://example.org/rss.xml"
+        with tempfile.TemporaryDirectory() as folder:
+            fake_root = Path(folder)
+            with patch.object(p, "DATA", fake_root / "data"), patch.object(p, "ROOT", fake_root), patch.object(p, "fetch", return_value=xml):
+                a1, m1, s1 = p.process_source(source, "2026-10-26", self.checked_at, self.taxonomy)
+                a2, m2, s2 = p.process_source(source, "2026-10-27", "2026-10-27T00:10:00+00:00", self.taxonomy)
+                self.assertEqual(s1["raw_sha256"], s2["raw_sha256"])
+                self.assertEqual(s1["raw_path"], s2["raw_path"])
+                self.assertTrue(s1["raw_path"].startswith("data/raw/immutable/"))
+                self.assertEqual(len(list((fake_root / "data" / "raw" / "immutable").glob("*"))), 1)
+                self.assertEqual(s1["status"], "ok")
+                self.assertEqual(len(a1), 1)
 
     def test_config_unique_source_ids(self):
         registry = p.read_json(ROOT / "config" / "sources.json")
