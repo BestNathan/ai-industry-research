@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "report_date": "2026-10-26",
-  "generated_at": "2026-10-26T09:08:10+00:00",
+  "generated_at": "2026-10-26T09:21:22+00:00",
   "title": "AI Industry Evidence Monitor",
   "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
   "cards": [
@@ -600,11 +600,11 @@
       "points": [
         {
           "label": "openclaw/openclaw",
-          "value": 393100
+          "value": 393099
         },
         {
           "label": "huggingface/transformers",
-          "value": 168175
+          "value": 168176
         },
         {
           "label": "anthropics/claude-code",
@@ -612,19 +612,19 @@
         },
         {
           "label": "langchain-ai/langchain",
-          "value": 148482
+          "value": 148483
         },
         {
           "label": "openai/codex",
-          "value": 130961
+          "value": 130964
         },
         {
           "label": "vllm-project/vllm",
-          "value": 95562
+          "value": 95565
         },
         {
           "label": "sgl-project/sglang",
-          "value": 38183
+          "value": 38185
         },
         {
           "label": "BestNathan/nession",
