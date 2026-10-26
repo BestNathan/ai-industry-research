@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "report_date": "2026-10-26",
-  "generated_at": "2026-10-26T05:49:18+00:00",
+  "generated_at": "2026-10-26T05:55:41+00:00",
   "title": "AI Industry Evidence Monitor",
   "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
   "cards": [
@@ -26,9 +26,9 @@
     {
       "label": "Daily data source health",
       "value": 26,
-      "suffix": "/26",
+      "suffix": "/32",
       "period": "2026-10-26",
-      "delta": "0 source failures",
+      "delta": "0 failures · 6 awaiting setup",
       "source_id": "collection_status",
       "description": "Only registered automatic sources, not all AI research websites."
     },
@@ -380,7 +380,7 @@
       "points": [
         {
           "label": "openclaw/openclaw",
-          "value": 393075
+          "value": 393074
         },
         {
           "label": "huggingface/transformers",
@@ -388,15 +388,15 @@
         },
         {
           "label": "anthropics/claude-code",
-          "value": 153382
+          "value": 153383
         },
         {
           "label": "langchain-ai/langchain",
-          "value": 148469
+          "value": 148470
         },
         {
           "label": "openai/codex",
-          "value": 130924
+          "value": 130926
         },
         {
           "label": "vllm-project/vllm",
@@ -439,9 +439,10 @@
     }
   ],
   "health": {
-    "registered_automatic": 26,
+    "registered_automatic": 32,
     "successful": 26,
     "failed": 0,
+    "skipped_config": 6,
     "failures": [
       {
         "source_id": "sec_msft_companyfacts",
