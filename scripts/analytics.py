@@ -96,6 +96,32 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
                 "caveat": caveat, "delta": _growth(rows)
             })
 
+    # Same survey/definition, same year: a permissible geographic breakdown.
+    # These survey geographies overlap (Greater China is within Asia-Pacific);
+    # interpret independently; never sum these percentages as market share.
+    regional = {}
+    if worldwide:
+        latest_survey_year = worldwide[-1]["period"]
+        for rows in datasets.values():
+            for row in _trend(rows):
+                if (row["source_id"] == "owid_business_ai_adoption" and
+                    row["period"] == latest_survey_year and
+                    row["geography"] in ("North America", "Europe", "Asia-Pacific", "Greater China")):
+                    regional[row["geography"]] = row["value"]
+    regional_chart = None
+    if regional:
+        regional_chart = {
+            "id": "regional_survey_adoption", "type": "bar",
+            "title": "Regional AI use · same organization survey",
+            "unit": "percent", "period_type": "calendar_year",
+            "scope": latest_survey_year + " · McKinsey/OWID",
+            "source_id": "owid_business_ai_adoption",
+            "source_url": sources.get("owid_business_ai_adoption", {}).get("homepage", ""),
+            "points": [{"label": geo, "value": value}
+                       for geo, value in sorted(regional.items(), key=lambda x: (-x[1], x[0]))],
+            "caveat": "Same survey and year; regions can overlap (Greater China is part of Asia-Pacific). Not a census, not production ROI; regional percentages are not additive."
+        }
+
     snapshots = {}
     for row in snapshot_rows:
         key = (row["entity_id"], row["metric_id"])
@@ -131,6 +157,32 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
                 "period_type": "latest_catalog_snapshot", "points": points,
                 "caveat": "Unweighted median of the most recently-created model entries sampled per provider (up to 12), excluding free prices. This is neither realized transaction pricing nor market share, and differs by model mix.",
             })
+
+    # Paired model prices permit a within-model output/input price multiple.
+    # No comparison with other vendors' realized volumes or revenue.
+    multiples = defaultdict(list)
+    input_key = "openrouter.list_price_input_usd_per_million"
+    output_key = "openrouter.list_price_output_usd_per_million"
+    for (entity, metric), row in snapshots.items():
+        if metric != input_key or not entity.startswith("openrouter:"):
+            continue
+        paired = snapshots.get((entity, output_key))
+        if paired is None or row["value"] <= 0 or paired["value"] <= 0:
+            continue
+        provider = entity.split(":", 1)[1].split("/", 1)[0]
+        multiples[provider].append(paired["value"] / row["value"])
+    multiple_chart = None
+    if multiples:
+        multiple_chart = {
+            "id": "price_output_to_input", "type": "bar",
+            "title": "Model output/input list-price multiples",
+            "unit": "times", "period_type": "latest_catalog_snapshot",
+            "source_id": "openrouter_models",
+            "source_url": sources.get("openrouter_models", {}).get("homepage", "https://openrouter.ai/models"),
+            "points": [{"label": name, "value": round(statistics.median(vals), 3), "n": len(vals)}
+                       for name, vals in sorted(multiples.items())],
+            "caveat": "Median of output price divided by input price for matched model IDs with positive prices. This is a posted tariff asymmetry, not inference cost, usage volume, or company margin."
+        }
 
     latest_stars = [r for (_, metric), r in snapshots.items() if metric == "github.stars"]
     latest_stars.sort(key=lambda x: x["value"], reverse=True)
@@ -238,6 +290,16 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
                 world_delta["latest"], world_delta["latest_period"], world_delta["previous"], world_delta["previous_period"]),
             "source_ids": ["owid_business_ai_adoption"]
         })
+    if len(regional) >= 2:
+        high = max(regional, key=regional.get)
+        low = min(regional, key=regional.get)
+        findings.append({
+            "kind": "observed", "topic": "enterprise",
+            "title": "Regional survey spread: %.1f pp in %s" % (regional[high] - regional[low], latest_survey_year),
+            "text": "Within the same OWID/McKinsey organization-use survey, %s records %.1f%% and %s records %.1f%%, a %.1f percentage-point observed range. Regional definitions overlap and sampling/weighting differ; this does not establish causality or representative country-level demand." % (
+                high, regional[high], low, regional[low], regional[high] - regional[low]),
+            "source_ids": ["owid_business_ai_adoption"]
+        })
     findings.append({
         "kind": "coverage", "topic": "publications",
         "title": "%d indexed links; %d from core publisher feeds" % (len(articles), sum(core_counts.values())),
@@ -279,7 +341,9 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
         "generated_at": as_of, "title": "AI Industry Evidence Monitor",
         "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
         "cards": cards, "findings": findings,
-        "charts": adoption_charts + price_charts + [article_chart] + ([repo_chart] if repo_chart else []),
+        "charts": adoption_charts + ([regional_chart] if regional_chart else []) +
+                  price_charts + ([multiple_chart] if multiple_chart else []) +
+                  [article_chart] + ([repo_chart] if repo_chart else []),
         "daily_changes": changes[:30],
         "coverage_gaps": missing,
         "health": health,

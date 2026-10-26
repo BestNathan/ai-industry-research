@@ -36,7 +36,7 @@ function showView(view) {
 function formatMeasure(value, unit) {
   const n = Number(value);
   if (!Number.isFinite(n)) return "—";
-  const decimals = unit === "percent" ? 2 : unit === "USD per 1M tokens" ? 4 : 0;
+  const decimals = unit === "percent" ? 2 : unit === "USD per 1M tokens" ? 4 : unit === "times" ? 2 : 0;
   return n.toLocaleString("en-US", {maximumFractionDigits: decimals});
 }
 function renderAnalysisLine(holder, chart) {
@@ -66,7 +66,7 @@ function renderAnalysisLine(holder, chart) {
 function renderAnalysisBars(holder, chart) {
   const points=chart.points || [];
   if(!points.length){holder.append(dom("div","empty","No data available for this breakdown."));return;}
-  const maximum=Math.max(1,...points.map(p=>Number(p.value)||0));
+  const maximum=chart.unit==="percent"?100:Math.max(1,...points.map(p=>Number(p.value)||0));
   const stack=dom("div","vbar-stack");
   for(const row of points){
     const item=dom("div","hbar");

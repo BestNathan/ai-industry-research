@@ -58,3 +58,9 @@ Re-running with identical evidence and health timestamps produces identical repo
 
 Add SEC XBRL revenue and capex series with reporting period, issuer and accession IDs; US Census enterprise AI adoption with pinned question/version; verified enterprise spend (where licensed); AI Agent completion, checkout and fulfillment metrics; and curated source-linked qualitative interpretation of material changes. For comparisons, require matching reporting units, population and period.
 
+
+## New within-dataset cross-sections
+
+- **Survey regional spread:** compare 2025 (or latest common reporting-year) Europe, North America, Asia-Pacific and Greater China within the **same OWID/McKinsey survey**. These labels overlap geographically, so never sum regional percentages or treat the spread as causal.
+- **Model pricing asymmetry:** compute `output_usd_per_1M / input_usd_per_1M` for each **matched non-free model ID**, then median per provider. This represents catalog price design, **not** actual inference costs, model output/input utilization, or profit margin.
+- Percent bars use an actual 0–100 scale; different-unit bars remain independent panels.

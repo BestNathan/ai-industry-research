@@ -83,6 +83,40 @@ class AnalysisTests(unittest.TestCase):
         self.assertEqual(chart["all_feed_total"],52)
         self.assertIn("not an industry",chart["caveat"])
 
+    def test_regional_survey_comparison_within_one_year(self):
+        annual=[
+            self.annual("owid_business_ai_adoption","owid:ai_adoption:all_geographies","All geographies",2025,88),
+            self.annual("owid_business_ai_adoption","owid:ai_adoption:OWID_EUR","Europe",2025,91),
+            self.annual("owid_business_ai_adoption","owid:ai_adoption:OWID_NAM","North America",2025,90),
+            self.annual("owid_business_ai_adoption","owid:ai_adoption:OWID_APAC","Asia-Pacific",2025,82),
+            self.annual("owid_business_ai_adoption","owid:ai_adoption:OWID_CHI","Greater China",2025,88),
+        ]
+        report=make_analysis([],annual,[],self.registry,self.status)
+        chart=next(x for x in report["charts"] if x["id"]=="regional_survey_adoption")
+        self.assertEqual([x["label"] for x in chart["points"]],
+                         ["Europe","North America","Greater China","Asia-Pacific"])
+        self.assertIn("not additive",chart["caveat"])
+        finding=next(x for x in report["findings"] if x["title"].startswith("Regional survey spread"))
+        self.assertIn("9.0 pp",finding["title"])
+
+    def test_model_output_input_multiple_uses_same_model_not_provider_medians(self):
+        rows=[]
+        for vendor,model,field,value in [
+            ("openai","a","input",1.0),("openai","a","output",4.0),
+            ("openai","b","input",2.0),("openai","b","output",6.0),
+            ("openai","c","input",0),("openai","c","output",10.0)
+        ]:
+            rows.append({"source_id":"openrouter_models",
+                         "entity_id":f"openrouter:{vendor}/{model}",
+                         "metric_id":"openrouter.list_price_"+field+"_usd_per_million",
+                         "unit":"USD per 1M tokens","period":"2026-10-26",
+                         "observed_at":"2026-10-26T00:10:00+00:00","value":value})
+        report=make_analysis(rows,[],[],self.registry,self.status)
+        chart=next(x for x in report["charts"] if x["id"]=="price_output_to_input")
+        self.assertEqual(chart["points"][0]["n"],2)
+        self.assertEqual(chart["points"][0]["value"],3.5)
+        self.assertIn("matched",chart["caveat"])
+
     def test_missing_sources_do_not_generate_fictional_economics(self):
         report=make_analysis([],[],[],self.registry,self.status)
         self.assertFalse(any(c["source_id"]=="eurostat_enterprise_ai_adoption" for c in report["cards"]))
