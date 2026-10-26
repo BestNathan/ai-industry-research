@@ -61,3 +61,7 @@ The normalized daily `data/metrics/YYYY-MM-DD.jsonl` snapshots are **not** histo
 OWID/Stanford/McKinsey's reported use in **any business function** can include trials/pilots; Eurostat is a different **official ICT-in-enterprises survey of 10+ person enterprises**. Differences in methodology mean percentages cannot be mechanically compared.
 
 See [docs/ECONOMIC_DATASETS.md](ECONOMIC_DATASETS.md) for the pinned sources, licenses, economic limitations and next steps.
+
+## Industrial intelligence synthesis
+
+Read [ANALYSIS.md](ANALYSIS.md) for the deterministic aggregation layer, indicator comparability, source caveats, Markdown report and multi-chart Pages presentation. No unsupported statement is upgraded from a proxy to a financial fact.
