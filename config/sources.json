@@ -131,6 +131,58 @@
       "priority": "core",
       "homepage": "https://www.anthropic.com/",
       "notes": "Unofficial index of primary-source publications; verify original article URLs."
+    },
+    {
+      "id": "nvidia_blog",
+      "title": "NVIDIA AI & Accelerated Computing Blog",
+      "url": "https://blogs.nvidia.com/feed/",
+      "category": "infrastructure",
+      "official": true,
+      "publisher": "NVIDIA",
+      "mode": "feed",
+      "access": "public",
+      "priority": "core",
+      "homepage": "https://blogs.nvidia.com/",
+      "notes": "Official NVIDIA product, infrastructure and AI industry publications."
+    },
+    {
+      "id": "google_ai_keyword",
+      "title": "Google AI (The Keyword)",
+      "url": "https://blog.google/technology/ai/rss/",
+      "category": "consumer",
+      "official": true,
+      "publisher": "Google",
+      "mode": "feed",
+      "access": "public",
+      "priority": "core",
+      "homepage": "https://blog.google/technology/ai/",
+      "notes": "Official Google AI application, user product and distribution publications."
+    },
+    {
+      "id": "semianalysis",
+      "title": "SemiAnalysis",
+      "url": "https://www.semianalysis.com/feed",
+      "category": "infrastructure",
+      "official": true,
+      "publisher": "SemiAnalysis",
+      "mode": "feed",
+      "access": "public",
+      "priority": "core",
+      "homepage": "https://www.semianalysis.com/",
+      "notes": "Publisher feed. Metadata/excerpts only; articles may require a paid subscription."
+    },
+    {
+      "id": "techcrunch_ai",
+      "title": "TechCrunch AI",
+      "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "category": "capital",
+      "official": true,
+      "publisher": "TechCrunch",
+      "mode": "feed",
+      "access": "public",
+      "priority": "supplemental",
+      "homepage": "https://techcrunch.com/category/artificial-intelligence/",
+      "notes": "Tech news and startup funding; independent reporting is not primary evidence for valuation or revenue."
     }
   ],
   "apis": [
