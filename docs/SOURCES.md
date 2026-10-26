@@ -43,3 +43,7 @@ Both are observation-time vs reporting-time aware and include method notes and o
 ## Expanded publication sources
 
 Official feeds: NVIDIA AI and Google AI product news. Publisher feeds: SemiAnalysis (excerpts only, subscription may be needed for full articles) and TechCrunch AI. These feeds complement engineering posts with compute economics, model distribution, startup financing, and applied AI. The publication index is not proof that claims in those articles are verified; validate commercial figures using primary filings or authorized datasets.
+
+## SEC EDGAR corporate finance API
+
+Companyfacts JSON endpoints are official SEC primary records and automatically activated **only when** Actions repository variable `SEC_USER_AGENT` identifies the consuming application and a real contact email. Missing config is a **visible skip**, not a fetch failure or zero observation. Do not use anonymous requests, spoof contacts, or exceed the SEC fair-access rules. Six issuer CIKs are pinned in `config/sources.json`. See [SEC financial facts methodological controls](SEC_FINANCIALS.md).

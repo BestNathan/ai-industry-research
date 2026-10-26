@@ -58,3 +58,12 @@ No fabricated "live" numbers, no bypassing commercial data licenses, no mirrorin
 - [ ] Representative consumer/enterprise payment and agent transaction measures (#6).
 - [ ] Multi-week snapshot trend significance and data quality anomalies (#5).
 - [ ] Independent article importance scoring and primary China market feeds (#4).
+
+## SEC pilot integration (2026-10-26)
+
+- [x] SEC annual 10-K XBRL extractor with original issuer CIK, form, fiscal end/start, filing accession, filed-at, chosen US-GAAP concept and raw archive SHA.
+- [x] Six-company revenue / PPE capex / operating cash flow / net income adapters with amended-filing and YTD exclusion tests.
+- [x] Converged Pages charts for corporate total sales and cash PPE outlays, conditional on actual SEC source availability.
+- [ ] First live SEC ingestion after configuring the real contact `SEC_USER_AGENT` repository variable.
+- [ ] Direct official US Census BTOS AI adoption series.
+- [ ] Reported AI-only business segments and datacenter capex attribution if consistently disclosed and verifiable.

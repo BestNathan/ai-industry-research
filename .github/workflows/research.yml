@@ -75,10 +75,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           EVENT_NAME: ${{ github.event_name }}
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
         run: |
           # Recollect after a source/collector change; otherwise lightweight Pages build.
           if [ "$EVENT_NAME" = "push" ] && [ -f data/status/latest.json ] &&
-             ! git diff-tree --no-commit-id --name-only -r HEAD | grep -Eq '^(config/sources.json|scripts/(pipeline|economic|analytics)\.py|\.github/workflows/research\.yml)$'; then
+             ! git diff-tree --no-commit-id --name-only -r HEAD | grep -Eq '^(config/sources.json|scripts/(pipeline|economic|analytics|sec_financials)\.py|\.github/workflows/research\.yml)$'; then
             echo "collected=false" >> "$GITHUB_OUTPUT"
           else
             python scripts/pipeline.py collect

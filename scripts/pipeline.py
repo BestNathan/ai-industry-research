@@ -24,6 +24,7 @@ from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
 from economic import parse_dataset
 from analytics import make_analysis, markdown_report
+from sec_financials import annual_financials_adapter
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -242,8 +243,8 @@ def parse_metrics(payload: bytes, source: dict, checked_at: str,
     return result
 
 
-def fetch(url: str) -> bytes:
-    headers = {"User-Agent": USER_AGENT, "Accept": "application/json, application/rss+xml, application/atom+xml, application/xml, */*"}
+def fetch(url: str, user_agent: str | None = None, max_bytes: int = MAX_BYTES) -> bytes:
+    headers = {"User-Agent": user_agent or USER_AGENT, "Accept": "application/json, application/rss+xml, application/atom+xml, application/xml, */*"}
     token = os.environ.get("GITHUB_TOKEN")
     if token and url.startswith("https://api.github.com/"):
         headers["Authorization"] = "Bearer " + token
@@ -252,9 +253,9 @@ def fetch(url: str) -> bytes:
     for attempt in range(3):
         try:
             with urlopen(Request(url, headers=headers), timeout=20) as response:
-                content = response.read(MAX_BYTES + 1)
-            if len(content) > MAX_BYTES:
-                raise ValueError("response exceeds configured 8 MB limit")
+                content = response.read(max_bytes + 1)
+            if len(content) > max_bytes:
+                raise ValueError("response exceeds configured {} MB limit".format(max_bytes // 1_000_000))
             return content
         except (OSError, HTTPError, URLError, ValueError) as exc:
             error = exc
@@ -267,12 +268,16 @@ def process_source(source: dict, day: str, checked_at: str,
                    taxonomy: list[dict]) -> tuple[list[dict], list[dict], dict]:
     status = {"source_id": source["id"], "mode": source["mode"],
               "checked_at": checked_at, "status": "ok", "records": 0}
+    if source["mode"] == "financial" and not os.environ.get("SEC_USER_AGENT", "").strip():
+        status.update({"status": "skipped_config", "reason": "Set Actions variable SEC_USER_AGENT (project name + real contact email) to enable official SEC EDGAR requests."})
+        return [], [], status
     try:
         endpoints = [source["url"], *source.get("fallback_urls", [])]
         errors = []
         for url in endpoints:
             try:
-                payload = fetch(url)
+                payload = (fetch(url, user_agent=os.environ["SEC_USER_AGENT"], max_bytes=30_000_000)
+                           if source["mode"] == "financial" else fetch(url))
                 checksum = hashlib.sha256(payload).hexdigest()
                 suffix = ("xml.gz" if source["mode"] == "feed" else
                           "csv.gz" if source["mode"] == "dataset" and source["kind"].startswith("owid") else "json.gz")
@@ -288,6 +293,9 @@ def process_source(source: dict, day: str, checked_at: str,
                 elif source["mode"] == "dataset":
                     articles = []
                     metrics = parse_dataset(payload, source, checked_at, raw_path, checksum)
+                elif source["mode"] == "financial":
+                    articles = []
+                    metrics = annual_financials_adapter(payload, source, checked_at, raw_path, checksum)
                 else:
                     articles = []
                     metrics = parse_metrics(payload, source, checked_at, raw_path, checksum)
@@ -312,11 +320,12 @@ def collect() -> int:
     day = checked_at[:10]
     sources = read_json(ROOT / "config" / "sources.json")
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")["categories"]
-    enabled = sources["feeds"] + sources["apis"] + sources.get("datasets", [])
+    enabled = sources["feeds"] + sources["apis"] + sources.get("datasets", []) + sources.get("financials", [])
     dataset_ids = {s["id"] for s in sources.get("datasets", [])}
+    financial_ids = {s["id"] for s in sources.get("financials", [])}
     old_health = read_json(DATA / "status" / "latest.json", {})
     previous_by_id = {s["source_id"]: s for s in old_health.get("sources", [])}
-    statuses, incoming_articles, incoming_metrics, incoming_datasets = [], [], [], []
+    statuses, incoming_articles, incoming_metrics, incoming_datasets, incoming_financials = [], [], [], [], []
     with concurrent.futures.ThreadPoolExecutor(max_workers=7) as pool:
         futures = [pool.submit(process_source, source, day, checked_at, taxonomy) for source in enabled]
         for source, future in zip(enabled, futures):
@@ -341,6 +350,8 @@ def collect() -> int:
             incoming_articles.extend(articles)
             if source["id"] in dataset_ids:
                 incoming_datasets.extend(metrics)
+            elif source["id"] in financial_ids:
+                incoming_financials.extend(metrics)
             else:
                 incoming_metrics.extend(metrics)
             statuses.append(status)
@@ -386,8 +397,29 @@ def collect() -> int:
         updated_rows = sorted(previous_dataset.values(), key=lambda r: (r["metric_id"], r["entity_id"], r["period"]))
         write_jsonl(dataset_path, updated_rows)
 
+    # Preserve immutable original SEC records. Revisions are recorded by
+    # accession / filed date with source payload provenance, but the current
+    # normalized view contains one chosen filing per fiscal period and tag.
+    financials_updated = 0
+    for source in sources.get("financials", []):
+        fresh = [m for m in incoming_financials if m["source_id"] == source["id"]]
+        if not fresh:
+            continue
+        financial_path = DATA / "financials" / (source["ticker"] + ".jsonl")
+        existing = {metric_key(m): m for m in read_jsonl(financial_path)}
+        for row in fresh:
+            key = metric_key(row)
+            previous = existing.get(key)
+            if previous and (previous["value"], previous["accession"], previous["xbrl_tag"]) == (
+                    row["value"], row["accession"], row["xbrl_tag"]):
+                continue
+            existing[key] = row
+            financials_updated += 1
+        write_jsonl(financial_path, sorted(existing.values(), key=lambda r: (r["metric_id"], r["period"])))
+
     successful = sum(s["status"] == "ok" for s in statuses)
-    failed = [s["source_id"] for s in statuses if s["status"] != "ok"]
+    skipped = [s["source_id"] for s in statuses if s["status"] == "skipped_config"]
+    failed = [s["source_id"] for s in statuses if s["status"] == "failed"]
     source_by_id = {s["id"]: s for s in enabled}
     # Prioritize official/primary industry engineering publications in the daily digest.
     # This is deterministic source-based ordering, NOT a model-generated quality claim.
@@ -419,9 +451,11 @@ def collect() -> int:
     report = {
         "date": day, "generated_at": checked_at,
         "source_count": len(enabled), "sources_ok": successful, "sources_failed": len(failed),
+        "sources_skipped_configuration": len(skipped), "skipped_source_ids": skipped,
         "failed_source_ids": failed, "new_articles": len(articles),
         "metric_observations": len(metrics),
         "historical_dataset_rows_added_or_revised": datasets_updated,
+        "sec_financial_rows_added_or_revised": financials_updated,
         "articles_by_category": dict(sorted(Counter(x["primary_category"] for x in articles).items())),
         "headline_articles": [
             {"title": row["title"], "url": row["url"], "source_id": row["source_id"],
@@ -437,18 +471,21 @@ def collect() -> int:
              "- Sources: {} succeeded, {} failed".format(successful, len(failed)),
              "- New articles: " + str(len(articles)),
              "- Metric observations: " + str(len(metrics)),
-             "- Historical dataset rows added/revised: " + str(datasets_updated), "",
+             "- Historical dataset rows added/revised: " + str(datasets_updated),
+             "- SEC annual filing rows added/revised: " + str(financials_updated),
+             "- SEC sources awaiting configured fair-access User-Agent: " + str(len(skipped)), "",
              "## New article links", ""]
     lines.extend("- [{}]({}) — {}".format(a["title"].replace("[", "").replace("]", ""),
                                             a["url"], a["source_id"]) for a in report["headline_articles"])
     lines += ["", "## Collection problems", ""]
     lines.extend("- " + entry["source_id"] + ": " + entry.get("error", "") for entry in statuses if entry["status"] == "failed")
+    lines.extend("- " + entry["source_id"] + ": " + entry.get("reason", "") for entry in statuses if entry["status"] == "skipped_config")
     if not failed:
         lines.append("No source failures.")
     (DATA / "reports" / "daily" / (day + ".md")).write_text("\n".join(lines) + "\n", encoding="utf-8")
     write_json(DATA / "status" / "latest.json", {
         "generated_at": checked_at, "date": day, "successful_sources": successful,
-        "failed_sources": len(failed), "sources": statuses
+        "failed_sources": len(failed), "skipped_sources": len(skipped), "sources": statuses
     })
     print("Collected {} articles; {} metric rows; {} source failures".format(len(articles), len(metrics), len(failed)))
     return 0 if successful else 2
@@ -468,7 +505,8 @@ def analyze() -> None:
     metrics = all_rows("metrics")
     annual = all_rows("datasets")
     articles = all_rows("articles")
-    report = make_analysis(metrics, annual, articles, sources, status)
+    financials = all_rows("financials")
+    report = make_analysis(metrics, annual, articles, sources, status, financial_rows=financials)
     day = report["report_date"]
     directory = DATA / "reports" / "analysis"
     write_json(directory / "latest.json", report)
@@ -489,7 +527,7 @@ def build() -> None:
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")
     status = read_json(DATA / "status" / "latest.json", {})
     analysis = read_json(DATA / "reports" / "analysis" / "latest.json", {})
-    metrics = all_rows("metrics") + all_rows("datasets")
+    metrics = all_rows("metrics") + all_rows("datasets") + all_rows("financials")
     articles = all_rows("articles")
     article_map = {a["id"]: a for a in articles}
     articles = sorted(article_map.values(),
@@ -507,6 +545,7 @@ def build() -> None:
     # Limit public page JSON size, but retain every raw and normalized observation in Git.
     prioritized = sorted(latest_by_key, key=lambda k: (
         0 if k[0] == "enterprise.ai_adoption_share_pct" else
+        0 if k[0].startswith("company.") else
         1 if k[0] == "github.stars" else
         2 if k[0] == "huggingface.downloads" else
         3 if k[0].startswith("openrouter.") else 4,
@@ -529,7 +568,7 @@ def build() -> None:
     payload = {
         "built_at": iso(now_utc()),
         "stats": {"articles": len(articles), "observations": len(metrics),
-                  "sources_automated": len(sources["feeds"]) + len(sources["apis"]) + len(sources.get("datasets", [])),
+                  "sources_automated": len(sources["feeds"]) + len(sources["apis"]) + len(sources.get("datasets", [])) + len(sources.get("financials", [])),
                   "sources_reference": len(sources["research"])},
         "taxonomy": taxonomy["categories"], "sources": sources,
         "source_health": status,
@@ -546,11 +585,13 @@ def validate() -> None:
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")
     categories = {c["id"] for c in taxonomy["categories"]}
     registered_ids = set()
-    for src in sources["feeds"] + sources["apis"] + sources.get("datasets", []) + sources["research"]:
+    for src in sources["feeds"] + sources["apis"] + sources.get("datasets", []) + sources.get("financials", []) + sources["research"]:
         if src["id"] in registered_ids or src["category"] not in categories:
             raise AssertionError("duplicate source ID or invalid category " + src["id"])
         registered_ids.add(src["id"])
-    for file in sorted((DATA / "metrics").glob("*.jsonl")) + sorted((DATA / "datasets").glob("*.jsonl")):
+    for file in (sorted((DATA / "metrics").glob("*.jsonl")) +
+                 sorted((DATA / "datasets").glob("*.jsonl")) +
+                 sorted((DATA / "financials").glob("*.jsonl"))):
         rows = read_jsonl(file)
         keys = set()
         for row in rows:
@@ -560,11 +601,19 @@ def validate() -> None:
             raw_file = ROOT / row["raw_path"]
             if not raw_file.exists():
                 raise AssertionError("raw snapshot missing for " + str(file))
+            if file.parent.name == "financials":
+                if row.get("period_type") != "fiscal_year_end" or row.get("end") != row.get("period"):
+                    raise AssertionError("SEC financial period is invalid")
+                if row.get("evidence_type") != "sec_xbrl_filing" or not row.get("accession"):
+                    raise AssertionError("SEC filing provenance missing")
             if file.parent.name == "datasets":
                 if row.get("period_type") != "calendar_year" or not re.fullmatch(r"20[0-9]{2}", row["period"]):
                     raise AssertionError("dataset reporting year is invalid")
                 if hashlib.sha256(gzip.decompress(raw_file.read_bytes())).hexdigest() != row["raw_sha256"]:
                     raise AssertionError("dataset raw provenance mismatch: " + str(raw_file))
+            if file.parent.name == "financials":
+                if hashlib.sha256(gzip.decompress(raw_file.read_bytes())).hexdigest() != row["raw_sha256"]:
+                    raise AssertionError("SEC input archive hash mismatch")
             keys.add(key)
     article_ids = set()
     for file in sorted((DATA / "articles").glob("*.jsonl")):

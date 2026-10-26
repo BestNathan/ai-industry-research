@@ -7,7 +7,7 @@ This repository has two equal products:
 - **Data** — daily raw snapshots, normalized time series, multi-angle analytical charts, evidence-labeled findings and reproducible JSON/Markdown reports.
 - **Articles** — a continuously monitored, categorized index of primary-source research, engineering publications, business reports, and industry evidence. We store metadata and brief descriptions with attribution and original links; we do **not** mirror copyrighted articles.
 
-The public website is published via GitHub Pages at **https://bestnathan.github.io/ai-industry-research/** via GitHub Pages.
+The public website is published via GitHub Pages at **https://bestnathan.github.io/ai-industry-research/**.
 
 ## Research questions
 
@@ -69,6 +69,7 @@ config/taxonomy.json          common article / data categories
 data/raw/immutable/          content-addressed gzip upstream snapshots (no daily duplicates)
 data/metrics/YYYY-MM-DD.jsonl normalized daily API snapshots
 data/datasets/{source}.jsonl    genuine survey-year observations, no daily duplication
+data/financials/{TICKER}.jsonl SEC 10-K company-wide fiscal financial facts (requires SEC identity)
 data/articles/YYYY-MM-DD.jsonl article metadata with source links / tags
 data/reports/daily/          JSON + Markdown daily acquisition summaries
 data/reports/analysis/       JSON + Markdown analytical findings and charts
@@ -155,3 +156,9 @@ The structured report is generated from saved data at `data/reports/analysis/lat
 
 **What this does not prove:** genuine AI revenue, enterprise paying adoption, employment substitution, agent transaction conversion and infrastructure returns still need licensed datasets or audited filings. The site deliberately names these gaps rather than fabricating charts.
 
+
+## Official SEC financial ingestion (US-listed issuers)
+
+The platform includes a six-company **SEC Company Facts** integration (MSFT, GOOGL, AMZN, META, NVDA, ORCL) for 10-K consolidated revenue, cash payments for property and equipment, operating cash flows, and net income. All years are labeled using the *actual fiscal period end*, not the data fetch date; SEC XBRL fields, filing accession and original snapshot hash remain linked. A company-wide SEC metric is **not AI-only revenue, cloud segment revenue, AI data center capex, or AI ROI**.
+
+**One-time configuration, required by SEC fair access:** Repository **Settings → Secrets and variables → Actions → Variables → New repository variable**, set `SEC_USER_AGENT` to an identifying application name and **a real monitored contact email address** under your control, e.g. `AIIndustryResearch/1.0 researcher@your-domain.example` (replace the example with a real address). Never add contact details or API keys to committed source files. Until this is configured, the 6 SEC sources explicitly show `skipped_config` instead of fabricating observations or violating the SEC's identification requirements. No SEC credentials are needed. SEC permits reasonable requests subject to its fair-access policy; failures leave previous valid filings unchanged. See [SEC integration methodology](docs/SEC_FINANCIALS.md).
