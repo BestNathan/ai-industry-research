@@ -48,11 +48,12 @@ def _display_delta(change):
 
 
 def financial_aggregation(rows, registry):
-    """Evidence-anchored company-wide annual financials, not AI revenue.
+    """Source-linked, issuer-level financials. Missing dimensions stay missing.
 
-    Latest comparable *within each issuer* requires the exact same fiscal-end
-    period and USD unit; cross-company bars describe each issuer's latest FY,
-    not one synchronized calendar window.
+    Revenue / operating cash flows are valid independently. PPE cash capex
+    needs an exact recognized GAAP tag; capex-to-sales additionally requires
+    revenue for the same fiscal year end. Do NOT drop an issuer's available
+    revenue merely because its capex XBRL concept is absent.
     """
     by_company = defaultdict(lambda: defaultdict(dict))
     for row in rows:
@@ -64,77 +65,119 @@ def financial_aggregation(rows, registry):
         previous = by_company[ticker][period].get(metric)
         if previous is None or row.get("filed_at", "") > previous.get("filed_at", ""):
             by_company[ticker][period][metric] = row
-    revenue_points, capex_points, ratio_points = [], [], []
-    growth = []
-    latest_rows = {}
+
+    revenue_points, cashflow_points, capex_points, ratio_points = [], [], [], []
+    missing_capex, growth = [], []
     for ticker in sorted(by_company):
         periods = by_company[ticker]
-        # Same period used for both numerator and denominator.
-        complete = sorted(p for p, metrics in periods.items()
-                          if "company.revenue_usd" in metrics and "company.capex_ppe_usd" in metrics
-                          and metrics["company.revenue_usd"]["value"] > 0)
-        if not complete:
+        # Each absolute measure uses its independently latest available full year.
+        for metric, target in (
+            ("company.revenue_usd", revenue_points),
+            ("company.operating_cashflow_usd", cashflow_points),
+            ("company.capex_ppe_usd", capex_points)
+        ):
+            candidates = sorted(p for p, values in periods.items() if metric in values)
+            if not candidates:
+                if metric == "company.capex_ppe_usd":
+                    missing_capex.append(ticker)
+                continue
+            period = candidates[-1]
+            row = periods[period][metric]
+            if metric in ("company.revenue_usd", "company.capex_ppe_usd") and row["value"] < 0:
+                continue
+            target.append({
+                "label": ticker + " · FY end " + period,
+                "value": round(row["value"] / 1e9, 3),
+                "period": period, "accession": row["accession"],
+                "source_url": row["source_url"]
+            })
+
+        # Only paired figures with exactly the same fiscal-year end are
+        # eligible for a ratio; never match adjacent year or rolling YTD.
+        paired = sorted(p for p, facts in periods.items()
+                        if facts.get("company.revenue_usd", {}).get("value", 0) > 0
+                        and facts.get("company.capex_ppe_usd", {}).get("value", -1) >= 0)
+        if not paired:
             continue
-        period = complete[-1]
-        item = periods[period]
-        rev, cap = item["company.revenue_usd"], item["company.capex_ppe_usd"]
-        if cap["value"] < 0:
-            continue
-        latest_rows[ticker] = item
-        label = ticker + " · FY end " + period
-        revenue_points.append({"label": label, "value": round(rev["value"] / 1e9, 3),
-                               "period": period, "accession": rev["accession"],
-                               "source_url": rev["source_url"]})
-        capex_points.append({"label": label, "value": round(cap["value"] / 1e9, 3),
-                             "period": period, "accession": cap["accession"],
-                             "source_url": cap["source_url"]})
-        ratio_points.append({"label": label, "value": round(cap["value"] / rev["value"] * 100, 2),
-                             "period": period, "capex_accession": cap["accession"],
-                             "revenue_accession": rev["accession"],
-                             "source_url": cap["source_url"]})
-        if len(complete) >= 2:
-            earlier = periods[complete[-2]]["company.capex_ppe_usd"]
-            if earlier["value"] > 0:
+        period = paired[-1]
+        rev, cap = periods[period]["company.revenue_usd"], periods[period]["company.capex_ppe_usd"]
+        ratio_points.append({
+            "label": ticker + " · FY end " + period,
+            "value": round(cap["value"] / rev["value"] * 100, 2),
+            "period": period, "capex_accession": cap["accession"],
+            "revenue_accession": rev["accession"],
+            "source_url": cap["source_url"]
+        })
+        if len(paired) >= 2:
+            prev_period = paired[-2]
+            previous = periods[prev_period]["company.capex_ppe_usd"]
+            if previous["value"] > 0:
                 growth.append({
                     "ticker": ticker, "current_period": period,
-                    "previous_period": complete[-2],
+                    "previous_period": prev_period,
                     "current_capex_usd_b": round(cap["value"] / 1e9, 3),
-                    "previous_capex_usd_b": round(earlier["value"] / 1e9, 3),
-                    "capex_change_pct": round((cap["value"] / earlier["value"] - 1) * 100, 2),
+                    "previous_capex_usd_b": round(previous["value"] / 1e9, 3),
+                    "capex_change_pct": round((cap["value"] / previous["value"] - 1) * 100, 2),
                     "source_url": cap["source_url"]
                 })
-    if not capex_points:
-        return [], [], []
 
+    if not any((revenue_points, cashflow_points, capex_points)):
+        return [], [], []
     meta = {
         "source_id": "sec_edgar",
         "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
         "period_type": "latest_available_fiscal_year_by_issuer"
     }
-    charts = [
-        dict(meta, id="sec_company_revenue", type="bar",
-             title="Consolidated revenue · latest reported fiscal year",
-             unit="USD billions", points=revenue_points,
-             caveat="Audited consolidated company revenue, NOT AI product revenue. Fiscal year-ends differ across issuers; each bar is labeled with its period."),
-        dict(meta, id="sec_company_capex", type="bar",
-             title="Cash payments for property & equipment · annual",
-             unit="USD billions", points=capex_points,
-             caveat="Consolidated US-GAAP PaymentsToAcquirePropertyPlantAndEquipment. Not AI-only or data-center-only infrastructure spend; excludes some lease financing. Different fiscal periods."),
-        dict(meta, id="sec_company_capex_to_sales", type="bar",
-             title="PPE cash investment as a share of consolidated revenue",
-             unit="percent", points=ratio_points,
-             caveat="Ratio of company-wide annual cash PPE purchases / revenue from the SAME fiscal-year end. This is neither AI ROI nor profit and cannot isolate data centers."),
-    ]
-    # Choose issuer with largest observed *relative* increase in reported
-    # absolute capex, but don't claim this rise is caused by AI demand.
+    charts = []
+    if revenue_points:
+        charts.append(dict(
+            meta, id="sec_company_revenue", type="bar",
+            title="Consolidated revenue · latest reported fiscal year",
+            unit="USD billions", points=revenue_points,
+            caveat="Issuer-wide SEC reported revenue, NOT AI product revenue. Fiscal year ends may differ; original filing and periods are linked."))
+    if cashflow_points:
+        charts.append(dict(
+            meta, id="sec_company_operating_cashflow", type="bar",
+            title="Consolidated operating cash flow · latest fiscal year",
+            unit="USD billions", points=cashflow_points,
+            caveat="Issuer-wide annual cash generated by operating activities (US GAAP). Includes non-AI activities and changes in working capital; not AI profit."))
+    missing_note = (" Excluded without an equivalent verified US-GAAP PPE-purchases tag: " +
+                    ", ".join(missing_capex) + ".") if missing_capex else ""
+    if capex_points:
+        charts.append(dict(
+            meta, id="sec_company_capex", type="bar",
+            title="Cash payments for property & equipment · annual",
+            unit="USD billions", points=capex_points,
+            omitted_issuers=missing_capex,
+            caveat="Company-wide GAAP PaymentsToAcquirePropertyPlantAndEquipment, not AI-only/data-center spend. Excludes some lease financing; missing concept is not zero." + missing_note))
+    if ratio_points:
+        charts.append(dict(
+            meta, id="sec_company_capex_to_sales", type="bar",
+            title="PPE cash investment as a share of consolidated revenue",
+            unit="percent", points=ratio_points,
+            omitted_issuers=missing_capex,
+            caveat="PPE cash payments divided by same-year consolidated revenue for the same issuer; not AI ROI. Missing ratios are omitted, never imputed." + missing_note))
+
     findings = []
+    if missing_capex:
+        findings.append({
+            "kind": "coverage", "topic": "infrastructure",
+            "title": "SEC cash PPE coverage: %d of %d tracked issuers" % (
+                len(capex_points), len(by_company)),
+            "text": "Available revenue and operating cash-flow statements remain visible. "
+                    "No directly equivalent US-GAAP PPE-cash-payments concept was captured for " +
+                    ", ".join(missing_capex) +
+                    "; company-specific cash investment definitions need separate research before comparison.",
+            "source_ids": ["sec_edgar"],
+            "source_url": meta["source_url"]
+        })
     if growth:
         entry = max(growth, key=lambda x: abs(x["capex_change_pct"]))
         findings.append({
             "kind": "observed", "topic": "infrastructure",
             "title": "%s reported PPE cash purchases changed %+.1f%%" % (
                 entry["ticker"], entry["capex_change_pct"]),
-            "text": "Latest reported fiscal year ended %s versus %s: $%.2fb vs $%.2fb company-wide PPE cash payments. Source: audited SEC 10-K US-GAAP concept. This is not AI-attributable CAPEX." % (
+            "text": "Latest reported fiscal year ended %s versus %s: $%.2fb vs $%.2fb company-wide PPE cash payments. Source: SEC 10-K US-GAAP concept. This is not AI-attributable CAPEX." % (
                 entry["current_period"], entry["previous_period"],
                 entry["current_capex_usd_b"], entry["previous_capex_usd_b"]),
             "source_ids": ["sec_edgar"],
