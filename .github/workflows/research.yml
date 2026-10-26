@@ -1,0 +1,83 @@
+name: Research collection & Pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "config/**"
+      - "scripts/**"
+      - "web/**"
+      - "tests/**"
+      - "data/**"
+      - ".github/workflows/research.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # 08:10 Asia/Singapore, 00:10 UTC.
+    - cron: "10 0 * * *"
+permissions:
+  contents: read
+concurrency:
+  group: ai-industry-research-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate stored evidence
+        run: python scripts/pipeline.py validate
+  publish:
+    if: github.event_name != 'pull_request'
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch and normalize source evidence
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/pipeline.py collect
+      - name: Validate results
+        run: python scripts/pipeline.py validate
+      - name: Commit daily evidence
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if ! git diff --cached --quiet; then
+            git commit -m "data: daily evidence snapshot $(date -u +%Y-%m-%d)"
+            git push origin HEAD:main
+          else
+            echo "No evidence changes to commit"
+          fi
+      - name: Build static Pages site
+        run: python scripts/pipeline.py build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_site"
+      - name: Deploy
+        id: deploy
+        uses: actions/deploy-pages@v4
