@@ -87,6 +87,31 @@ jobs:
             python scripts/pipeline.py collect
             echo "collected=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: SEC onboarding verification
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          status = json.loads(Path("data/status/latest.json").read_text())
+          sec = [s for s in status["sources"] if s["source_id"].startswith("sec_")]
+          summary = ["### SEC Company Facts source verification", "",
+                     "| Issuer | Status | Annual facts |",
+                     "| --- | --- | ---: |"]
+          for s in sec:
+              summary.append("| {} | {} | {} |".format(
+                  s["source_id"], s["status"], s["records"]))
+              if s["status"] == "failed":
+                  print("SEC source failed:", s["source_id"], s.get("error", ""))
+          if not sec:
+              raise SystemExit("No SEC sources registered in latest collection status")
+          Path(__import__("os").environ["GITHUB_STEP_SUMMARY"]).open("a").write(
+              "\n".join(summary) + "\n")
+          configured = [s for s in sec if s["status"] != "skipped_config"]
+          if configured and not any(s["status"] == "ok" for s in configured):
+              raise SystemExit("SEC_USER_AGENT configured, but all SEC financial sources failed")
+          print("SEC verification:", len(sec), "sources;", 
+                sum(s["status"] == "ok" for s in sec), "successful")
+          PY
       - name: Validate results
         run: python scripts/pipeline.py validate
       - name: Aggregate data into evidence reports
