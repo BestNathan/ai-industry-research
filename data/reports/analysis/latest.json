@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "report_date": "2026-10-26",
-  "generated_at": "2026-10-26T05:55:41+00:00",
+  "generated_at": "2026-10-26T07:04:19+00:00",
   "title": "AI Industry Evidence Monitor",
   "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
   "cards": [
@@ -25,10 +25,10 @@
     },
     {
       "label": "Daily data source health",
-      "value": 26,
+      "value": 31,
       "suffix": "/32",
       "period": "2026-10-26",
-      "delta": "0 failures · 6 awaiting setup",
+      "delta": "1 failures · 0 awaiting setup",
       "source_id": "collection_status",
       "description": "Only registered automatic sources, not all AI research websites."
     },
@@ -85,6 +85,16 @@
       "title": "No defensible daily usage-growth trend yet",
       "text": "Only 1 unique daily snapshot date(s) are stored. At least two comparable dates for the same entity and metric are required to compute changes. List prices and GitHub stars are proxies, not token volume or commercial revenue.",
       "source_ids": []
+    },
+    {
+      "kind": "observed",
+      "topic": "infrastructure",
+      "title": "ORCL reported PPE cash purchases changed +162.4%",
+      "text": "Latest reported fiscal year ended 2026-05-31 versus 2025-05-31: $55.66b vs $21.21b company-wide PPE cash payments. Source: audited SEC 10-K US-GAAP concept. This is not AI-attributable CAPEX.",
+      "source_ids": [
+        "sec_edgar"
+      ],
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
     }
   ],
   "charts": [
@@ -204,6 +214,130 @@
       "caveat": "Same survey and year; regions can overlap (Greater China is part of Asia-Pacific). Not a census, not production ROI; regional percentages are not additive."
     },
     {
+      "source_id": "sec_edgar",
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "period_type": "latest_available_fiscal_year_by_issuer",
+      "id": "sec_company_revenue",
+      "type": "bar",
+      "title": "Consolidated revenue · latest reported fiscal year",
+      "unit": "USD billions",
+      "points": [
+        {
+          "label": "GOOGL · FY end 2025-12-31",
+          "value": 402.836,
+          "period": "2025-12-31",
+          "accession": "0001652044-26-000018",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+        },
+        {
+          "label": "META · FY end 2025-12-31",
+          "value": 200.966,
+          "period": "2025-12-31",
+          "accession": "0001628280-26-003942",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+        },
+        {
+          "label": "MSFT · FY end 2026-06-30",
+          "value": 331.839,
+          "period": "2026-06-30",
+          "accession": "0001193125-26-323660",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+        },
+        {
+          "label": "ORCL · FY end 2026-05-31",
+          "value": 67.357,
+          "period": "2026-05-31",
+          "accession": "0001193125-26-277521",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+        }
+      ],
+      "caveat": "Audited consolidated company revenue, NOT AI product revenue. Fiscal year-ends differ across issuers; each bar is labeled with its period."
+    },
+    {
+      "source_id": "sec_edgar",
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "period_type": "latest_available_fiscal_year_by_issuer",
+      "id": "sec_company_capex",
+      "type": "bar",
+      "title": "Cash payments for property & equipment · annual",
+      "unit": "USD billions",
+      "points": [
+        {
+          "label": "GOOGL · FY end 2025-12-31",
+          "value": 91.447,
+          "period": "2025-12-31",
+          "accession": "0001652044-26-000018",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+        },
+        {
+          "label": "META · FY end 2025-12-31",
+          "value": 69.691,
+          "period": "2025-12-31",
+          "accession": "0001628280-26-003942",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+        },
+        {
+          "label": "MSFT · FY end 2026-06-30",
+          "value": 115.948,
+          "period": "2026-06-30",
+          "accession": "0001193125-26-323660",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+        },
+        {
+          "label": "ORCL · FY end 2026-05-31",
+          "value": 55.663,
+          "period": "2026-05-31",
+          "accession": "0001193125-26-277521",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+        }
+      ],
+      "caveat": "Consolidated US-GAAP PaymentsToAcquirePropertyPlantAndEquipment. Not AI-only or data-center-only infrastructure spend; excludes some lease financing. Different fiscal periods."
+    },
+    {
+      "source_id": "sec_edgar",
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "period_type": "latest_available_fiscal_year_by_issuer",
+      "id": "sec_company_capex_to_sales",
+      "type": "bar",
+      "title": "PPE cash investment as a share of consolidated revenue",
+      "unit": "percent",
+      "points": [
+        {
+          "label": "GOOGL · FY end 2025-12-31",
+          "value": 22.7,
+          "period": "2025-12-31",
+          "capex_accession": "0001652044-26-000018",
+          "revenue_accession": "0001652044-26-000018",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+        },
+        {
+          "label": "META · FY end 2025-12-31",
+          "value": 34.68,
+          "period": "2025-12-31",
+          "capex_accession": "0001628280-26-003942",
+          "revenue_accession": "0001628280-26-003942",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+        },
+        {
+          "label": "MSFT · FY end 2026-06-30",
+          "value": 34.94,
+          "period": "2026-06-30",
+          "capex_accession": "0001193125-26-323660",
+          "revenue_accession": "0001193125-26-323660",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+        },
+        {
+          "label": "ORCL · FY end 2026-05-31",
+          "value": 82.64,
+          "period": "2026-05-31",
+          "capex_accession": "0001193125-26-277521",
+          "revenue_accession": "0001193125-26-277521",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+        }
+      ],
+      "caveat": "Ratio of company-wide annual cash PPE purchases / revenue from the SAME fiscal-year end. This is neither AI ROI nor profit and cannot isolate data centers."
+    },
+    {
       "id": "price_input",
       "type": "bar",
       "title": "Input model list prices by provider",
@@ -219,7 +353,7 @@
         },
         {
           "label": "deepseek",
-          "value": 0.26,
+          "value": 0.27,
           "n": 12
         },
         {
@@ -256,7 +390,7 @@
         },
         {
           "label": "deepseek",
-          "value": 0.7984,
+          "value": 0.975,
           "n": 12
         },
         {
@@ -380,31 +514,31 @@
       "points": [
         {
           "label": "openclaw/openclaw",
-          "value": 393074
+          "value": 393088
         },
         {
           "label": "huggingface/transformers",
-          "value": 168168
+          "value": 168170
         },
         {
           "label": "anthropics/claude-code",
-          "value": 153383
+          "value": 153396
         },
         {
           "label": "langchain-ai/langchain",
-          "value": 148470
+          "value": 148472
         },
         {
           "label": "openai/codex",
-          "value": 130926
+          "value": 130935
         },
         {
           "label": "vllm-project/vllm",
-          "value": 95530
+          "value": 95539
         },
         {
           "label": "sgl-project/sglang",
-          "value": 38170
+          "value": 38175
         },
         {
           "label": "BestNathan/nession",
@@ -414,7 +548,44 @@
       "caveat": "Cumulative developer-interest signal in a selected set of repositories, not unique users, adoption, revenue, or an unbiased ecosystem ranking."
     }
   ],
-  "company_fiscal_capex_changes": [],
+  "company_fiscal_capex_changes": [
+    {
+      "ticker": "GOOGL",
+      "current_period": "2025-12-31",
+      "previous_period": "2024-12-31",
+      "current_capex_usd_b": 91.447,
+      "previous_capex_usd_b": 52.535,
+      "capex_change_pct": 74.07,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+    },
+    {
+      "ticker": "META",
+      "current_period": "2025-12-31",
+      "previous_period": "2024-12-31",
+      "current_capex_usd_b": 69.691,
+      "previous_capex_usd_b": 37.256,
+      "capex_change_pct": 87.06,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+    },
+    {
+      "ticker": "MSFT",
+      "current_period": "2026-06-30",
+      "previous_period": "2025-06-30",
+      "current_capex_usd_b": 115.948,
+      "previous_capex_usd_b": 64.551,
+      "capex_change_pct": 79.62,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+    },
+    {
+      "ticker": "ORCL",
+      "current_period": "2026-05-31",
+      "previous_period": "2025-05-31",
+      "current_capex_usd_b": 55.663,
+      "previous_capex_usd_b": 21.215,
+      "capex_change_pct": 162.38,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+    }
+  ],
   "daily_changes": [],
   "coverage_gaps": [
     {
@@ -440,39 +611,14 @@
   ],
   "health": {
     "registered_automatic": 32,
-    "successful": 26,
-    "failed": 0,
-    "skipped_config": 6,
+    "successful": 31,
+    "failed": 1,
+    "skipped_config": 0,
     "failures": [
       {
-        "source_id": "sec_msft_companyfacts",
-        "error": null,
-        "last_success_at": null
-      },
-      {
-        "source_id": "sec_googl_companyfacts",
-        "error": null,
-        "last_success_at": null
-      },
-      {
-        "source_id": "sec_amzn_companyfacts",
-        "error": null,
-        "last_success_at": null
-      },
-      {
-        "source_id": "sec_meta_companyfacts",
-        "error": null,
-        "last_success_at": null
-      },
-      {
-        "source_id": "sec_nvda_companyfacts",
-        "error": null,
-        "last_success_at": null
-      },
-      {
-        "source_id": "sec_orcl_companyfacts",
-        "error": null,
-        "last_success_at": null
+        "source_id": "deepmind_blog",
+        "error": "RuntimeError: https://deepmind.google/blog/rss.xml: ParseError not well-formed (invalid token): line 1, column 0 | https://deepmind.com/blog/feed/basic/: ParseError not well-formed (invalid token): line 1, column 0",
+        "last_success_at": "2026-10-26T05:55:41+00:00"
       }
     ],
     "distinct_snapshot_days": 1

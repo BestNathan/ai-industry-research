@@ -1,23 +1,18 @@
 {
   "date": "2026-10-26",
-  "generated_at": "2026-10-26T05:55:41+00:00",
+  "generated_at": "2026-10-26T07:04:19+00:00",
   "source_count": 32,
-  "sources_ok": 26,
-  "sources_failed": 0,
-  "sources_skipped_configuration": 6,
-  "skipped_source_ids": [
-    "sec_msft_companyfacts",
-    "sec_googl_companyfacts",
-    "sec_amzn_companyfacts",
-    "sec_meta_companyfacts",
-    "sec_nvda_companyfacts",
-    "sec_orcl_companyfacts"
+  "sources_ok": 31,
+  "sources_failed": 1,
+  "sources_skipped_configuration": 0,
+  "skipped_source_ids": [],
+  "failed_source_ids": [
+    "deepmind_blog"
   ],
-  "failed_source_ids": [],
   "new_articles": 317,
   "metric_observations": 184,
   "historical_dataset_rows_added_or_revised": 0,
-  "sec_financial_rows_added_or_revised": 0,
+  "sec_financial_rows_added_or_revised": 165,
   "articles_by_category": {
     "capital": 14,
     "china": 3,
