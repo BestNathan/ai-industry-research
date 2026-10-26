@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-26T04:59:45+00:00",
+  "generated_at": "2026-10-26T05:00:38+00:00",
   "date": "2026-10-26",
   "successful_sources": 21,
   "failed_sources": 1,
@@ -7,25 +7,24 @@
     {
       "source_id": "openai_news",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 61,
-      "raw_path": "data/raw/2026-10-26/openai_news-081de253f35188c5.xml.gz",
-      "raw_sha256": "081de253f35188c537b8a145c037f570f7b5365d2c68b36765e5a0189ee51311"
+      "raw_path": "data/raw/2026-10-26/openai_news-7d69a6bb10dc4bd4.xml.gz",
+      "raw_sha256": "7d69a6bb10dc4bd4e186401e5f17decee11202f5c0194fb717060c968f3a84c1"
     },
     {
       "source_id": "deepmind_blog",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
-      "status": "ok",
-      "records": 9,
-      "raw_path": "data/raw/2026-10-26/deepmind_blog-f3fd1fb332de351d.xml.gz",
-      "raw_sha256": "f3fd1fb332de351d7ac05412f6cbac011791a4267f8d916298a5d046a04bee51"
+      "checked_at": "2026-10-26T05:00:38+00:00",
+      "status": "failed",
+      "records": 0,
+      "error": "ParseError: not well-formed (invalid token): line 1, column 0"
     },
     {
       "source_id": "huggingface_blog",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 25,
       "raw_path": "data/raw/2026-10-26/huggingface_blog-2619a00b9482b1bd.xml.gz",
@@ -34,7 +33,7 @@
     {
       "source_id": "aws_ml_blog",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 20,
       "raw_path": "data/raw/2026-10-26/aws_ml_blog-4e261e38266000a9.xml.gz",
@@ -43,16 +42,16 @@
     {
       "source_id": "microsoft_research",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 10,
-      "raw_path": "data/raw/2026-10-26/microsoft_research-7589609415f951fa.xml.gz",
-      "raw_sha256": "7589609415f951fa11ce80826e2ab8ecd15eb5b13f58370bf6aa86093e5be9db"
+      "raw_path": "data/raw/2026-10-26/microsoft_research-effc431410334339.xml.gz",
+      "raw_sha256": "effc43141033433934815d854d67524c0515d31e328828c1db5b5e5f4c4b0b8d"
     },
     {
       "source_id": "google_research",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 11,
       "raw_path": "data/raw/2026-10-26/google_research-828844a06f630725.xml.gz",
@@ -61,7 +60,7 @@
     {
       "source_id": "arxiv_ai",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 90,
       "raw_path": "data/raw/2026-10-26/arxiv_ai-16e4de61dd01996e.xml.gz",
@@ -70,7 +69,7 @@
     {
       "source_id": "simon_willison",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 30,
       "raw_path": "data/raw/2026-10-26/simon_willison-5e173ab12e9e3e86.xml.gz",
@@ -79,7 +78,7 @@
     {
       "source_id": "anthropic_engineering",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 1,
       "raw_path": "data/raw/2026-10-26/anthropic_engineering-086e6333be256cd4.xml.gz",
@@ -88,7 +87,7 @@
     {
       "source_id": "anthropic_research",
       "mode": "feed",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 18,
       "raw_path": "data/raw/2026-10-26/anthropic_research-ca17f03b6a7aeddb.xml.gz",
@@ -97,7 +96,7 @@
     {
       "source_id": "github_openai_codex",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 3,
       "raw_path": "data/raw/2026-10-26/github_openai_codex-fd5ae7d915ce347c.json.gz",
@@ -106,7 +105,7 @@
     {
       "source_id": "github_anthropics_claude_code",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 3,
       "raw_path": "data/raw/2026-10-26/github_anthropics_claude_code-3e10a7c2491cfea3.json.gz",
@@ -115,7 +114,7 @@
     {
       "source_id": "github_vllm_project_vllm",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 3,
       "raw_path": "data/raw/2026-10-26/github_vllm_project_vllm-82de5454510bab9e.json.gz",
@@ -124,16 +123,16 @@
     {
       "source_id": "github_sgl_project_sglang",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 3,
-      "raw_path": "data/raw/2026-10-26/github_sgl_project_sglang-ce3d954511caf90c.json.gz",
-      "raw_sha256": "ce3d954511caf90ca507496ddaee3afb68f9ad6cdb645fbc3a22761aa8665ed2"
+      "raw_path": "data/raw/2026-10-26/github_sgl_project_sglang-ba779e6d89e594cf.json.gz",
+      "raw_sha256": "ba779e6d89e594cfc31fc38ad74405baa285f3c1e06a6808b2f1257afd9d9d87"
     },
     {
       "source_id": "github_huggingface_transformers",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 3,
       "raw_path": "data/raw/2026-10-26/github_huggingface_transformers-f985dbf73a3ce753.json.gz",
@@ -142,7 +141,7 @@
     {
       "source_id": "github_langchain_ai_langchain",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 3,
       "raw_path": "data/raw/2026-10-26/github_langchain_ai_langchain-d0024510de439f3d.json.gz",
@@ -151,16 +150,16 @@
     {
       "source_id": "github_openclaw_openclaw",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 3,
-      "raw_path": "data/raw/2026-10-26/github_openclaw_openclaw-913ce50b358e1588.json.gz",
-      "raw_sha256": "913ce50b358e1588620736d11d29cceb7105a1382711058de6c544e3dda687be"
+      "raw_path": "data/raw/2026-10-26/github_openclaw_openclaw-9b3ba667261de76d.json.gz",
+      "raw_sha256": "9b3ba667261de76d06e584e76cc614f8f7ebf066602a83021e7fe082a1306367"
     },
     {
       "source_id": "github_bestnathan_nession",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 3,
       "raw_path": "data/raw/2026-10-26/github_bestnathan_nession-acc1ce03ec1808dd.json.gz",
@@ -169,7 +168,7 @@
     {
       "source_id": "huggingface_models",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 40,
       "raw_path": "data/raw/2026-10-26/huggingface_models-fc9768a3dc7895eb.json.gz",
@@ -178,7 +177,7 @@
     {
       "source_id": "openrouter_models",
       "mode": "api",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 120,
       "raw_path": "data/raw/2026-10-26/openrouter_models-1daad627278d5a39.json.gz",
@@ -187,15 +186,16 @@
     {
       "source_id": "owid_business_ai_adoption",
       "mode": "dataset",
-      "checked_at": "2026-10-26T04:59:45+00:00",
-      "status": "failed",
-      "records": 0,
-      "error": "ValueError: OWID schema: expected Entity, Code, Year; received entity,code,year,pct_of_respondents\nAll geographies,,2021,56\nAll geographies,,2022,50\nAll geographies,,2023,55\nAll geographies,,2024,78\nAll "
+      "checked_at": "2026-10-26T05:00:38+00:00",
+      "status": "ok",
+      "records": 30,
+      "raw_path": "data/raw/immutable/owid_business_ai_adoption-0876f171001e3c08.csv.gz",
+      "raw_sha256": "0876f171001e3c0809634e2ded7f6a2bd1cc1a7730b3bd5e8603803a825229c0"
     },
     {
       "source_id": "eurostat_enterprise_ai_adoption",
       "mode": "dataset",
-      "checked_at": "2026-10-26T04:59:45+00:00",
+      "checked_at": "2026-10-26T05:00:38+00:00",
       "status": "ok",
       "records": 4,
       "raw_path": "data/raw/immutable/eurostat_enterprise_ai_adoption-788c7b471f6317d8.json.gz",
