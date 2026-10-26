@@ -1,12 +1,10 @@
 {
   "date": "2026-10-26",
-  "generated_at": "2026-10-26T05:04:25+00:00",
+  "generated_at": "2026-10-26T05:07:31+00:00",
   "source_count": 26,
-  "sources_ok": 25,
-  "sources_failed": 1,
-  "failed_source_ids": [
-    "deepmind_blog"
-  ],
+  "sources_ok": 26,
+  "sources_failed": 0,
+  "failed_source_ids": [],
   "new_articles": 317,
   "metric_observations": 184,
   "historical_dataset_rows_added_or_revised": 0,
