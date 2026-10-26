@@ -13,7 +13,7 @@ const clear = (node) => { while (node.firstChild) node.removeChild(node.firstChi
 const fmtNum = (n) => Number(n || 0).toLocaleString("en-US");
 const topic = (id) => (db.taxonomy.find(x => x.id === id) || {}).label || id || "Uncategorized";
 const allSources = () => [
-  ...(db.sources.feeds || []), ...(db.sources.apis || []), ...(db.sources.research || [])
+  ...(db.sources.feeds || []), ...(db.sources.apis || []), ...(db.sources.datasets || []), ...(db.sources.research || [])
 ];
 const source = (id) => allSources().find(x => x.id === id);
 const link = (href, label, cls = "") => {
@@ -72,7 +72,10 @@ function numberDisplay(value, unit) {
   return n.toLocaleString("en-US", {maximumFractionDigits: n < 1 ? 5 : 0});
 }
 function seriesName(s) {
-  return s.entity_id.replace(/^(github:|huggingface:|openrouter:)/, "") + " · " +
+  const who = s.entity_id.startsWith("owid:ai_adoption:") ? "McKinsey survey: " + s.geography :
+    s.entity_id.startsWith("eurostat:ai_adoption:") ? "Eurostat: " + s.geography :
+    s.entity_id.replace(/^(github:|huggingface:|openrouter:)/, "");
+  return who + " · " +
     s.metric_id.replace(/^github\./, "").replace(/^huggingface\./, "").replace(/^openrouter\./, "").replaceAll("_", " ");
 }
 function createSvg(tag, attributes = {}, text = null) {
@@ -114,8 +117,15 @@ function renderChart(index) {
   svg.append(createSvg("text", {x:l,y:H-7,class:"line-axis"}, points[0].date));
   svg.append(createSvg("text", {x:W-r,y:H-7,"text-anchor":"end",class:"line-axis"}, points.at(-1).date));
   holder.append(svg);
-  el("chart-note").textContent = s.methodology + ". Source: " + (source(s.source_id)?.title || s.source_id) +
-    ". Unit: " + s.unit + ". " + (points.length === 1 ? "One observation is not a trend." : "Historical daily source snapshots; not market-wide measurements.");
+  const note = el("chart-note");
+  clear(note);
+  const period = s.period_type === "calendar_year"
+    ? "Reporting years are the survey years, not the dates this data was downloaded."
+    : "These are collection-day API snapshots, not audited market-wide measurements.";
+  note.append(dom("span", "", s.methodology + ". Unit: " + s.unit + ". " + period + " "));
+  const original = source(s.source_id);
+  if (original?.homepage) note.append(link(original.homepage, "Original source ↗"));
+  if (points.length === 1) note.append(dom("span", "", " One observation is not a trend."));
 }
 function renderSeries() {
   const select = el("metric-select"); clear(select);
