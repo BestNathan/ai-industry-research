@@ -71,7 +71,7 @@ class AnalysisTests(unittest.TestCase):
         self.assertEqual(by["openai"]["value"],2)
         self.assertEqual(by["anthropic"]["value"],4)
         self.assertEqual(by["anthropic"]["n"],1)
-        self.assertIn("not",chart["caveat"].lower())
+        self.assertIn("neither realized transaction pricing nor market share",chart["caveat"].lower())
 
     def test_publication_counts_are_core_feed_only_and_labeled_proxy(self):
         self.registry["feeds"].append({"id":"arxiv_ai","priority":"supplemental","title":"arxiv"})
