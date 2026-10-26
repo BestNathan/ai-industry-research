@@ -44,15 +44,16 @@ def owid_business_adoption(payload: bytes, source: dict, observed_at: str,
     production deployment, and not a census of all registered businesses.
     """
     rows = list(csv.DictReader(io.StringIO(payload.decode("utf-8-sig"))))
-    if not rows or not {"Entity", "Code", "Year"}.issubset(rows[0]):
-        preview = payload[:180].decode("utf-8", errors="replace").replace("\\n", " ")
-        raise ValueError("OWID schema: expected Entity, Code, Year; received " + preview[:140])
-    cols = [key for key in rows[0] if key not in ("Entity", "Code", "Year")]
+    headers = {k.strip().lower(): k for k in rows[0]} if rows else {}
+    if not {"entity", "code", "year"}.issubset(headers):
+        preview = payload[:180].decode("utf-8", errors="replace").replace("\n", " ")
+        raise ValueError("OWID schema: expected entity,code,year; received " + preview[:140])
+    cols = [key for key in rows[0] if key.strip().lower() not in ("entity", "code", "year")]
     if len(cols) != 1:
         raise ValueError("OWID expected one adoption indicator, got " + str(cols))
     out: list[dict] = []
     for row in rows:
-        year = row.get("Year", "")
+        year = row.get(headers["year"], "")
         if not (len(year) == 4 and year.isdigit() and 2000 <= int(year) <= 2100):
             continue
         value = row.get(cols[0], "").strip()
@@ -62,10 +63,10 @@ def owid_business_adoption(payload: bytes, source: dict, observed_at: str,
             percentage = float(value)
         except ValueError:
             continue
-        geo = row["Entity"].strip()
+        geo = row[headers["entity"]].strip()
         if not geo:
             continue
-        entity = "owid:ai_adoption:" + (row.get("Code") or geo.lower().replace(" ", "_"))
+        entity = "owid:ai_adoption:" + (row.get(headers["code"]) or geo.lower().replace(" ", "_"))
         out.append(record(
             source, entity, geo, year, percentage, observed_at, raw_path, checksum,
             "McKinsey State of AI self-reported AI use in at least one business function, "
