@@ -505,7 +505,8 @@ def analyze() -> None:
     metrics = all_rows("metrics")
     annual = all_rows("datasets")
     articles = all_rows("articles")
-    report = make_analysis(metrics, annual, articles, sources, status)
+    financials = all_rows("financials")
+    report = make_analysis(metrics, annual, articles, sources, status, financial_rows=financials)
     day = report["report_date"]
     directory = DATA / "reports" / "analysis"
     write_json(directory / "latest.json", report)
@@ -544,6 +545,7 @@ def build() -> None:
     # Limit public page JSON size, but retain every raw and normalized observation in Git.
     prioritized = sorted(latest_by_key, key=lambda k: (
         0 if k[0] == "enterprise.ai_adoption_share_pct" else
+        0 if k[0].startswith("company.") else
         1 if k[0] == "github.stars" else
         2 if k[0] == "huggingface.downloads" else
         3 if k[0].startswith("openrouter.") else 4,
