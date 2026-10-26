@@ -273,8 +273,10 @@ def process_source(source: dict, day: str, checked_at: str,
                   "csv.gz" if source["mode"] == "dataset" and source["kind"].startswith("owid") else "json.gz")
         # Annual datasets are content-addressed globally, not downloaded anew
         # into daily archive paths when their statistics have not changed.
-        archive = "immutable" if source["mode"] == "dataset" else day
-        path = DATA / "raw" / archive / (source["id"] + "-" + checksum[:16] + "." + suffix)
+        # All upstream payloads are immutable, content-addressed objects.
+        # Daily metric/article records reference the exact hash and fetch time,
+        # while identical responses across days do not bloat Git storage.
+        path = DATA / "raw" / "immutable" / (source["id"] + "-" + checksum[:16] + "." + suffix)
         path.parent.mkdir(parents=True, exist_ok=True)
         if not path.exists():
             path.write_bytes(gzip.compress(payload, compresslevel=6, mtime=0))
@@ -307,11 +309,30 @@ def collect() -> int:
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")["categories"]
     enabled = sources["feeds"] + sources["apis"] + sources.get("datasets", [])
     dataset_ids = {s["id"] for s in sources.get("datasets", [])}
+    old_health = read_json(DATA / "status" / "latest.json", {})
+    previous_by_id = {s["source_id"]: s for s in old_health.get("sources", [])}
     statuses, incoming_articles, incoming_metrics, incoming_datasets = [], [], [], []
     with concurrent.futures.ThreadPoolExecutor(max_workers=7) as pool:
         futures = [pool.submit(process_source, source, day, checked_at, taxonomy) for source in enabled]
         for source, future in zip(enabled, futures):
             articles, metrics, status = future.result()
+            previous_status = previous_by_id.get(source["id"], {})
+            status["last_success_at"] = (
+                status["checked_at"] if status["status"] == "ok"
+                else previous_status.get("last_success_at") or (
+                    previous_status.get("checked_at") if previous_status.get("status") == "ok" else None
+                )
+            )
+            if status["last_success_at"]:
+                status["age_days"] = round(
+                    (dt.datetime.fromisoformat(checked_at) -
+                     dt.datetime.fromisoformat(status["last_success_at"])).total_seconds() / 86400, 2)
+            else:
+                status["age_days"] = None
+            status["freshness"] = (
+                "fresh" if status["status"] == "ok" else
+                "stale" if status["last_success_at"] else "never_collected"
+            )
             incoming_articles.extend(articles)
             if source["id"] in dataset_ids:
                 incoming_datasets.extend(metrics)

@@ -30,8 +30,8 @@
 
 ## P3 — durable research intelligence
 
-- [ ] Data contracts and source adapters as isolated modules with fixture/backfill support.
-- [ ] Object storage for large historical raw payloads, content-addressed manifest in Git.
+- [~] Data contracts and source adapters as isolated modules with fixture/backfill support (economic adapter separated; others remain in pipeline).
+- [~] Object storage for large historical raw payloads, content-addressed manifest in Git (content-addressed raw snapshots implemented; object storage threshold/migration pending).
 - [ ] A citation-linked quarterly AI industry report and hypotheses board with disconfirming evidence.
 - [ ] Licensed market share/traffic integration if and when access is available.
 - [ ] Historical revisions, provenance graph and reproducible SQL/Parquet exports.
@@ -39,3 +39,11 @@
 ## Non-goals
 
 No fabricated "live" numbers, no bypassing commercial data licenses, no mirroring full copyrighted articles, and no ungrounded inference of AI market penetration from a narrow sample.
+
+## Progress notes (2026-10-26)
+
+- Pages deployment and first live collection succeeded. Full external browser inspection remains a separate verification step.
+- Eurostat and OWID enterprise adoption historical series are collected with their actual reporting years. OWID returned lowercase column names in the live CSV and the parser was hardened accordingly.
+- All API/feed/dataset raw inputs use content-addressed archives for incremental space savings, and the UI exposes the last successful source collection.
+- New official and independent article feeds cover compute, distribution and industry economics (NVIDIA, Google AI, SemiAnalysis, TechCrunch).
+- Still open: SEC filings, US Census BTOS, article ranking/China coverage, anomalous values, storage capacity thresholds, and Agent/transaction datasets.

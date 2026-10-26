@@ -34,6 +34,13 @@ class EconomicDatasetTests(unittest.TestCase):
         self.assertEqual(result[1]["unit"], "percent")
         self.assertEqual(result[1]["evidence_type"], "survey_estimate")
 
+    def test_owid_accepts_actual_lowercase_grapher_headers(self):
+        csv = b"entity,code,year,pct_of_respondents\nAll geographies,,2025,88\n"
+        result = owid_business_adoption(csv, self.source, self.now, "raw", "checksum")
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["period"], "2025")
+        self.assertEqual(result[0]["value"], 88)
+
     def test_owid_rejects_schema_drift(self):
         with self.assertRaises(ValueError):
             owid_business_adoption(b"Year,Value\n2025,88\n", self.source, self.now, "x", "sha")

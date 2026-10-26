@@ -39,3 +39,7 @@ Add to the appropriate array in `config/sources.json` with a stable ID. For an *
 - Eurostat `isoc_eb_ai`, official enterprises-using-at-least-one-AI-technology indicator, nonfinancial business economy and 10+ employee scope.
 
 Both are observation-time vs reporting-time aware and include method notes and original links. See [economic dataset methodology](ECONOMIC_DATASETS.md).
+
+## Expanded publication sources
+
+Official feeds: NVIDIA AI and Google AI product news. Publisher feeds: SemiAnalysis (excerpts only, subscription may be needed for full articles) and TechCrunch AI. These feeds complement engineering posts with compute economics, model distribution, startup financing, and applied AI. The publication index is not proof that claims in those articles are verified; validate commercial figures using primary filings or authorized datasets.
