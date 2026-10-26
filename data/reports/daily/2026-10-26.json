@@ -1,0 +1,147 @@
+{
+  "date": "2026-10-26",
+  "generated_at": "2026-10-26T04:40:10+00:00",
+  "source_count": 20,
+  "sources_ok": 20,
+  "sources_failed": 0,
+  "failed_source_ids": [],
+  "new_articles": 274,
+  "metric_observations": 184,
+  "articles_by_category": {
+    "capital": 7,
+    "china": 2,
+    "commercialization": 3,
+    "consumer": 39,
+    "engineering": 27,
+    "enterprise": 5,
+    "infrastructure": 13,
+    "models-research": 109,
+    "policy": 13,
+    "usage-agents": 49,
+    "verticals": 1,
+    "workforce": 6
+  },
+  "headline_articles": [
+    {
+      "title": "Learning Nonlinear Waveform Fusion Across Scales for Integrated Sensing and Communication",
+      "url": "https://arxiv.org/abs/2610.32099",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "ActionRAG: Evidence-Refining Graph Diffusion for Long-Term Memory in LLM Agents",
+      "url": "https://arxiv.org/abs/2610.32752",
+      "source_id": "arxiv_ai",
+      "category": "usage-agents"
+    },
+    {
+      "title": "Beyond Post-Hoc Rewards: Privileged Reasoning Exploration for Multimodal Embeddings",
+      "url": "https://arxiv.org/abs/2610.32474",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "MedCaseAgent: From Multimodal Clinical Evidence to Rare Disease Case Reports",
+      "url": "https://arxiv.org/abs/2610.32258",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "RSIHub: A Composable Framework for Agent-Evolution Methods",
+      "url": "https://arxiv.org/abs/2610.32253",
+      "source_id": "arxiv_ai",
+      "category": "usage-agents"
+    },
+    {
+      "title": "PPO vs. SAC: A Comparative Study for Cooperative Motion Control of Dual-Arm Space Robots",
+      "url": "https://arxiv.org/abs/2610.32034",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "Who Verifies the Tools? How Warped Formatters Mislead Agents and Their Verifiers",
+      "url": "https://arxiv.org/abs/2610.32110",
+      "source_id": "arxiv_ai",
+      "category": "usage-agents"
+    },
+    {
+      "title": "NgramRL: Accelerating RL Post-Training for Structured Generation via Rollout-Aware N-gram Speculative Decoding",
+      "url": "https://arxiv.org/abs/2610.32881",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "When to Stop Penalizing Actions? Martingale GRPO for VLA Reinforcement Learning",
+      "url": "https://arxiv.org/abs/2610.32431",
+      "source_id": "arxiv_ai",
+      "category": "policy"
+    },
+    {
+      "title": "From Target Selection to Condition Reuse: Auditing Residual Interventions in Tool-Use Models",
+      "url": "https://arxiv.org/abs/2610.31686",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "RxnExBench: Benchmarking Vision-Language Models for Structured Chemical Reaction Extraction from Scientific Literature",
+      "url": "https://arxiv.org/abs/2610.32221",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "PaperFormalizer: Author-in-the-Loop Autoformalization of Research Papers in Lean",
+      "url": "https://arxiv.org/abs/2610.31810",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "Behaviour analysis for large language model-driven agents",
+      "url": "https://arxiv.org/abs/2610.32087",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "Understanding Communication Failures in Multi-Agent LLM Systems",
+      "url": "https://arxiv.org/abs/2610.32060",
+      "source_id": "arxiv_ai",
+      "category": "usage-agents"
+    },
+    {
+      "title": "Validating the Comparison, Not Just the Scorer: Why Overall Accuracy Can Mislead in Interactive LLM Evaluation",
+      "url": "https://arxiv.org/abs/2610.31678",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "Distributional Alignment of LLMs and Its Generalization Properties",
+      "url": "https://arxiv.org/abs/2610.31687",
+      "source_id": "arxiv_ai",
+      "category": "consumer"
+    },
+    {
+      "title": "Compact-Bench: Measuring What Context Compaction Costs Long-Horizon Coding Agents",
+      "url": "https://arxiv.org/abs/2610.31710",
+      "source_id": "arxiv_ai",
+      "category": "engineering"
+    },
+    {
+      "title": "Evidence-Grounded SLM Behavioral Prediction Architecture for Future Assistance Use",
+      "url": "https://arxiv.org/abs/2610.32193",
+      "source_id": "arxiv_ai",
+      "category": "consumer"
+    },
+    {
+      "title": "From Visual Affinity to Learning Credit in Multimodal Reinforcement Learning",
+      "url": "https://arxiv.org/abs/2610.32324",
+      "source_id": "arxiv_ai",
+      "category": "models-research"
+    },
+    {
+      "title": "LeafSkill: Efficient Leaf-Level Action Grounding for Recursive LLM Agents",
+      "url": "https://arxiv.org/abs/2610.32412",
+      "source_id": "arxiv_ai",
+      "category": "usage-agents"
+    }
+  ],
+  "note": "Metrics are platform/API snapshots collected on this date; articles may have earlier publication dates."
+}

@@ -1,0 +1,188 @@
+{
+  "generated_at": "2026-10-26T04:40:10+00:00",
+  "date": "2026-10-26",
+  "successful_sources": 20,
+  "failed_sources": 0,
+  "sources": [
+    {
+      "source_id": "openai_news",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 61,
+      "raw_path": "data/raw/2026-10-26/openai_news.xml.gz",
+      "raw_sha256": "081de253f35188c537b8a145c037f570f7b5365d2c68b36765e5a0189ee51311"
+    },
+    {
+      "source_id": "deepmind_blog",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 9,
+      "raw_path": "data/raw/2026-10-26/deepmind_blog.xml.gz",
+      "raw_sha256": "f3fd1fb332de351d7ac05412f6cbac011791a4267f8d916298a5d046a04bee51"
+    },
+    {
+      "source_id": "huggingface_blog",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 25,
+      "raw_path": "data/raw/2026-10-26/huggingface_blog.xml.gz",
+      "raw_sha256": "2619a00b9482b1bd28f3d6815931957098abf38375d9faa0a0fbaac07b453bb5"
+    },
+    {
+      "source_id": "aws_ml_blog",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 20,
+      "raw_path": "data/raw/2026-10-26/aws_ml_blog.xml.gz",
+      "raw_sha256": "4e261e38266000a9c9f51c5eec08ad14826cb0c28a64dd46b28b435723193b12"
+    },
+    {
+      "source_id": "microsoft_research",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 10,
+      "raw_path": "data/raw/2026-10-26/microsoft_research.xml.gz",
+      "raw_sha256": "6eeaca9dc419af67b8339ceec104abc3a44a0f65203b248fc497e40e9ec75f3f"
+    },
+    {
+      "source_id": "google_research",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 11,
+      "raw_path": "data/raw/2026-10-26/google_research.xml.gz",
+      "raw_sha256": "828844a06f6307252acc7699e4d06729da99d0c05d5a553a719123548ee96fe1"
+    },
+    {
+      "source_id": "arxiv_ai",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 90,
+      "raw_path": "data/raw/2026-10-26/arxiv_ai.xml.gz",
+      "raw_sha256": "16e4de61dd01996ee7c1777d234dc3647f78288120be117d246c637bd4c2f695"
+    },
+    {
+      "source_id": "simon_willison",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 30,
+      "raw_path": "data/raw/2026-10-26/simon_willison.xml.gz",
+      "raw_sha256": "5e173ab12e9e3e865bdd87c31092d18326839b9bf0eaf4bb2ed8e801ae6e7a94"
+    },
+    {
+      "source_id": "anthropic_engineering",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 1,
+      "raw_path": "data/raw/2026-10-26/anthropic_engineering.xml.gz",
+      "raw_sha256": "086e6333be256cd490f63306cae3ec2c01df5d2bd406984e7e48b0a7189fdf7a"
+    },
+    {
+      "source_id": "anthropic_research",
+      "mode": "feed",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 18,
+      "raw_path": "data/raw/2026-10-26/anthropic_research.xml.gz",
+      "raw_sha256": "ca17f03b6a7aeddb59aa98046d4f9382ab531b0c1177a3eb49b56247c6b0ed73"
+    },
+    {
+      "source_id": "github_openai_codex",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 3,
+      "raw_path": "data/raw/2026-10-26/github_openai_codex.json.gz",
+      "raw_sha256": "58411c56ca48983828fafccad09f520f7554b2d3021fa2b43e60d9f4966a768a"
+    },
+    {
+      "source_id": "github_anthropics_claude_code",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 3,
+      "raw_path": "data/raw/2026-10-26/github_anthropics_claude_code.json.gz",
+      "raw_sha256": "5894c73112a4053d4d69942a19c16179ba5535c89016448e0f8e8b2a7a8d3fe1"
+    },
+    {
+      "source_id": "github_vllm_project_vllm",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 3,
+      "raw_path": "data/raw/2026-10-26/github_vllm_project_vllm.json.gz",
+      "raw_sha256": "25539db033d5eee19684744943c3cc99f0a4c00947bfbc5915dc90ffa92ba837"
+    },
+    {
+      "source_id": "github_sgl_project_sglang",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 3,
+      "raw_path": "data/raw/2026-10-26/github_sgl_project_sglang.json.gz",
+      "raw_sha256": "940fddf8dd871cb8ad99017f2931258f71d2a2804d5d96888c7db9017dae9de1"
+    },
+    {
+      "source_id": "github_huggingface_transformers",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 3,
+      "raw_path": "data/raw/2026-10-26/github_huggingface_transformers.json.gz",
+      "raw_sha256": "00f807cf785a18f5fad2bdc51fc65b83e28011b6264d7543ce143bb36441a3dd"
+    },
+    {
+      "source_id": "github_langchain_ai_langchain",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 3,
+      "raw_path": "data/raw/2026-10-26/github_langchain_ai_langchain.json.gz",
+      "raw_sha256": "9aafcb0c6ffa429165571b2866ebbe017a8326bc89a73d53cb8381bb857f4376"
+    },
+    {
+      "source_id": "github_openclaw_openclaw",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 3,
+      "raw_path": "data/raw/2026-10-26/github_openclaw_openclaw.json.gz",
+      "raw_sha256": "b165a23e1375ccd05f2d54a411b7fa05748c7e5a9c9ab7af6895358d9ebcde37"
+    },
+    {
+      "source_id": "github_bestnathan_nession",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 3,
+      "raw_path": "data/raw/2026-10-26/github_bestnathan_nession.json.gz",
+      "raw_sha256": "f129d4a53b5f6249e55b21086136ab4a0942a02a048e4f378c7c6193f425dd63"
+    },
+    {
+      "source_id": "huggingface_models",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 40,
+      "raw_path": "data/raw/2026-10-26/huggingface_models.json.gz",
+      "raw_sha256": "19d9f29a28913c873c1a7b99ddc0e485eead368c88945b946c08f5ae947ba127"
+    },
+    {
+      "source_id": "openrouter_models",
+      "mode": "api",
+      "checked_at": "2026-10-26T04:40:10+00:00",
+      "status": "ok",
+      "records": 120,
+      "raw_path": "data/raw/2026-10-26/openrouter_models.json.gz",
+      "raw_sha256": "67263b134256758f2f92cc8756249a1fe2ccd97ba52f688b6df13c069428a5a5"
+    }
+  ]
+}
