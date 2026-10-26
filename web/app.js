@@ -158,9 +158,15 @@ function renderHealth() {
   if (!h.sources?.length) {
     holder.append(dom("div", "empty", "No source collection recorded. Run the scheduled workflow or trigger it manually.")); return;
   }
-  const summary = dom("p", "minor", (h.successful_sources || 0) + " successful / " + (h.failed_sources || 0) + " failed · " + h.date);
+  const q=db.quality||{};
+  const counts=q.sources||{};
+  const summary=dom("p","minor",
+    (h.successful_sources||0)+" healthy · "+(h.failed_sources||0)+" failed · "+
+    (h.skipped_sources||0)+" need setup · "+(counts.stale||0)+" stale · "+h.date);
   holder.append(summary);
-  for (const row of [...h.sources].sort((a,b) => (a.status === "failed" ? -1 : 1) - (b.status === "failed" ? -1 : 1)).slice(0, 10)) {
+  const priority={failed:0,skipped_config:1,not_collected:2,ok:3};
+  for (const row of [...h.sources].sort((a,b) =>
+        (priority[a.status]??4)-(priority[b.status]??4)).slice(0, 14)) {
     const wrap = dom("div", "health-item"), left = dom("div", "health-left");
     left.append(dom("span", "health-name", source(row.source_id)?.title || row.source_id));
     const healthText = row.status === "ok" ? fmtNum(row.records) + " records · latest fetch OK"
