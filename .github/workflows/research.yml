@@ -54,14 +54,23 @@ jobs:
         with:
           python-version: "3.12"
       - name: Fetch and normalize source evidence
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        id: collect
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python scripts/pipeline.py collect
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          # Bootstrap a newly created repository on the first main-branch deploy.
+          # Later pushes only rebuild Pages; schedule/manual always refresh data.
+          if [ "$EVENT_NAME" = "push" ] && [ -f data/status/latest.json ]; then
+            echo "collected=false" >> "$GITHUB_OUTPUT"
+          else
+            python scripts/pipeline.py collect
+            echo "collected=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Validate results
         run: python scripts/pipeline.py validate
       - name: Commit daily evidence
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: steps.collect.outputs.collected == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
