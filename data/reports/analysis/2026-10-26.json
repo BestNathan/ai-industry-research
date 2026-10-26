@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "report_date": "2026-10-26",
-  "generated_at": "2026-10-26T09:21:22+00:00",
+  "generated_at": "2026-10-26T09:23:46+00:00",
   "title": "AI Industry Evidence Monitor",
   "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
   "cards": [
@@ -600,7 +600,7 @@
       "points": [
         {
           "label": "openclaw/openclaw",
-          "value": 393099
+          "value": 393100
         },
         {
           "label": "huggingface/transformers",
