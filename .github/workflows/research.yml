@@ -55,6 +55,16 @@ jobs:
           assert dashboard["quality"]["schema_version"] == 1
           assert Path("_site/index.html").exists()
           assert Path("_site/app.js").exists()
+          import hashlib, re
+          site_html = Path("_site/index.html").read_text()
+          for asset in ("app.js", "styles.css"):
+              file_bytes = Path("_site", asset).read_bytes()
+              stem, extension = asset.rsplit(".", 1)
+              asset_hash = hashlib.sha256(file_bytes).hexdigest()[:12]
+              fingerprinted = f"{stem}.{asset_hash}.{extension}"
+              assert Path("_site", fingerprinted).read_bytes() == file_bytes
+              assert f'./{fingerprinted}' in site_html
+              assert f'="./{asset}"' not in site_html
           assert dashboard["financial_data"]["schema_version"] == 1
           issuers = dashboard["financial_data"]["companies"]
           assert len(issuers) == len(dashboard["sources"]["financials"])
