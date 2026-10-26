@@ -530,6 +530,22 @@ def build() -> None:
     if website.exists():
         shutil.rmtree(website)
     shutil.copytree(ROOT / "web", website)
+    # GitHub Pages/CDN and browsers can cache app.js independently of index.html.
+    # Content-addressed asset URLs prevent a fresh page from executing stale JS.
+    html_path = website / "index.html"
+    html_page = html_path.read_text(encoding="utf-8")
+    for filename in ("app.js", "styles.css"):
+        source_asset = website / filename
+        raw = source_asset.read_bytes()
+        fingerprint = hashlib.sha256(raw).hexdigest()[:12]
+        stem, extension = filename.rsplit(".", 1)
+        hashed_name = stem + "." + fingerprint + "." + extension
+        (website / hashed_name).write_bytes(raw)
+        existing = "./" + filename
+        if html_page.count(existing) != 1:
+            raise AssertionError("Expected exactly one HTML asset reference: " + existing)
+        html_page = html_page.replace(existing, "./" + hashed_name)
+    html_path.write_text(html_page, encoding="utf-8")
     (website / "data").mkdir(exist_ok=True)
     sources = read_json(ROOT / "config" / "sources.json")
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")
