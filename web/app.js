@@ -2,6 +2,21 @@
 
 let db = { articles: [], series: [], reports: [], taxonomy: [], sources: { feeds: [], apis: [], research: [] }, stats: {} };
 let shownArticles = 30, shownSources = 24, sourceMode = "all";
+const renderErrors = [];
+function noteRenderError(area, error) {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error("[AI Industry Research] "+area+" render failed", error);
+  const alert = document.getElementById("runtime-alert");
+  if (!alert) return;
+  renderErrors.push(area + ": " + message);
+  alert.hidden = false;
+  alert.textContent = "Some data views could not render (" + renderErrors.join("; ") +
+    "). Other sections remain available. Please report this issue if it persists.";
+}
+function renderSafely(area, callback) {
+  try { callback(); } catch (error) { noteRenderError(area, error); }
+}
+
 const el = (id) => document.getElementById(id);
 const dom = (tag, cls, value) => {
   const node = document.createElement(tag);
@@ -543,11 +558,28 @@ async function start() {
     el("health").textContent = "Failed to load dashboard data: " + error.message;
     return;
   }
-  renderStats(); renderAnalysis(); renderFinance(); renderHealth(); renderSeries(); renderReports(); renderFilters(); renderSources(); renderArticles();
-  el("source-filter").addEventListener("change", (e) => {sourceMode = e.target.value;shownSources=24;renderSources();});
-  el("source-more").addEventListener("click", () => {shownSources += 24;renderSources();});
+  // Bind controls before rendering any panel. A faulty chart must never prevent
+  // navigation, Articles, source filters or other panels from working.
+  el("source-filter").addEventListener("change", (e) => {
+    sourceMode = e.target.value; shownSources=24;
+    renderSafely("Sources", renderSources);
+  });
+  el("source-more").addEventListener("click", () => {
+    shownSources += 24; renderSafely("Sources", renderSources);
+  });
   for (const id of ["article-search","article-scope","article-category","article-source"])
-    el(id).addEventListener("input", () => {shownArticles=30;renderArticles();});
-  el("article-more").addEventListener("click", () => {shownArticles+=30;renderArticles();});
+    el(id).addEventListener("input", () => {
+      shownArticles=30; renderSafely("Articles", renderArticles);
+    });
+  el("article-more").addEventListener("click", () => {
+    shownArticles += 30; renderSafely("Articles", renderArticles);
+  });
+  for (const [area, fn] of [
+    ["Stats", renderStats], ["Analysis", renderAnalysis],
+    ["Financials", renderFinance], ["Source health", renderHealth],
+    ["Indicators", renderSeries], ["Reports", renderReports],
+    ["Filters", renderFilters], ["Sources", renderSources],
+    ["Articles", renderArticles]
+  ]) renderSafely(area, fn);
 }
 document.addEventListener("DOMContentLoaded", start);
