@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "report_date": "2026-10-26",
-  "generated_at": "2026-10-26T05:23:16+00:00",
+  "generated_at": "2026-10-26T05:26:28+00:00",
   "title": "AI Industry Evidence Monitor",
   "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
   "cards": [
@@ -57,6 +57,15 @@
       "topic": "enterprise",
       "title": "Surveyed organizations' reported AI use changed +10.00 pp versus 2024",
       "text": "The OWID/McKinsey all-geographies survey reports 88.00% in 2025 versus 78.00% in 2024. It covers use in at least one function and is not directly comparable with Eurostat.",
+      "source_ids": [
+        "owid_business_ai_adoption"
+      ]
+    },
+    {
+      "kind": "observed",
+      "topic": "enterprise",
+      "title": "Regional survey spread: 9.0 pp in 2025",
+      "text": "Within the same OWID/McKinsey organization-use survey, Europe records 91.0% and Asia-Pacific records 82.0%, a 9.0 percentage-point observed range. Regional definitions overlap and sampling/weighting differ; this does not establish causality or representative country-level demand.",
       "source_ids": [
         "owid_business_ai_adoption"
       ]
@@ -166,6 +175,35 @@
       }
     },
     {
+      "id": "regional_survey_adoption",
+      "type": "bar",
+      "title": "Regional AI use · same organization survey",
+      "unit": "percent",
+      "period_type": "calendar_year",
+      "scope": "2025 · McKinsey/OWID",
+      "source_id": "owid_business_ai_adoption",
+      "source_url": "https://ourworldindata.org/grapher/share-companies-using-artificial-intelligence",
+      "points": [
+        {
+          "label": "Europe",
+          "value": 91.0
+        },
+        {
+          "label": "North America",
+          "value": 90.0
+        },
+        {
+          "label": "Greater China",
+          "value": 88.0
+        },
+        {
+          "label": "Asia-Pacific",
+          "value": 82.0
+        }
+      ],
+      "caveat": "Same survey and year; regions can overlap (Greater China is part of Asia-Pacific). Not a census, not production ROI; regional percentages are not additive."
+    },
+    {
       "id": "price_input",
       "type": "bar",
       "title": "Input model list prices by provider",
@@ -240,6 +278,43 @@
       "caveat": "Unweighted median of the most recently-created model entries sampled per provider (up to 12), excluding free prices. This is neither realized transaction pricing nor market share, and differs by model mix."
     },
     {
+      "id": "price_output_to_input",
+      "type": "bar",
+      "title": "Model output/input list-price multiples",
+      "unit": "times",
+      "period_type": "latest_catalog_snapshot",
+      "source_id": "openrouter_models",
+      "source_url": "https://openrouter.ai/models",
+      "points": [
+        {
+          "label": "anthropic",
+          "value": 5.0,
+          "n": 12
+        },
+        {
+          "label": "deepseek",
+          "value": 3.0,
+          "n": 12
+        },
+        {
+          "label": "google",
+          "value": 5.0,
+          "n": 12
+        },
+        {
+          "label": "openai",
+          "value": 5.0,
+          "n": 12
+        },
+        {
+          "label": "qwen",
+          "value": 3.567,
+          "n": 12
+        }
+      ],
+      "caveat": "Median of output price divided by input price for matched model IDs with positive prices. This is a posted tariff asymmetry, not inference cost, usage volume, or company margin."
+    },
+    {
       "id": "article_topics",
       "type": "bar",
       "title": "Research archive coverage by topic",
@@ -305,7 +380,7 @@
       "points": [
         {
           "label": "openclaw/openclaw",
-          "value": 393070
+          "value": 393072
         },
         {
           "label": "huggingface/transformers",
@@ -317,7 +392,7 @@
         },
         {
           "label": "langchain-ai/langchain",
-          "value": 148468
+          "value": 148469
         },
         {
           "label": "openai/codex",
