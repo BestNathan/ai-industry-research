@@ -21,15 +21,39 @@ const link = (href, label, cls = "") => {
   a.href = href; a.target = "_blank"; a.rel = "noopener noreferrer";
   return a;
 };
-function showView(view) {
+const DATA_SECTIONS = ["overview", "financials", "adoption", "models", "ecosystem", "sources"];
+let currentDataSection = "overview";
+function showDataSection(section) {
+  currentDataSection = DATA_SECTIONS.includes(section) ? section : "overview";
+  for (const name of DATA_SECTIONS) {
+    const panel = el("data-" + name), button = el("tab-" + name);
+    const selected = name === currentDataSection;
+    panel.hidden = !selected;
+    panel.classList.toggle("active", selected);
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-selected", String(selected));
+    button.tabIndex = selected ? 0 : -1;
+  }
+}
+function showView(view, section = null) {
+  const active = view === "articles" ? "articles" : "data";
+  if (active === "data") showDataSection(section || currentDataSection);
   for (const name of ["data", "articles"]) {
-    el("view-" + name).classList.toggle("active", name === view);
+    const visible = name === active;
+    el("view-" + name).classList.toggle("active", visible);
     const button = document.querySelector('[data-view="' + name + '"]');
-    button.classList.toggle("active", name === view);
-    if (name === view) button.setAttribute("aria-current", "page");
+    button.classList.toggle("active", visible);
+    if (visible) button.setAttribute("aria-current", "page");
     else button.removeAttribute("aria-current");
   }
-  if (location.hash !== "#" + view) history.replaceState(null, "", "#" + view);
+  const destination = active === "articles" ? "#articles" : "#data/" + currentDataSection;
+  if (location.hash !== destination) history.replaceState(null, "", destination);
+}
+function routeFromHash() {
+  const hash = location.hash.replace(/^#/, "");
+  if (hash === "articles") return showView("articles");
+  const section = hash.startsWith("data/") ? hash.split("/")[1] : "overview";
+  return showView("data", section);
 }
 
 
@@ -82,57 +106,74 @@ function renderAnalysisBars(holder, chart) {
   }
   holder.append(stack);
 }
+// Explicit research-domain mapping prevents a chart of model pricing from
+// being mistaken for company finances, or publication coverage for adoption.
+function analysisCategory(id) {
+  if (id.startsWith("sec_")) return "finance-charts";
+  if (id === "eurostat_adoption" || id === "survey_adoption" ||
+      id === "regional_survey_adoption") return "adoption-charts";
+  if (id.startsWith("price_")) return "model-charts";
+  return "ecosystem-charts";
+}
 function renderAnalysis() {
-  const analysis=db.analysis || {};
-  const cards=el("analysis-cards"), grid=el("analysis-charts"),
-        findings=el("analysis-findings"), gaps=el("analysis-gaps");
-  [cards,grid,findings,gaps].forEach(clear);
-  if(!analysis.charts?.length){
-    cards.append(dom("div","empty","Analysis has not been generated from the stored evidence yet."));
+  const analysis = db.analysis || {};
+  const cards = el("analysis-cards"), findings = el("analysis-findings"), gaps = el("analysis-gaps");
+  const grids = ["finance-charts", "adoption-charts", "model-charts", "ecosystem-charts"];
+  [cards, findings, gaps, ...grids.map(el)].forEach(clear);
+  if (!analysis.charts?.length) {
+    cards.append(dom("div", "empty", "Analysis has not been generated from the stored evidence yet."));
     return;
   }
-  el("analysis-link").href="https://github.com/BestNathan/ai-industry-research/blob/main/data/reports/analysis/"+analysis.report_date+".md";
-  for(const card of analysis.cards || []){
-    const box=dom("article","analysis-card");
-    box.append(dom("div","analysis-card-label",card.label));
-    const number=dom("div","analysis-card-value",formatMeasure(card.value,card.suffix==="%"?"percent":"count")+card.suffix);
-    box.append(number,dom("div","analysis-card-period",card.period+" · "+card.delta));
-    box.append(dom("div","analysis-card-detail",card.description));
+  el("analysis-link").href = "https://github.com/BestNathan/ai-industry-research/blob/main/data/reports/analysis/" + analysis.report_date + ".md";
+  for (const card of analysis.cards || []) {
+    const box = dom("article", "analysis-card");
+    box.append(dom("div", "analysis-card-label", card.label));
+    box.append(dom("div", "analysis-card-value",
+      formatMeasure(card.value, card.suffix === "%" ? "percent" : "count") + card.suffix));
+    box.append(dom("div", "analysis-card-period", card.period + " · " + card.delta));
+    box.append(dom("div", "analysis-card-detail", card.description));
     cards.append(box);
   }
-  for(const chart of analysis.charts || []){
-    const wrap=dom("article","analysis-chart");
-    const heading=dom("div","analysis-chart-header");
-    const name=dom("div");
-    name.append(dom("h4","",chart.title),dom("div","analysis-chart-sub",chart.scope || chart.unit));
-    heading.append(name);wrap.append(heading);
-    const plot=dom("div","analysis-chart-plot");
-    if(chart.type==="line") renderAnalysisLine(plot,chart);
-    else renderAnalysisBars(plot,chart);
+  for (const chart of analysis.charts || []) {
+    const wrap = dom("article", "analysis-chart"), heading = dom("div", "analysis-chart-header");
+    const name = dom("div");
+    name.append(dom("h4", "", chart.title),
+                dom("div", "analysis-chart-sub", chart.scope || chart.unit));
+    heading.append(name);
+    wrap.append(heading);
+    const plot = dom("div", "analysis-chart-plot");
+    if (chart.type === "line") renderAnalysisLine(plot, chart);
+    else renderAnalysisBars(plot, chart);
     wrap.append(plot);
-    const foot=dom("div","analysis-chart-foot");
-    foot.append(dom("span","",chart.caveat+" "));
-    if(chart.source_url) foot.append(link(chart.source_url,"View original source ↗"));
+    const foot = dom("div", "analysis-chart-foot");
+    foot.append(dom("span", "", chart.caveat + " "));
+    if (chart.source_url) foot.append(link(chart.source_url, "View original source ↗"));
     wrap.append(foot);
-    grid.append(wrap);
+    el(analysisCategory(chart.id)).append(wrap);
   }
-  for(const f of analysis.findings||[]){
-    const row=dom("article","insight-row");
-    row.append(dom("div","insight-eyebrow",f.kind.replaceAll("_"," ")));
-    row.append(dom("strong","",f.title),dom("p","",f.text));
-    for(const id of f.source_ids||[]){
-      const item=source(id);
-      if(item?.homepage || item?.url)row.append(link(item.homepage||item.url,"Evidence: "+item.title+" ↗"));
-      else if(f.source_url && id==="sec_edgar")row.append(link(f.source_url,"SEC filing evidence ↗"));
+  for (const gridId of grids) {
+    if (!el(gridId).children.length)
+      el(gridId).append(dom("div", "empty", "No comparable public observations collected for this category yet."));
+  }
+  for (const f of analysis.findings || []) {
+    const row = dom("article", "insight-row");
+    row.append(dom("div", "insight-eyebrow", f.kind.replaceAll("_", " ")));
+    row.append(dom("strong", "", f.title), dom("p", "", f.text));
+    for (const id of f.source_ids || []) {
+      const item = source(id);
+      if (item?.homepage || item?.url)
+        row.append(link(item.homepage || item.url, "Evidence: " + item.title + " ↗"));
+      else if (f.source_url && id === "sec_edgar")
+        row.append(link(f.source_url, "SEC filing evidence ↗"));
     }
     findings.append(row);
   }
-  for(const gap of analysis.coverage_gaps||[]){
-    const row=dom("article","insight-row");
-    row.append(dom("strong","",gap.title),dom("p","",gap.reason));
+  for (const gap of analysis.coverage_gaps || []) {
+    const row = dom("article", "insight-row");
+    row.append(dom("strong", "", gap.title), dom("p", "", gap.reason));
     gaps.append(row);
   }
-  el("analysis-note").textContent=analysis.research_note||"";
+  el("analysis-note").textContent = analysis.research_note || "";
 }
 
 function renderStats() {
@@ -325,8 +366,25 @@ function renderArticles() {
 async function start() {
   for (const button of document.querySelectorAll(".nav-button"))
     button.addEventListener("click", () => showView(button.dataset.view));
-  window.addEventListener("hashchange", () => showView(location.hash === "#articles" ? "articles" : "data"));
-  showView(location.hash === "#articles" ? "articles" : "data");
+  for (const button of document.querySelectorAll("[data-data-tab]")) {
+    button.addEventListener("click", () => showView("data", button.dataset.dataTab));
+    button.addEventListener("keydown", (event) => {
+      const index = DATA_SECTIONS.indexOf(button.dataset.dataTab);
+      let next;
+      if (event.key === "ArrowRight") next = (index + 1) % DATA_SECTIONS.length;
+      else if (event.key === "ArrowLeft") next = (index - 1 + DATA_SECTIONS.length) % DATA_SECTIONS.length;
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = DATA_SECTIONS.length - 1;
+      else return;
+      event.preventDefault();
+      showView("data", DATA_SECTIONS[next]);
+      el("tab-" + DATA_SECTIONS[next]).focus();
+    });
+  }
+  for (const button of document.querySelectorAll("[data-open-section]"))
+    button.addEventListener("click", () => showView("data", button.dataset.openSection));
+  window.addEventListener("hashchange", routeFromHash);
+  routeFromHash();
   try {
     const response = await fetch("./data/dashboard.json", {cache:"no-cache"});
     if (!response.ok) throw Error("HTTP " + response.status);
@@ -336,7 +394,7 @@ async function start() {
     el("health").textContent = "Failed to load dashboard data: " + error.message;
     return;
   }
-  renderStats(); renderAnalysis(); renderHealth(); renderSeries(); renderReports(); renderFilters(); renderSources(); renderArticles();
+  renderStats(); renderAnalysis(); renderFinance(); renderHealth(); renderSeries(); renderReports(); renderFilters(); renderSources(); renderArticles();
   el("source-filter").addEventListener("change", (e) => {sourceMode = e.target.value;shownSources=24;renderSources();});
   el("source-more").addEventListener("click", () => {shownSources += 24;renderSources();});
   for (const id of ["article-search","article-scope","article-category","article-source"])
