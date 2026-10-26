@@ -23,6 +23,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
 from economic import parse_dataset
+from analytics import make_analysis, markdown_report
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -460,6 +461,24 @@ def all_rows(section: str) -> list[dict]:
     return results
 
 
+def analyze() -> None:
+    """Create versioned, citation-aware analytical reports from historical evidence."""
+    sources = read_json(ROOT / "config" / "sources.json")
+    status = read_json(DATA / "status" / "latest.json", {})
+    metrics = all_rows("metrics")
+    annual = all_rows("datasets")
+    articles = all_rows("articles")
+    report = make_analysis(metrics, annual, articles, sources, status)
+    day = report["report_date"]
+    directory = DATA / "reports" / "analysis"
+    write_json(directory / "latest.json", report)
+    write_json(directory / (day + ".json"), report)
+    markdown = markdown_report(report, sources)
+    (directory / (day + ".md")).write_text(markdown, encoding="utf-8")
+    print("Analyzed {} findings and {} charts for {}".format(
+        len(report["findings"]), len(report["charts"]), day))
+
+
 def build() -> None:
     website = ROOT / "_site"
     if website.exists():
@@ -469,6 +488,7 @@ def build() -> None:
     sources = read_json(ROOT / "config" / "sources.json")
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")
     status = read_json(DATA / "status" / "latest.json", {})
+    analysis = read_json(DATA / "reports" / "analysis" / "latest.json", {})
     metrics = all_rows("metrics") + all_rows("datasets")
     articles = all_rows("articles")
     article_map = {a["id"]: a for a in articles}
@@ -514,7 +534,7 @@ def build() -> None:
         "taxonomy": taxonomy["categories"], "sources": sources,
         "source_health": status,
         "articles": articles[:1000], "series": series,
-        "reports": reports
+        "analysis": analysis, "reports": reports
     }
     write_json(website / "data" / "dashboard.json", payload)
     (website / ".nojekyll").write_text("", encoding="utf-8")
@@ -557,7 +577,7 @@ def validate() -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["collect", "build", "validate", "all"])
+    parser.add_argument("command", choices=["collect", "build", "validate", "analyze", "all"])
     args = parser.parse_args()
     if args.command == "validate":
         validate()
@@ -565,9 +585,12 @@ def main() -> int:
         build()
     elif args.command == "collect":
         return collect()
+    elif args.command == "analyze":
+        analyze()
     else:
         result = collect()
         validate()
+        analyze()
         build()
         return result
     return 0
