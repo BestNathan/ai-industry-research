@@ -1,27 +1,27 @@
 {
   "date": "2026-10-26",
-  "generated_at": "2026-10-26T05:00:38+00:00",
-  "source_count": 22,
-  "sources_ok": 21,
+  "generated_at": "2026-10-26T05:04:25+00:00",
+  "source_count": 26,
+  "sources_ok": 25,
   "sources_failed": 1,
   "failed_source_ids": [
     "deepmind_blog"
   ],
-  "new_articles": 274,
+  "new_articles": 317,
   "metric_observations": 184,
-  "historical_dataset_rows_added_or_revised": 30,
+  "historical_dataset_rows_added_or_revised": 0,
   "articles_by_category": {
-    "capital": 7,
-    "china": 2,
-    "commercialization": 3,
-    "consumer": 39,
-    "engineering": 27,
-    "enterprise": 5,
-    "infrastructure": 13,
-    "models-research": 109,
+    "capital": 14,
+    "china": 3,
+    "commercialization": 4,
+    "consumer": 44,
+    "engineering": 29,
+    "enterprise": 8,
+    "infrastructure": 22,
+    "models-research": 119,
     "policy": 13,
-    "usage-agents": 49,
-    "verticals": 1,
+    "usage-agents": 53,
+    "verticals": 2,
     "workforce": 6
   },
   "headline_articles": [
@@ -98,6 +98,12 @@
       "category": "models-research"
     },
     {
+      "title": "Kazakhstan Expands Compute for Its AI Future",
+      "url": "https://blogs.nvidia.com/blog/kazakhstan-ai-compute-ecosystem",
+      "source_id": "nvidia_blog",
+      "category": "infrastructure"
+    },
+    {
       "title": "An alignment assessment of the UK AISI cybertesting incident",
       "url": "https://www.anthropic.com/research/alignment-assessment-ukaisi",
       "source_id": "anthropic_research",
@@ -138,12 +144,6 @@
       "url": "https://simonwillison.net/2026/Oct/22/donating-agent-skills",
       "source_id": "simon_willison",
       "category": "usage-agents"
-    },
-    {
-      "title": "Amazon Polly delivers a major upgrade to its Generative engine",
-      "url": "https://aws.amazon.com/blogs/machine-learning/amazon-polly-delivers-a-major-upgrade-to-its-generative-engine",
-      "source_id": "aws_ml_blog",
-      "category": "enterprise"
     }
   ],
   "comparable_metric_changes": [],
