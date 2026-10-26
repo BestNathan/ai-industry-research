@@ -23,7 +23,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
 from economic import parse_dataset
-from analytics import make_analysis, markdown_report
+from analytics import make_analysis, markdown_report, build_financial_directory
 from sec_financials import annual_financials_adapter
 from quality import quality_report, markdown_report as quality_markdown
 
@@ -536,6 +536,7 @@ def build() -> None:
     status = read_json(DATA / "status" / "latest.json", {})
     analysis = read_json(DATA / "reports" / "analysis" / "latest.json", {})
     quality = read_json(DATA / "reports" / "quality" / "latest.json", {})
+    financial_data = build_financial_directory(all_rows("financials"), sources)
     metrics = all_rows("metrics") + all_rows("datasets") + all_rows("financials")
     articles = all_rows("articles")
     article_map = {a["id"]: a for a in articles}
@@ -582,7 +583,7 @@ def build() -> None:
         "taxonomy": taxonomy["categories"], "sources": sources,
         "source_health": status,
         "articles": articles[:1000], "series": series,
-        "analysis": analysis, "quality": quality, "reports": reports
+        "analysis": analysis, "financial_data": financial_data, "quality": quality, "reports": reports
     }
     write_json(website / "data" / "dashboard.json", payload)
     (website / ".nojekyll").write_text("", encoding="utf-8")

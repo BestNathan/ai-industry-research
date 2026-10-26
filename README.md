@@ -146,6 +146,8 @@ The feed index includes OpenAI, DeepMind, Hugging Face, Anthropic (explicitly un
 
 ## Analysis and charts (evidence-backed, not invented)
 
+The **Data** entry point has six deep-linkable research domains: **Overview**, **Financials**, **Adoption**, **Model economics**, **Ecosystem**, and **Sources & quality**. Financials presents a selectable issuer scorecard (all six SEC companies), four original annual US-GAAP measures, individual fiscal history, issuer comparisons, and SEC filing links. Missing standardized cash PPE (AMZN/NVDA) is never zero-filled or inferred. Other chart domains keep incompatible measurements apart.
+
 The **Data** entry point is organized from interpretation to evidence:
 
 1. **AI adoption:** two deliberately separate trend charts (Eurostat EU official firm survey and the multi-geography OWID/McKinsey organization survey). Display original survey years and **percentage-point** changes; do not overlay incomparable samples.
@@ -168,3 +170,15 @@ The platform includes a six-company **SEC Company Facts** integration (MSFT, GOO
 ## Automated quality checks
 
 Daily research output includes [machine-readable quality status](data/reports/quality/latest.json) and a Markdown quality brief. The quality audit lists every configured source and distinguishes **healthy**, **failed**, **stale**, and **waiting for explicit SEC contact identification**. A source that publishes no recent articles is not automatically considered broken. Archive hashes and source periods remain reproducible. Changes in cumulative GitHub stars/forks exceeding a 25% drop across two distinct days emit a **non-destructive review warning**, never a silent data correction. Unrelated provider price models and yearly survey measures are never blended. Read [quality methodology](docs/QUALITY.md).
+
+### Data page interaction and style
+
+- **Overview** presents a short research brief, evidence cards and four domain entry tiles rather than 12 unrelated charts in one long scroll.
+- **Financials** uses a wide auditable issuer table, a selected company/metric historical chart, and comparative charts. All USD totals remain company-wide GAAP, not AI-only financial performance.
+- **Adoption** isolates two distinct official/survey adoption populations, with different denominators and proper percentage scales.
+- **Model economics** isolates posted catalog pricing and output/input tariff ratios, not actual realized inference costs.
+- **Ecosystem** isolates curated feed topic coverage and selected GitHub metrics.
+- **Sources & quality** retains raw indicator explorer, monitoring reports, data provenance, status and source index.
+- Stable section URLs `#data/financials`, `#data/adoption`, etc. Tabs support keyboard arrow/Home/End navigation, narrow screens scroll tab rail and SEC scorecard independently.
+
+See [Data page design specification](docs/DATA_PAGE.md).

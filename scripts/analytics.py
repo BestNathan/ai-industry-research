@@ -186,6 +186,88 @@ def financial_aggregation(rows, registry):
     return charts, findings, growth
 
 
+FINANCIAL_METRICS = (
+    ("company.revenue_usd", "Revenue"),
+    ("company.operating_cashflow_usd", "Operating cash flow"),
+    ("company.capex_ppe_usd", "Cash purchases of PPE"),
+    ("company.net_income_usd", "Net income"),
+)
+
+
+def build_financial_directory(rows, registry):
+    """Issuer -> fiscal-year -> original reported facts; no mixed-year rollups.
+
+    Every issuer in the registry is shown even if a supported metric is missing.
+    The latest overview row is anchored to that issuer's latest available
+    revenue fiscal period. No unverified capex fields are substituted.
+    """
+    companies = registry.get("financials", [])
+    grouped = defaultdict(lambda: defaultdict(dict))
+    allowed = {key for key, _ in FINANCIAL_METRICS}
+    for fact in rows:
+        ticker = fact.get("ticker")
+        period = fact.get("period")
+        metric = fact.get("metric_id")
+        if not (ticker and period and metric in allowed and
+                fact.get("period_type") == "fiscal_year_end" and fact.get("unit") == "USD"):
+            continue
+        old = grouped[ticker][period].get(metric)
+        if old is None or (fact.get("filed_at") or "", fact.get("accession") or "") > (
+                old.get("filed_at") or "", old.get("accession") or ""):
+            grouped[ticker][period][metric] = fact
+    result = []
+    for company in companies:
+        ticker = company["ticker"]
+        periods = grouped.get(ticker, {})
+        sorted_periods = sorted(periods)
+        fiscal_end = max(
+            (p for p in sorted_periods if "company.revenue_usd" in periods[p]),
+            default=sorted_periods[-1] if sorted_periods else None)
+        history = []
+        for period in sorted_periods:
+            metrics = {}
+            for metric, _ in FINANCIAL_METRICS:
+                fact = periods[period].get(metric)
+                if fact:
+                    metrics[metric] = {
+                        "value_usd": fact["value"], "period": period,
+                        "start": fact["start"], "filed_at": fact.get("filed_at"),
+                        "accession": fact["accession"], "xbrl_tag": fact["xbrl_tag"],
+                        "source_url": fact["source_url"]
+                    }
+            history.append({"period": period, "metrics": metrics})
+        latest = next((row["metrics"] for row in history if row["period"] == fiscal_end), {})
+        missing = [name for key, name in FINANCIAL_METRICS if key not in latest]
+        result.append({
+            "ticker": ticker, "name": company["title"].replace(" consolidated SEC financials", ""),
+            "source_id": company["id"], "homepage": company.get("homepage"),
+            "fiscal_year_end": fiscal_end,
+            "metrics": latest, "missing_metrics": missing,
+            "history": history[-9:]
+        })
+    return {
+        "schema_version": 1,
+        "unit": "USD",
+        "metric_dictionary": [
+            {"id": metric, "label": label} for metric, label in FINANCIAL_METRICS
+        ],
+        "companies": result,
+        "coverage": {
+            "companies_registered": len(result),
+            "with_revenue": sum("company.revenue_usd" in c["metrics"] for c in result),
+            "with_cash_ppe": sum("company.capex_ppe_usd" in c["metrics"] for c in result),
+            "historical_fiscal_rows": sum(len(c["history"]) for c in result)
+        },
+        "methodology": (
+            "Reported issuer-wide 10-K US-GAAP values. Each company table row is pinned "
+            "to its latest revenue fiscal-year end; a missing field in that same period "
+            "is unavailable, not zero. Different companies' fiscal year ends differ. "
+            "Cash purchases of PPE exclude some leased/financed equipment. "
+            "This is not AI-only revenue, investment, or ROI."
+        )
+    }
+
+
 def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
                   as_of=None, financial_rows=None):
     """Build a pure deterministic report from real stored records.

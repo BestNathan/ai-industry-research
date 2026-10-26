@@ -25,48 +25,126 @@
         <div class="hero-meta"><span>Daily source snapshots</span><span>Traceable evidence</span><span>Independent research</span></div>
       </section>
 
-      <section class="view active" id="view-data" aria-label="Data dashboard">
-        <div class="section-title"><div><div class="kicker">01 / MEASUREMENT</div><h2>Industry data</h2><p>Platform observations and source-linked metrics — not market-wide estimates.</p></div></div>
-        <section class="intelligence" id="intelligence">
-          <div class="analysis-heading">
-            <div><div class="kicker">ANALYSIS / EVIDENCE-BASED BRIEF</div><h3>What the evidence actually says</h3><p>Computed from stored observations, with source populations, sample restrictions and missing-data warnings preserved.</p></div>
-            <a id="analysis-link" href="https://github.com/BestNathan/ai-industry-research/tree/main/data/reports/analysis" target="_blank" rel="noopener noreferrer">Research report ↗</a>
+      <section class="view active" id="view-data" aria-label="Research data dashboard">
+        <div class="data-heading">
+          <div><div class="kicker">RESEARCH TERMINAL / DATA</div><h2>Industry intelligence</h2>
+          <p>Explore public evidence by research question. Financial filings, adoption surveys and platform signals retain their own units, periods and limitations.</p></div>
+          <a id="analysis-link" class="data-report-link" href="https://github.com/BestNathan/ai-industry-research/tree/main/data/reports/analysis" target="_blank" rel="noopener noreferrer">Daily research brief ↗</a>
+        </div>
+
+        <nav class="data-tabs" role="tablist" aria-label="Industry data categories">
+          <button id="tab-overview" class="data-tab active" type="button" role="tab" aria-controls="data-overview" aria-selected="true" data-data-tab="overview"><span class="data-tab-index">00</span> Overview</button>
+          <button id="tab-financials" class="data-tab" type="button" role="tab" aria-controls="data-financials" aria-selected="false" data-data-tab="financials" tabindex="-1"><span class="data-tab-index">01</span> Financials</button>
+          <button id="tab-adoption" class="data-tab" type="button" role="tab" aria-controls="data-adoption" aria-selected="false" data-data-tab="adoption" tabindex="-1"><span class="data-tab-index">02</span> Adoption</button>
+          <button id="tab-models" class="data-tab" type="button" role="tab" aria-controls="data-models" aria-selected="false" data-data-tab="models" tabindex="-1"><span class="data-tab-index">03</span> Model economics</button>
+          <button id="tab-ecosystem" class="data-tab" type="button" role="tab" aria-controls="data-ecosystem" aria-selected="false" data-data-tab="ecosystem" tabindex="-1"><span class="data-tab-index">04</span> Ecosystem</button>
+          <button id="tab-sources" class="data-tab" type="button" role="tab" aria-controls="data-sources" aria-selected="false" data-data-tab="sources" tabindex="-1"><span class="data-tab-index">05</span> Sources & quality</button>
+        </nav>
+
+        <section class="data-section active" id="data-overview" role="tabpanel" aria-labelledby="tab-overview">
+          <div class="data-section-heading"><div class="kicker">00 / RESEARCH DESK</div><h3>The signal, not just the data.</h3>
+          <p>Evidence-backed indicators and important caveats, organized by the underlying question rather than raw feed type.</p></div>
+          <div id="analysis-cards" class="analysis-cards"><div class="empty">Analysis appears after the first complete build.</div></div>
+          <div class="category-cards" aria-label="Explore research domains">
+            <button class="category-card financial-accent" data-open-section="financials" type="button"><span class="category-icon" aria-hidden="true">↗</span><span class="category-eyebrow">FINANCIAL STATEMENTS</span><strong>Who captures the value?</strong><span>Issuer revenue, cash flow and cash investment from SEC filings</span><em>Explore financials →</em></button>
+            <button class="category-card adoption-accent" data-open-section="adoption" type="button"><span class="category-icon" aria-hidden="true">◉</span><span class="category-eyebrow">ENTERPRISE ADOPTION</span><strong>Who is actually using AI?</strong><span>EU official surveys and self-reported organization adoption</span><em>Explore adoption →</em></button>
+            <button class="category-card models-accent" data-open-section="models" type="button"><span class="category-icon" aria-hidden="true">◇</span><span class="category-eyebrow">MODEL ECONOMICS</span><strong>How is supply priced?</strong><span>Input/output token list prices with model-mix limitations</span><em>Explore model economics →</em></button>
+            <button class="category-card ecosystem-accent" data-open-section="ecosystem" type="button"><span class="category-icon" aria-hidden="true">⌘</span><span class="category-eyebrow">RESEARCH & DEVELOPMENT</span><strong>Where is attention moving?</strong><span>Selected developer activity and primary-source coverage</span><em>Explore ecosystem →</em></button>
           </div>
-          <div id="analysis-cards" class="analysis-cards"><div class="empty">Analysis appears after the next build.</div></div>
-          <div class="analytical-grid" id="analysis-charts"></div>
           <div class="analysis-bottom">
             <div class="analysis-narrative"><h3>Evidence & interpretation</h3><div id="analysis-findings"></div></div>
             <div class="analysis-narrative"><h3>What we cannot yet claim</h3><div id="analysis-gaps"></div></div>
           </div>
           <p class="analysis-footnote" id="analysis-note"></p>
         </section>
-        <div class="section-title spaced"><div><div class="kicker">UNDERLYING EVIDENCE</div><h2>Explore raw indicators</h2><p>Select one entity and source for traceable observations. The analysis above never combines incompatible denominators.</p></div></div>
-        <div class="stat-grid" id="stats">
-          <div class="stat"><span class="stat-label">Collected articles</span><strong>—</strong></div>
-          <div class="stat"><span class="stat-label">Metric observations</span><strong>—</strong></div>
-          <div class="stat"><span class="stat-label">Automated sources</span><strong>—</strong></div>
-          <div class="stat"><span class="stat-label">Research sources</span><strong>—</strong></div>
-        </div>
-        <section class="chart-layout">
-          <div class="panel chart-panel">
-            <div class="panel-top"><div><div class="kicker">TIME SERIES</div><h3>Observable signals</h3></div><span class="little-tag">RAW API SNAPSHOTS</span></div>
-            <label for="metric-select" class="control-label">Indicator & entity</label>
-            <select id="metric-select" aria-label="Choose a measurement time series"><option>Waiting for data</option></select>
-            <div class="chart-area" id="chart-area"><div class="empty">No measurements yet. The next collector run will populate the chart.</div></div>
-            <div class="chart-footer" id="chart-note">Values are stored with original source and methodology. Single-day snapshots cannot establish a trend.</div>
+
+        <section class="data-section" id="data-financials" role="tabpanel" aria-labelledby="tab-financials" hidden>
+          <div class="data-section-heading financial-accent"><div class="kicker">01 / PRIMARY FILINGS</div><h3>Public company financials</h3>
+          <p>Auditable annual 10-K consolidated financials. Company totals include non-AI businesses; fiscal years are not synchronized between issuers.</p></div>
+          <div class="finance-summary" id="finance-summary"></div>
+          <div class="finance-table-shell">
+            <div class="data-panel-heading"><div><h4>Issuer scorecard</h4><p>Latest fiscal year with reported revenue for each issuer · amounts in USD billions</p></div>
+              <a href="https://www.sec.gov/search-filings/edgar-application-programming-interfaces" target="_blank" rel="noopener noreferrer">SEC Company Facts ↗</a></div>
+            <div class="finance-table-scroll"><table class="finance-table" id="finance-table">
+              <caption class="sr-only">Source-linked financial statements by issuer and latest fiscal year; select a row to explore history</caption>
+              <thead><tr><th scope="col">Company</th><th scope="col">FY ended</th><th scope="col">Revenue</th><th scope="col">Operating CF</th><th scope="col">Cash PPE</th><th scope="col">Net income</th><th scope="col">Filing</th></tr></thead>
+              <tbody id="finance-table-body"><tr><td colspan="7">No SEC data loaded.</td></tr></tbody>
+            </table></div>
+            <div class="finance-table-note">“—” means no matching reported fact for that issuer’s selected fiscal year, not zero. Select a company to review its source-linked history.</div>
           </div>
-          <div class="panel">
-            <div class="panel-top"><div><div class="kicker">SOURCE TRANSPARENCY</div><h3>Collection health</h3></div></div>
-            <div id="health"><div class="empty">No automated collection has run yet.</div></div>
-            <div class="panel-foot">A source failure never means zero usage. No unavailable values are imputed. <a href="https://github.com/BestNathan/ai-industry-research/blob/main/data/reports/quality/latest.json" target="_blank" rel="noopener noreferrer">Full quality audit ↗</a></div>
+          <div class="finance-explorer">
+            <div class="data-panel-heading"><div><h4>Company deep dive</h4><p>Historical reported 10-K facts · original filing periods and accession evidence</p></div></div>
+            <div class="finance-filters">
+              <label>Company<select id="finance-company" aria-label="Company for financial history"><option>Select company</option></select></label>
+              <label>Financial measure<select id="finance-metric" aria-label="Financial metric for history">
+                <option value="company.revenue_usd">Revenue</option>
+                <option value="company.operating_cashflow_usd">Operating cash flow</option>
+                <option value="company.capex_ppe_usd">Cash PPE purchases</option>
+                <option value="company.net_income_usd">Net income</option>
+              </select></label>
+            </div>
+            <div class="finance-detail-grid">
+              <div><div class="finance-history-title" id="finance-history-title"></div><div class="finance-history" id="finance-history"><div class="empty">Select a company to inspect historical filings.</div></div></div>
+              <div class="finance-history-side"><div class="minor">ANNUAL ORIGINAL VALUES</div><div id="finance-history-records"></div></div>
+            </div>
           </div>
+          <div class="data-subheading"><h4>Compare issuers</h4><span>Different fiscal-year ends · direct SEC filing evidence</span></div>
+          <div id="finance-charts" class="analytical-grid"></div>
+          <div class="method-strip">Corporate-wide GAAP indicators are not AI revenue, AI margin, or AI infrastructure ROI. Cash property-and-equipment purchases may exclude leased or financed assets. <a href="https://github.com/BestNathan/ai-industry-research/blob/main/docs/SEC_FINANCIALS.md" target="_blank" rel="noopener noreferrer">Methodology ↗</a></div>
         </section>
-        <div class="section-title spaced"><div><div class="kicker">DAILY RECORD</div><h2>Research reports</h2><p>Auditable counts of new links, normalized observations and ingestion errors.</p></div></div>
-        <div id="reports" class="report-grid"><div class="empty">Reports will appear after the first collection.</div></div>
-        <div class="section-title spaced"><div><div class="kicker">EVIDENCE DIRECTORY</div><h2>Sources & coverage</h2><p>Includes both automated and tracked-only sources. Being listed does not imply API access.</p></div></div>
-        <div class="source-controls"><label for="source-filter" class="sr-only">Filter sources</label><select id="source-filter"><option value="all">All source modes</option><option value="feed">Article feeds</option><option value="api">Public data APIs</option><option value="dataset">Statistical datasets</option><option value="financial">SEC company financials</option><option value="reference">Research / licensed sources</option></select><span id="source-count" class="minor"></span></div>
-        <div class="source-list" id="source-list"></div>
-        <button class="outline-btn" id="source-more" hidden>Show more sources</button>
+
+        <section class="data-section" id="data-adoption" role="tabpanel" aria-labelledby="tab-adoption" hidden>
+          <div class="data-section-heading adoption-accent"><div class="kicker">02 / REAL-WORLD UPTAKE</div><h3>Enterprise AI adoption</h3>
+          <p>Has AI reached businesses? Distinguish the official EU enterprise population from the multi-region surveyed-organizations sample. Survey usage is not verified production ROI.</p></div>
+          <div class="domain-note">Two survey families. Different denominators. These series deliberately remain on separate charts; all percentage charts have a zero-to-100 baseline.</div>
+          <div id="adoption-charts" class="analytical-grid"></div>
+          <div class="method-strip">Eurostat: businesses with 10+ employed persons. OWID/McKinsey: self-reported AI use in at least one function, including pilots. <a href="https://github.com/BestNathan/ai-industry-research/blob/main/docs/ECONOMIC_DATASETS.md" target="_blank" rel="noopener noreferrer">Statistical definitions ↗</a></div>
+        </section>
+
+        <section class="data-section" id="data-models" role="tabpanel" aria-labelledby="tab-models" hidden>
+          <div class="data-section-heading models-accent"><div class="kicker">03 / MODEL SUPPLY</div><h3>Model economics</h3>
+          <p>Provider-level catalog pricing comparisons, sampled from selected recently listed models. This does not measure transactions, inference margins or industry-wide volume.</p></div>
+          <div class="domain-note">Unweighted provider median · positive model list prices only · up to 12 models per provider in the current collector</div>
+          <div id="model-charts" class="analytical-grid"></div>
+        </section>
+
+        <section class="data-section" id="data-ecosystem" role="tabpanel" aria-labelledby="tab-ecosystem" hidden>
+          <div class="data-section-heading ecosystem-accent"><div class="kicker">04 / ECOSYSTEM SIGNALS</div><h3>Developer & publication signals</h3>
+          <p>Public GitHub popularity and tracked primary-source publication categories. These are attention indicators, not adoption, revenue or complete industry share.</p></div>
+          <div id="ecosystem-charts" class="analytical-grid"></div>
+          <div class="method-strip">Repository stars are cumulative platform signals. Publication counts reflect this repository's configured feeds; source changes alter the observed topic mix.</div>
+        </section>
+
+        <section class="data-section" id="data-sources" role="tabpanel" aria-labelledby="tab-sources" hidden>
+          <div class="data-section-heading"><div class="kicker">05 / DATA GOVERNANCE</div><h3>Sources & quality</h3>
+          <p>Inspect every upstream source, the underlying metric series, collection health, methodology and daily evidence releases.</p></div>
+          <div class="stat-grid" id="stats">
+            <div class="stat"><span class="stat-label">Collected articles</span><strong>—</strong></div>
+            <div class="stat"><span class="stat-label">Metric observations</span><strong>—</strong></div>
+            <div class="stat"><span class="stat-label">Automated sources</span><strong>—</strong></div>
+            <div class="stat"><span class="stat-label">Research sources</span><strong>—</strong></div>
+          </div>
+          <div class="chart-layout">
+            <div class="panel chart-panel">
+              <div class="panel-top"><div><div class="kicker">INDICATOR EXPLORER</div><h3>Underlying time series</h3></div><span class="little-tag">SOURCE-BOUND</span></div>
+              <label for="metric-select" class="control-label">Indicator & entity</label>
+              <select id="metric-select" aria-label="Choose a measurement time series"><option>Waiting for data</option></select>
+              <div class="chart-area" id="chart-area"><div class="empty">No measurements yet.</div></div>
+              <div class="chart-footer" id="chart-note">Original source and survey/filing periods are preserved.</div>
+            </div>
+            <div class="panel">
+              <div class="panel-top"><div><div class="kicker">SOURCE TRANSPARENCY</div><h3>Collection health</h3></div></div>
+              <div id="health"><div class="empty">No automated collection has run yet.</div></div>
+              <div class="panel-foot">A missing observation is not zero. <a href="https://github.com/BestNathan/ai-industry-research/blob/main/data/reports/quality/latest.json" target="_blank" rel="noopener noreferrer">Full quality audit ↗</a></div>
+            </div>
+          </div>
+          <div class="section-title spaced"><div><div class="kicker">DAILY RECORD</div><h2>Research reports</h2><p>Auditable source collection, normalization, and ingestion diagnostics.</p></div></div>
+          <div id="reports" class="report-grid"><div class="empty">Reports will appear after the first collection.</div></div>
+          <div class="section-title spaced"><div><div class="kicker">EVIDENCE DIRECTORY</div><h2>Sources & coverage</h2><p>Official and tracked sources. A catalog entry does not imply automatic access.</p></div></div>
+          <div class="source-controls"><label for="source-filter" class="sr-only">Filter sources</label><select id="source-filter"><option value="all">All source modes</option><option value="feed">Article feeds</option><option value="api">Public data APIs</option><option value="dataset">Statistical datasets</option><option value="financial">SEC company financials</option><option value="reference">Research / licensed sources</option></select><span id="source-count" class="minor"></span></div>
+          <div class="source-list" id="source-list"></div>
+          <button class="outline-btn" id="source-more" hidden>Show more sources</button>
+        </section>
       </section>
 
       <section class="view" id="view-articles" aria-label="Article library">
