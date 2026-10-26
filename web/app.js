@@ -175,8 +175,10 @@ function renderFilters() {
 function renderArticles() {
   const holder = el("article-list"); clear(holder);
   const search = el("article-search").value.trim().toLowerCase(),
-        category = el("article-category").value, publisher = el("article-source").value;
+        category = el("article-category").value, publisher = el("article-source").value,
+        scope = el("article-scope").value;
   const selected = db.articles.filter(a => {
+    if (scope === "core" && source(a.source_id)?.priority !== "core") return false;
     if (category !== "all" && a.primary_category !== category && !(a.tags || []).includes(category)) return false;
     if (publisher !== "all" && a.source_id !== publisher) return false;
     return !search || [a.title,a.summary,a.publisher,(a.tags || []).join(" ")].join(" ").toLowerCase().includes(search);
@@ -215,7 +217,7 @@ async function start() {
   renderStats(); renderHealth(); renderSeries(); renderReports(); renderFilters(); renderSources(); renderArticles();
   el("source-filter").addEventListener("change", (e) => {sourceMode = e.target.value;shownSources=24;renderSources();});
   el("source-more").addEventListener("click", () => {shownSources += 24;renderSources();});
-  for (const id of ["article-search","article-category","article-source"])
+  for (const id of ["article-search","article-scope","article-category","article-source"])
     el(id).addEventListener("input", () => {shownArticles=30;renderArticles();});
   el("article-more").addEventListener("click", () => {shownArticles+=30;renderArticles();});
 }
