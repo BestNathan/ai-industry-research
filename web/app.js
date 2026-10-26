@@ -176,6 +176,155 @@ function renderAnalysis() {
   el("analysis-note").textContent = analysis.research_note || "";
 }
 
+const FINANCE_FIELDS = [
+  {id: "company.revenue_usd", label: "Revenue"},
+  {id: "company.operating_cashflow_usd", label: "Operating CF"},
+  {id: "company.capex_ppe_usd", label: "Cash PPE"},
+  {id: "company.net_income_usd", label: "Net income"}
+];
+function moneyBillions(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "—";
+  const billions = n / 1e9;
+  return (billions < 0 ? "−$" : "$") + Math.abs(billions).toLocaleString("en-US", {
+    maximumFractionDigits: 2, minimumFractionDigits: 2
+  }) + "B";
+}
+function renderFinanceHistory(company, metricId) {
+  const place = el("finance-history"), title = el("finance-history-title");
+  const records = el("finance-history-records");
+  [place, records].forEach(clear);
+  const metricLabel = FINANCE_FIELDS.find(x => x.id === metricId)?.label || metricId;
+  title.textContent = company.name + " / " + metricLabel + " · annual reported USD billions";
+  const observations = (company.history || [])
+    .map(year => ({period: year.period, fact: year.metrics?.[metricId]}))
+    .filter(x => x.fact && Number.isFinite(Number(x.fact.value_usd)));
+  if (!observations.length) {
+    place.append(dom("p", "empty", "No matched annual 10-K fact for this measure. The absence is not zero."));
+    records.append(dom("p", "minor", "No standardized XBRL observations are available."));
+    return;
+  }
+  const W = 760, H = 255, L = 78, R = 24, T = 20, B = 40;
+  const values = observations.map(x => x.fact.value_usd / 1e9);
+  let min = Math.min(0, ...values), max = Math.max(0, ...values);
+  if (min === max) max = min + 1;
+  const pad = (max - min) * .07;
+  if (min < 0) min -= pad;
+  if (max > 0) max += pad;
+  const x = i => L + (observations.length === 1 ? (W-L-R)/2 :
+      i*(W-L-R)/(observations.length-1));
+  const y = v => T + (max-v) * (H-T-B) / (max-min);
+  const svg = createSvg("svg", {viewBox: "0 0 "+W+" "+H,
+    role: "img", "aria-label": company.ticker+" annual "+metricLabel+" by fiscal year end"});
+  svg.classList.add("finance-line");
+  for (let i = 0; i <= 4; i++) {
+    const value = min + (max-min)*i/4, yy = y(value);
+    svg.append(createSvg("line", {x1:L,y1:yy,x2:W-R,y2:yy,class:"line-grid"}));
+    svg.append(createSvg("text", {x:L-12,y:yy+4,"text-anchor":"end",class:"line-axis"},
+      (value < 0 ? "−" : "")+"$"+Math.abs(value).toFixed(value>10?0:1)+"B"));
+  }
+  const path = observations.map((p,i) => (i?"L":"M")+x(i).toFixed(1)+","+
+      y(p.fact.value_usd/1e9).toFixed(1)).join(" ");
+  svg.append(createSvg("path", {d:path,class:"finance-line-path"}));
+  for (const [i,p] of observations.entries()) {
+    const cy = y(p.fact.value_usd/1e9);
+    const circle=createSvg("circle",{cx:x(i),cy,r:4.5,class:"finance-line-dot"});
+    circle.append(createSvg("title",{},p.period+": "+moneyBillions(p.fact.value_usd)));
+    svg.append(circle);
+    svg.append(createSvg("text",{x:x(i),y:H-12,"text-anchor":"middle",class:"line-axis"},p.period.slice(2,4)));
+  }
+  place.append(svg);
+  const latest=observations.at(-1);
+  const latestValue=dom("p","finance-chart-caption",
+    "Latest: "+moneyBillions(latest.fact.value_usd)+" · FY ended "+latest.period);
+  latestValue.append(" · ");
+  latestValue.append(link(latest.fact.source_url,"Original SEC filing ↗"));
+  place.append(latestValue);
+  for (const p of [...observations].reverse()) {
+    const line = dom("div", "financial-record");
+    const left = dom("span", "", p.period);
+    const value = dom("strong", "", moneyBillions(p.fact.value_usd));
+    const evidence = link(p.fact.source_url, "↗", "financial-record-link");
+    evidence.title = "View SEC filing, accession "+p.fact.accession+" / "+p.fact.xbrl_tag;
+    line.append(left, value, evidence);
+    records.append(line);
+  }
+}
+function renderFinance() {
+  const info = db.financial_data || {};
+  const companies = info.companies || [];
+  const coverage = info.coverage || {};
+  const summary=el("finance-summary"), table=el("finance-table-body");
+  const picker=el("finance-company"), metricSelect=el("finance-metric");
+  [summary,table,picker].forEach(clear);
+  const stats=[
+    ["SEC issuers", coverage.companies_registered ?? companies.length, "source-registered"],
+    ["Revenue coverage", coverage.with_revenue ?? 0, "annual GAAP facts"],
+    ["Comparable cash PPE", coverage.with_cash_ppe ?? 0, "matched source concept"],
+    ["Annual facts", db.quality?.records?.sec_financial ?? 0, "normalized SEC records"]
+  ];
+  for (const [label, value, detail] of stats) {
+    const card = dom("div", "finance-stat");
+    card.append(dom("span", "finance-stat-label", label),dom("strong","",formatMeasure(value, "count")),
+                dom("span","finance-stat-detail",detail));
+    summary.append(card);
+  }
+  for (const company of companies) {
+    const option=dom("option","",company.name+" · "+company.ticker);
+    option.value=company.ticker;
+    picker.append(option);
+    const row=dom("tr", "issuer-row"), nameCell=dom("td","");
+    const pick=dom("button","issuer-pick",company.ticker);
+    pick.type="button";
+    pick.setAttribute("aria-label", "View "+company.name+" financial history");
+    pick.addEventListener("click", () => {
+      picker.value=company.ticker;
+      renderSelectedCompany();
+      el("finance-history").scrollIntoView({behavior:"smooth",block:"nearest"});
+    });
+    nameCell.append(pick,dom("div","issuer-name",company.name));
+    row.append(nameCell);
+    row.append(dom("td","finance-period",company.fiscal_year_end || "—"));
+    for (const {id} of FINANCE_FIELDS) {
+      const fact=company.metrics?.[id], cell=dom("td","amount-cell");
+      if (fact) {
+        const a=link(fact.source_url,moneyBillions(fact.value_usd),"finance-amount-link");
+        a.title=company.ticker+" "+id+" / "+fact.period+" / "+fact.xbrl_tag;
+        cell.append(a);
+      } else {
+        cell.append(dom("span","missing-fact","—"));
+        cell.title="Not available for this fiscal period. Missing is not zero.";
+      }
+      row.append(cell);
+    }
+    const filingCell=dom("td","finance-filing");
+    const proof=company.metrics?.["company.revenue_usd"] ||
+                Object.values(company.metrics||{})[0];
+    if(proof)filingCell.append(link(proof.source_url,"10-K ↗"));
+    else filingCell.append(dom("span","missing-fact","—"));
+    row.append(filingCell);
+    table.append(row);
+  }
+  if (!companies.length) {
+    const row=dom("tr");
+    const cell=dom("td","", "No public SEC fiscal-year records available.");
+    cell.colSpan=7;row.append(cell);table.append(row);
+    picker.append(dom("option","","No issuers available"));
+  }
+  function renderSelectedCompany() {
+    const company=companies.find(c=>c.ticker===picker.value);
+    if(!company)return;
+    for(const row of table.querySelectorAll(".issuer-row")){
+      const active = row.querySelector(".issuer-pick")?.textContent === company.ticker;
+      row.classList.toggle("selected",active);
+    }
+    renderFinanceHistory(company,metricSelect.value);
+  }
+  picker.addEventListener("change",renderSelectedCompany);
+  metricSelect.addEventListener("change",renderSelectedCompany);
+  if(companies.length){picker.value=companies[0].ticker;renderSelectedCompany();}
+}
+
 function renderStats() {
   const labels = [
     ["Collected articles", db.stats.articles],
