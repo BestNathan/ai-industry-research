@@ -649,7 +649,7 @@
       "title": "Eurostat official enterprise AI adoption",
       "mode": "dataset",
       "kind": "eurostat_business_adoption",
-      "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_eb_ai?geo=EU27_2020",
+      "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_eb_ai?freq=A&geo=EU27_2020&size_emp=GE10&nace_r2=C10-S951_X_K&indic_is=E_AI_TANY&unit=PC_ENT&sinceTimePeriod=2021",
       "homepage": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",
       "category": "enterprise",
       "official": true,
