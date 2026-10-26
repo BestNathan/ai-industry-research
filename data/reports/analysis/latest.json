@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "report_date": "2026-10-26",
+  "generated_at": "2026-10-26T05:23:16+00:00",
+  "title": "AI Industry Evidence Monitor",
+  "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
+  "cards": [
+    {
+      "label": "EU enterprise AI use",
+      "value": 19.95,
+      "suffix": "%",
+      "period": "2025",
+      "delta": "+6.47 pp versus 2024",
+      "source_id": "eurostat_enterprise_ai_adoption",
+      "description": "EU27, surveyed businesses with 10+ employed persons; official statistic."
+    },
+    {
+      "label": "Surveyed organizations using AI",
+      "value": 88.0,
+      "suffix": "%",
+      "period": "2025",
+      "delta": "+10.00 pp versus 2024",
+      "source_id": "owid_business_ai_adoption",
+      "description": "McKinsey survey across geographies: any-function use, including pilots."
+    },
+    {
+      "label": "Daily data source health",
+      "value": 26,
+      "suffix": "/26",
+      "period": "2026-10-26",
+      "delta": "0 source failures",
+      "source_id": "collection_status",
+      "description": "Only registered automatic sources, not all AI research websites."
+    },
+    {
+      "label": "Core publication coverage",
+      "value": 207,
+      "suffix": " links",
+      "period": "indexed archive",
+      "delta": "11 publishers",
+      "source_id": "article_index",
+      "description": "Article index records, not readership or importance."
+    }
+  ],
+  "findings": [
+    {
+      "kind": "observed",
+      "topic": "enterprise",
+      "title": "EU business AI-use share changed +6.47 pp versus 2024",
+      "text": "Eurostat reports 19.95% in 2025 versus 13.48% in 2024, an increase of 6.47 percentage points. This is adoption, not realized ROI.",
+      "source_ids": [
+        "eurostat_enterprise_ai_adoption"
+      ]
+    },
+    {
+      "kind": "observed",
+      "topic": "enterprise",
+      "title": "Surveyed organizations' reported AI use changed +10.00 pp versus 2024",
+      "text": "The OWID/McKinsey all-geographies survey reports 88.00% in 2025 versus 78.00% in 2024. It covers use in at least one function and is not directly comparable with Eurostat.",
+      "source_ids": [
+        "owid_business_ai_adoption"
+      ]
+    },
+    {
+      "kind": "coverage",
+      "topic": "publications",
+      "title": "317 indexed links; 207 from core publisher feeds",
+      "text": "Counts reflect the configured RSS/Atom feeds and article classifications, not global research investment or market demand. Source-mix changes can alter topic proportions.",
+      "source_ids": [
+        "article_index"
+      ]
+    },
+    {
+      "kind": "insufficient_history",
+      "topic": "usage",
+      "title": "No defensible daily usage-growth trend yet",
+      "text": "Only 1 unique daily snapshot date(s) are stored. At least two comparable dates for the same entity and metric are required to compute changes. List prices and GitHub stars are proxies, not token volume or commercial revenue.",
+      "source_ids": []
+    }
+  ],
+  "charts": [
+    {
+      "id": "eurostat_adoption",
+      "type": "line",
+      "title": "EU27 business AI use · Eurostat",
+      "unit": "percent",
+      "period_type": "calendar_year",
+      "scope": "European Union - 27 countries (from 2020)",
+      "source_id": "eurostat_enterprise_ai_adoption",
+      "source_url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",
+      "series": [
+        {
+          "label": "European Union - 27 countries (from 2020)",
+          "points": [
+            {
+              "period": "2021",
+              "value": 7.65
+            },
+            {
+              "period": "2023",
+              "value": 8.06
+            },
+            {
+              "period": "2024",
+              "value": 13.48
+            },
+            {
+              "period": "2025",
+              "value": 19.95
+            }
+          ]
+        }
+      ],
+      "caveat": "Official ICT survey, enterprises with 10+ employed persons, percentage using at least one AI technology.",
+      "delta": {
+        "previous_period": "2024",
+        "latest_period": "2025",
+        "previous": 13.48,
+        "latest": 19.95,
+        "change_pp": 6.47
+      }
+    },
+    {
+      "id": "survey_adoption",
+      "type": "line",
+      "title": "AI use within surveyed organizations · OWID/McKinsey",
+      "unit": "percent",
+      "period_type": "calendar_year",
+      "scope": "All geographies",
+      "source_id": "owid_business_ai_adoption",
+      "source_url": "https://ourworldindata.org/grapher/share-companies-using-artificial-intelligence",
+      "series": [
+        {
+          "label": "All geographies",
+          "points": [
+            {
+              "period": "2021",
+              "value": 56.0
+            },
+            {
+              "period": "2022",
+              "value": 50.0
+            },
+            {
+              "period": "2023",
+              "value": 55.0
+            },
+            {
+              "period": "2024",
+              "value": 78.0
+            },
+            {
+              "period": "2025",
+              "value": 88.0
+            }
+          ]
+        }
+      ],
+      "caveat": "Self-reported AI use in any business function, across surveyed organizations; includes experimentation/pilots. Not the same population as Eurostat.",
+      "delta": {
+        "previous_period": "2024",
+        "latest_period": "2025",
+        "previous": 78.0,
+        "latest": 88.0,
+        "change_pp": 10.0
+      }
+    },
+    {
+      "id": "price_input",
+      "type": "bar",
+      "title": "Input model list prices by provider",
+      "unit": "USD per 1M tokens",
+      "source_id": "openrouter_models",
+      "source_url": "https://openrouter.ai/models",
+      "period_type": "latest_catalog_snapshot",
+      "points": [
+        {
+          "label": "anthropic",
+          "value": 2.0,
+          "n": 12
+        },
+        {
+          "label": "deepseek",
+          "value": 0.26,
+          "n": 12
+        },
+        {
+          "label": "google",
+          "value": 0.5625,
+          "n": 12
+        },
+        {
+          "label": "openai",
+          "value": 1.0,
+          "n": 12
+        },
+        {
+          "label": "qwen",
+          "value": 0.265,
+          "n": 12
+        }
+      ],
+      "caveat": "Unweighted median of the most recently-created model entries sampled per provider (up to 12), excluding free prices. This is neither realized transaction pricing nor market share, and differs by model mix."
+    },
+    {
+      "id": "price_output",
+      "type": "bar",
+      "title": "Output model list prices by provider",
+      "unit": "USD per 1M tokens",
+      "source_id": "openrouter_models",
+      "source_url": "https://openrouter.ai/models",
+      "period_type": "latest_catalog_snapshot",
+      "points": [
+        {
+          "label": "anthropic",
+          "value": 10.0,
+          "n": 12
+        },
+        {
+          "label": "deepseek",
+          "value": 0.7984,
+          "n": 12
+        },
+        {
+          "label": "google",
+          "value": 3.125,
+          "n": 12
+        },
+        {
+          "label": "openai",
+          "value": 5.0,
+          "n": 12
+        },
+        {
+          "label": "qwen",
+          "value": 1.54,
+          "n": 12
+        }
+      ],
+      "caveat": "Unweighted median of the most recently-created model entries sampled per provider (up to 12), excluding free prices. This is neither realized transaction pricing nor market share, and differs by model mix."
+    },
+    {
+      "id": "article_topics",
+      "type": "bar",
+      "title": "Research archive coverage by topic",
+      "unit": "indexed article records",
+      "period_type": "archive_to_date",
+      "source_id": "article_index",
+      "source_url": "https://github.com/BestNathan/ai-industry-research/tree/main/data/articles",
+      "points": [
+        {
+          "label": "models-research",
+          "value": 63
+        },
+        {
+          "label": "consumer",
+          "value": 37
+        },
+        {
+          "label": "engineering",
+          "value": 27
+        },
+        {
+          "label": "usage-agents",
+          "value": 26
+        },
+        {
+          "label": "infrastructure",
+          "value": 22
+        },
+        {
+          "label": "policy",
+          "value": 9
+        },
+        {
+          "label": "enterprise",
+          "value": 6
+        },
+        {
+          "label": "capital",
+          "value": 5
+        },
+        {
+          "label": "workforce",
+          "value": 5
+        },
+        {
+          "label": "commercialization",
+          "value": 4
+        }
+      ],
+      "all_feed_total": 317,
+      "core_total": 207,
+      "publisher_count": 11,
+      "caveat": "Core-feeds-only article counts are **coverage of configured feeds**. They are not an industry topic-share survey, and publisher publication volume varies."
+    },
+    {
+      "id": "github_stars",
+      "type": "bar",
+      "title": "Tracked AI engineering repositories · GitHub stars",
+      "unit": "GitHub stars",
+      "period_type": "latest_platform_snapshot",
+      "source_id": "github",
+      "source_url": "https://github.com/",
+      "points": [
+        {
+          "label": "openclaw/openclaw",
+          "value": 393070
+        },
+        {
+          "label": "huggingface/transformers",
+          "value": 168168
+        },
+        {
+          "label": "anthropics/claude-code",
+          "value": 153378
+        },
+        {
+          "label": "langchain-ai/langchain",
+          "value": 148468
+        },
+        {
+          "label": "openai/codex",
+          "value": 130919
+        },
+        {
+          "label": "vllm-project/vllm",
+          "value": 95529
+        },
+        {
+          "label": "sgl-project/sglang",
+          "value": 38170
+        },
+        {
+          "label": "BestNathan/nession",
+          "value": 1
+        }
+      ],
+      "caveat": "Cumulative developer-interest signal in a selected set of repositories, not unique users, adoption, revenue, or an unbiased ecosystem ranking."
+    }
+  ],
+  "daily_changes": [],
+  "coverage_gaps": [
+    {
+      "id": "actual_ai_revenue",
+      "title": "Verified AI-specific revenue",
+      "reason": "No audited AI-only revenue series is connected. Cloud segment revenue is not equivalent to AI revenue."
+    },
+    {
+      "id": "paid_enterprise_use",
+      "title": "Representative enterprise AI payments",
+      "reason": "Ramp and private purchase/payment data remain licensed or sample-limited."
+    },
+    {
+      "id": "agent_transactions",
+      "title": "Completed agent actions and transactions",
+      "reason": "No comparable transaction/fulfillment outcomes dataset is connected."
+    },
+    {
+      "id": "infrastructure_roi",
+      "title": "AI infrastructure return on invested capital",
+      "reason": "Capex and disclosed revenue/profit series still require audited filing ingestion and segmentation."
+    }
+  ],
+  "health": {
+    "registered_automatic": 26,
+    "successful": 26,
+    "failed": 0,
+    "failures": [],
+    "distinct_snapshot_days": 1
+  },
+  "research_note": "Adoption surveys, API model list prices, selected repository popularity, and publisher article counts measure different populations and outcomes. No causal claims or cross-dataset market shares can be made without compatible denominators."
+}
