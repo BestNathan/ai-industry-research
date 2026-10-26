@@ -40,13 +40,13 @@ A **source directory** catalogs reliable sources even when API access is restric
 ## Architecture
 
 ```text
-Official RSS / Atom         Public APIs                 Licensed/manual reports
+Official RSS/Atom       Public APIs / SEC filings       Licensed/manual reports
        |                        |                                 |
        +------------------------+--------------------------- catalog only
                                 |
                  daily GitHub Actions (08:10 Asia/Singapore)
                                 |
-                  raw/YYYY-MM-DD source snapshots
+             immutable content-addressed source snapshots
                                 |
                   normalize, dedupe, provenance
                        /                    \
@@ -83,10 +83,11 @@ web/                         zero-server static frontend
 
 For observations, always preserve **source, entity, metric, observation time, value, unit, methodology, geography, and original snapshot path**. Company-stated ARR, estimates, survey results, and audited revenues are not interchangeable. Article records use stable URL-derived identifiers and categorization; collection timestamps differ from publication timestamps.
 
-## Included automated coverage (MVP)
+## Active coverage and source configuration
 
 - **Articles:** OpenAI News, Google DeepMind, Hugging Face Blog, selected engineering/research feeds, and arXiv. An **unofficial** community feed is used for Anthropic Engineering/Research where the publisher does not expose an RSS feed; those records are marked accordingly.
 - **Metrics:** GitHub repository public statistics, Hugging Face model download signals, and OpenRouter public model price listings.
+- **SEC annual financials (requires setup):** Six issuer records are configured, but no live SEC financial observations will be collected until `SEC_USER_AGENT` is set to an identifying application plus real contact email.
 - **Historical enterprise adoption:** OWID/McKinsey/Stanford AI Index survey series and Eurostat official EU enterprise AI-use statistics, each labeled with its **original survey year** and population caveats. An annual statistic is not refreshed every day just because its CSV is downloaded daily.
 - **Tracked / not automatically scraped:** Stanford AI Index, Ramp AI Index, McKinsey, Menlo Ventures, US Census, OECD, Similarweb, Sensor Tower, QuestMobile, CNNIC, CAICT, SEC EDGAR, Epoch AI, IEA, METR, LinkedIn, and other primary sources.
 
