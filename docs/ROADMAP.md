@@ -67,3 +67,14 @@ No fabricated "live" numbers, no bypassing commercial data licenses, no mirrorin
 - [ ] First live SEC ingestion after configuring the real contact `SEC_USER_AGENT` repository variable.
 - [ ] Direct official US Census BTOS AI adoption series.
 - [ ] Reported AI-only business segments and datacenter capex attribution if consistently disclosed and verifiable.
+
+## Data quality convergence (2026-10-26)
+
+- [x] Daily quality status JSON/Markdown with source-level freshness, failures, missing-contact configuration and evidence counts.
+- [x] Expose pending SEC contact setup prominently ahead of successful sources on Pages.
+- [x] Non-destructive anomaly warnings for material drops in selected cumulative GitHub measures across distinct collection dates.
+- [x] CI validates quality report and static site data contract.
+- [ ] Source-level quantitative freshness SLAs beyond fixed 3-day threshold; explicit source cadence profiles.
+- [ ] Upstream dataset revision manifest and automated anomaly review workflow.
+- [ ] SEC fair-access contact configured and real data collection validated.
+- [ ] Census BTOS officially pinned biweekly data import preserving the 2025-12 question wording series break.
