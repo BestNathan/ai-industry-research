@@ -46,6 +46,8 @@ jobs:
           assert dashboard["analysis"]["schema_version"] == 1
           assert len(dashboard["analysis"]["charts"]) >= 3
           assert Path("data/reports/analysis/latest.json").exists()
+          assert Path("data/reports/quality/latest.json").exists()
+          assert dashboard["quality"]["schema_version"] == 1
           assert Path("_site/index.html").exists()
           assert Path("_site/app.js").exists()
           print("Dashboard build contract valid")

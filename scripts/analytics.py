@@ -348,7 +348,8 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
     ))
     snapshots_days = len({r.get("period") for r in snapshot_rows if r.get("period")})
     successes = status.get("successful_sources", 0)
-    total_sources = successes + status.get("failed_sources", 0)
+    total_sources = len(status.get("sources", [])) or (successes + status.get("failed_sources", 0))
+    skipped_sources = status.get("skipped_sources", 0)
 
     cards = []
     if eu:
@@ -362,7 +363,7 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
                       "source_id": "owid_business_ai_adoption",
                       "description": "McKinsey survey across geographies: any-function use, including pilots."})
     cards.append({"label": "Daily data source health", "value": successes, "suffix": "/" + str(total_sources),
-                  "period": report_date, "delta": str(status.get("failed_sources", 0)) + " source failures",
+                  "period": report_date, "delta": str(status.get("failed_sources", 0)) + " failures · " + str(skipped_sources) + " awaiting setup",
                   "source_id": "collection_status", "description": "Only registered automatic sources, not all AI research websites."})
     cards.append({"label": "Core publication coverage", "value": sum(core_counts.values()), "suffix": " links",
                   "period": "indexed archive", "delta": str(len(publisher_counts)) + " publishers",
@@ -429,7 +430,7 @@ def make_analysis(snapshot_rows, annual_rows, articles, registry, status,
     ]
     health = {
         "registered_automatic": total_sources, "successful": successes,
-        "failed": status.get("failed_sources", 0),
+        "failed": status.get("failed_sources", 0), "skipped_config": skipped_sources,
         "failures": [{"source_id": s["source_id"], "error": s.get("error"), "last_success_at": s.get("last_success_at")}
                      for s in status.get("sources", []) if s["status"] != "ok"],
         "distinct_snapshot_days": snapshots_days

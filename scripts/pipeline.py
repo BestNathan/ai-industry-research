@@ -25,6 +25,7 @@ import xml.etree.ElementTree as ET
 from economic import parse_dataset
 from analytics import make_analysis, markdown_report
 from sec_financials import annual_financials_adapter
+from quality import quality_report, markdown_report as quality_markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -513,6 +514,13 @@ def analyze() -> None:
     write_json(directory / (day + ".json"), report)
     markdown = markdown_report(report, sources)
     (directory / (day + ".md")).write_text(markdown, encoding="utf-8")
+    raw_files = list((DATA / "raw").glob("**/*.gz"))
+    quality = quality_report(status, metrics, annual, financials, articles,
+                             sources, raw_paths=raw_files)
+    quality_dir = DATA / "reports" / "quality"
+    write_json(quality_dir / "latest.json", quality)
+    write_json(quality_dir / (day + ".json"), quality)
+    (quality_dir / (day + ".md")).write_text(quality_markdown(quality), encoding="utf-8")
     print("Analyzed {} findings and {} charts for {}".format(
         len(report["findings"]), len(report["charts"]), day))
 
@@ -527,6 +535,7 @@ def build() -> None:
     taxonomy = read_json(ROOT / "config" / "taxonomy.json")
     status = read_json(DATA / "status" / "latest.json", {})
     analysis = read_json(DATA / "reports" / "analysis" / "latest.json", {})
+    quality = read_json(DATA / "reports" / "quality" / "latest.json", {})
     metrics = all_rows("metrics") + all_rows("datasets") + all_rows("financials")
     articles = all_rows("articles")
     article_map = {a["id"]: a for a in articles}
@@ -573,7 +582,7 @@ def build() -> None:
         "taxonomy": taxonomy["categories"], "sources": sources,
         "source_health": status,
         "articles": articles[:1000], "series": series,
-        "analysis": analysis, "reports": reports
+        "analysis": analysis, "quality": quality, "reports": reports
     }
     write_json(website / "data" / "dashboard.json", payload)
     (website / ".nojekyll").write_text("", encoding="utf-8")

@@ -73,6 +73,7 @@ data/financials/{TICKER}.jsonl SEC 10-K company-wide fiscal financial facts (req
 data/articles/YYYY-MM-DD.jsonl article metadata with source links / tags
 data/reports/daily/          JSON + Markdown daily acquisition summaries
 data/reports/analysis/       JSON + Markdown analytical findings and charts
+data/reports/quality/        Per-source freshness, configuration, warnings, quality checks
 data/status/latest.json      per-source collection success, freshness and errors
 docs/                        source access, research methodology, roadmap
 scripts/pipeline.py          collect, validate and static-site build
@@ -162,3 +163,7 @@ The structured report is generated from saved data at `data/reports/analysis/lat
 The platform includes a six-company **SEC Company Facts** integration (MSFT, GOOGL, AMZN, META, NVDA, ORCL) for 10-K consolidated revenue, cash payments for property and equipment, operating cash flows, and net income. All years are labeled using the *actual fiscal period end*, not the data fetch date; SEC XBRL fields, filing accession and original snapshot hash remain linked. A company-wide SEC metric is **not AI-only revenue, cloud segment revenue, AI data center capex, or AI ROI**.
 
 **One-time configuration, required by SEC fair access:** Repository **Settings → Secrets and variables → Actions → Variables → New repository variable**, set `SEC_USER_AGENT` to an identifying application name and **a real monitored contact email address** under your control, e.g. `AIIndustryResearch/1.0 researcher@your-domain.example` (replace the example with a real address). Never add contact details or API keys to committed source files. Until this is configured, the 6 SEC sources explicitly show `skipped_config` instead of fabricating observations or violating the SEC's identification requirements. No SEC credentials are needed. SEC permits reasonable requests subject to its fair-access policy; failures leave previous valid filings unchanged. See [SEC integration methodology](docs/SEC_FINANCIALS.md).
+
+## Automated quality checks
+
+Daily research output includes [machine-readable quality status](data/reports/quality/latest.json) and a Markdown quality brief. The quality audit lists every configured source and distinguishes **healthy**, **failed**, **stale**, and **waiting for explicit SEC contact identification**. A source that publishes no recent articles is not automatically considered broken. Archive hashes and source periods remain reproducible. Changes in cumulative GitHub stars/forks exceeding a 25% drop across two distinct days emit a **non-destructive review warning**, never a silent data correction. Unrelated provider price models and yearly survey measures are never blended. Read [quality methodology](docs/QUALITY.md).
