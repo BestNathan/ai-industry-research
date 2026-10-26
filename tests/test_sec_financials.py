@@ -98,6 +98,32 @@ class SECAnnualTests(unittest.TestCase):
         self.assertEqual(growth[0]["capex_change_pct"],200)
         self.assertIn("not ai",charts[0]["caveat"].lower())
 
+    def test_missing_capex_keeps_revenue_and_cashflow_visible(self):
+        def row(ticker,metric,value):
+            return {"ticker":ticker,"period":"2025-12-31","period_type":"fiscal_year_end",
+                    "metric_id":metric,"value":value,"unit":"USD",
+                    "filed_at":"2026-02-01","accession":"0001018724-26-000004",
+                    "source_url":"https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/"}
+        facts=[
+            row("AMZN","company.revenue_usd",716_924_000_000),
+            row("AMZN","company.operating_cashflow_usd",139_514_000_000),
+            row("META","company.revenue_usd",200_966_000_000),
+            row("META","company.operating_cashflow_usd",115_800_000_000),
+            row("META","company.capex_ppe_usd",69_691_000_000),
+        ]
+        charts,findings,_=financial_aggregation(facts,{})
+        revenue=next(c for c in charts if c["id"]=="sec_company_revenue")
+        cashflow=next(c for c in charts if c["id"]=="sec_company_operating_cashflow")
+        capex=next(c for c in charts if c["id"]=="sec_company_capex")
+        ratio=next(c for c in charts if c["id"]=="sec_company_capex_to_sales")
+        self.assertEqual(len(revenue["points"]),2)
+        self.assertEqual(len(cashflow["points"]),2)
+        self.assertEqual(len(capex["points"]),1)
+        self.assertEqual(len(ratio["points"]),1)
+        self.assertIn("AMZN",capex["omitted_issuers"])
+        self.assertEqual(ratio["points"][0]["value"],34.68)
+        self.assertTrue(any("coverage" in f["kind"] for f in findings))
+
     def test_missing_financials_preserve_coverage_gap(self):
         registry={"feeds":[],"apis":[],"datasets":[],"financials":[],"research":[]}
         report=make_analysis([],[],[],registry,{"generated_at":self.now,
