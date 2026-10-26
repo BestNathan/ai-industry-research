@@ -66,7 +66,7 @@ Official RSS / Atom         Public APIs                 Licensed/manual reports
 ```text
 config/sources.json           tracked APIs, feeds and research-only sources
 config/taxonomy.json          common article / data categories
-data/raw/                    gzip-compressed response snapshots partitioned by date
+data/raw/immutable/          content-addressed gzip upstream snapshots (no daily duplicates)
 data/metrics/YYYY-MM-DD.jsonl normalized daily API snapshots
 data/datasets/{source}.jsonl    genuine survey-year observations, no daily duplication
 data/articles/YYYY-MM-DD.jsonl article metadata with source links / tags
@@ -134,3 +134,7 @@ See [docs/ROADMAP.md](docs/ROADMAP.md) for planned research coverage and impleme
 ## Economic indicators
 
 Historical enterprise AI-use series are in [`data/datasets/`](data/datasets/) and are normalized by **source reporting year**. The OWID series is based on a McKinsey survey curated via Stanford's AI Index; it includes experimentation and does **not** represent US Census adoption or full production deployment. Eurostat has a different official EU business survey population (enterprises with 10+ employed persons). Do not directly compare their percentages or merge their denominators. See [economic dataset methodology](docs/ECONOMIC_DATASETS.md).
+
+## Publisher coverage and collection health
+
+The feed index includes OpenAI, DeepMind, Hugging Face, Anthropic (explicitly unofficial mirror), AWS, Microsoft, Google Research, **Google AI**, **NVIDIA**, **SemiAnalysis** and AI/industry media. Bulk arXiv records are preserved but are not the default essential-read view. The status JSON includes each source's **last successful collection** alongside current failures. Identical raw responses use the same immutable SHA-256 address across days, avoiding duplicate archives in Git.
