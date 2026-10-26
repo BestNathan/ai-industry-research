@@ -34,6 +34,18 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Validate stored evidence
         run: python scripts/pipeline.py validate
+      - name: Build Pages and assert dashboard contract
+        run: |
+          python scripts/pipeline.py build
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          dashboard = json.loads(Path("_site/data/dashboard.json").read_text())
+          assert all(k in dashboard for k in ("stats", "sources", "series", "reports", "articles"))
+          assert Path("_site/index.html").exists()
+          assert Path("_site/app.js").exists()
+          print("Dashboard build contract valid")
+          PY
   publish:
     if: github.event_name != 'pull_request'
     needs: checks
