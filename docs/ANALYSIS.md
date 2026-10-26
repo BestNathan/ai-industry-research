@@ -64,3 +64,7 @@ Add SEC XBRL revenue and capex series with reporting period, issuer and accessio
 - **Survey regional spread:** compare 2025 (or latest common reporting-year) Europe, North America, Asia-Pacific and Greater China within the **same OWID/McKinsey survey**. These labels overlap geographically, so never sum regional percentages or treat the spread as causal.
 - **Model pricing asymmetry:** compute `output_usd_per_1M / input_usd_per_1M` for each **matched non-free model ID**, then median per provider. This represents catalog price design, **not** actual inference costs, model output/input utilization, or profit margin.
 - Percent bars use an actual 0–100 scale; different-unit bars remain independent panels.
+
+## Audited issuer financials as economic signals
+
+Only after a real SEC Company Facts XBRL response has been successfully acquired are company-wide fiscal annual comparisons included. The charts compare **latest 10-K fiscal-year revenue**, **cash payments for PPE**, and **PPE purchases / revenue for precisely matched fiscal period ends** per company. Bars include issuer ticker, fiscal period end and accession-linked filing source. Different companies have **different fiscal year-ends**, so these are not synchronized calendar periods. Values are not AI-specific, and PPE cash payments omit some capex under financing/lease agreements. No positive capex ratio is labeled an ROI. See [SEC methodology](SEC_FINANCIALS.md).
