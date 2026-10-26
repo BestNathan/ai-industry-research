@@ -13,7 +13,7 @@ const clear = (node) => { while (node.firstChild) node.removeChild(node.firstChi
 const fmtNum = (n) => Number(n || 0).toLocaleString("en-US");
 const topic = (id) => (db.taxonomy.find(x => x.id === id) || {}).label || id || "Uncategorized";
 const allSources = () => [
-  ...(db.sources.feeds || []), ...(db.sources.apis || []), ...(db.sources.datasets || []), ...(db.sources.research || [])
+  ...(db.sources.feeds || []), ...(db.sources.apis || []), ...(db.sources.datasets || []), ...(db.sources.financials || []), ...(db.sources.research || [])
 ];
 const source = (id) => allSources().find(x => x.id === id);
 const link = (href, label, cls = "") => {
@@ -36,7 +36,7 @@ function showView(view) {
 function formatMeasure(value, unit) {
   const n = Number(value);
   if (!Number.isFinite(n)) return "—";
-  const decimals = unit === "percent" ? 2 : unit === "USD per 1M tokens" ? 4 : unit === "times" ? 2 : 0;
+  const decimals = unit === "percent" ? 2 : unit === "USD per 1M tokens" ? 4 : unit === "USD billions" ? 2 : unit === "times" ? 2 : 0;
   return n.toLocaleString("en-US", {maximumFractionDigits: decimals});
 }
 function renderAnalysisLine(holder, chart) {
@@ -70,7 +70,7 @@ function renderAnalysisBars(holder, chart) {
   const stack=dom("div","vbar-stack");
   for(const row of points){
     const item=dom("div","hbar");
-    const label=dom("span","hbar-label",row.label);
+    const label=row.source_url ? link(row.source_url,row.label,"hbar-label") : dom("span","hbar-label",row.label);
     label.title=row.label+(row.n?" ("+row.n+" selected listed models)":"");
     const track=dom("div","hbar-track"),fill=dom("div","hbar-fill");
     fill.style.width=Math.max(0,Math.min(100,(Number(row.value)||0)/maximum*100))+"%";
@@ -123,6 +123,7 @@ function renderAnalysis() {
     for(const id of f.source_ids||[]){
       const item=source(id);
       if(item?.homepage || item?.url)row.append(link(item.homepage||item.url,"Evidence: "+item.title+" ↗"));
+      else if(f.source_url && id==="sec_edgar")row.append(link(f.source_url,"SEC filing evidence ↗"));
     }
     findings.append(row);
   }
@@ -163,6 +164,7 @@ function renderHealth() {
     const wrap = dom("div", "health-item"), left = dom("div", "health-left");
     left.append(dom("span", "health-name", source(row.source_id)?.title || row.source_id));
     const healthText = row.status === "ok" ? fmtNum(row.records) + " records · latest fetch OK"
+      : row.status === "skipped_config" ? row.reason || "Configure SEC_USER_AGENT"
       : (row.error || "Collection failed") + (row.last_success_at ? " · last success " + row.last_success_at.slice(0,10) : " · no previous success");
     left.append(dom("span", "health-meta", healthText));
     wrap.append(left, dom("span", "pill " + row.status, row.status)); holder.append(wrap);
