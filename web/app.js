@@ -60,7 +60,9 @@ function renderHealth() {
   for (const row of [...h.sources].sort((a,b) => (a.status === "failed" ? -1 : 1) - (b.status === "failed" ? -1 : 1)).slice(0, 10)) {
     const wrap = dom("div", "health-item"), left = dom("div", "health-left");
     left.append(dom("span", "health-name", source(row.source_id)?.title || row.source_id));
-    left.append(dom("span", "health-meta", row.status === "ok" ? fmtNum(row.records) + " records" : row.error || "Collection failed"));
+    const healthText = row.status === "ok" ? fmtNum(row.records) + " records · latest fetch OK"
+      : (row.error || "Collection failed") + (row.last_success_at ? " · last success " + row.last_success_at.slice(0,10) : " · no previous success");
+    left.append(dom("span", "health-meta", healthText));
     wrap.append(left, dom("span", "pill " + row.status, row.status)); holder.append(wrap);
   }
 }
