@@ -1,0 +1,1100 @@
+{
+  "schema_version": 1,
+  "report_date": "2026-10-28",
+  "generated_at": "2026-10-28T05:37:32+00:00",
+  "title": "AI Industry Evidence Monitor",
+  "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
+  "cards": [
+    {
+      "label": "EU enterprise AI use",
+      "value": 19.95,
+      "suffix": "%",
+      "period": "2025",
+      "delta": "+6.47 pp versus 2024",
+      "source_id": "eurostat_enterprise_ai_adoption",
+      "description": "EU27, surveyed businesses with 10+ employed persons; official statistic."
+    },
+    {
+      "label": "Surveyed organizations using AI",
+      "value": 88.0,
+      "suffix": "%",
+      "period": "2025",
+      "delta": "+10.00 pp versus 2024",
+      "source_id": "owid_business_ai_adoption",
+      "description": "McKinsey survey across geographies: any-function use, including pilots."
+    },
+    {
+      "label": "Daily data source health",
+      "value": 32,
+      "suffix": "/32",
+      "period": "2026-10-28",
+      "delta": "0 failures · 0 awaiting setup",
+      "source_id": "collection_status",
+      "description": "Only registered automatic sources, not all AI research websites."
+    },
+    {
+      "label": "Core publication coverage",
+      "value": 239,
+      "suffix": " links",
+      "period": "indexed archive",
+      "delta": "11 publishers",
+      "source_id": "article_index",
+      "description": "Article index records, not readership or importance."
+    }
+  ],
+  "findings": [
+    {
+      "kind": "observed",
+      "topic": "enterprise",
+      "title": "EU business AI-use share changed +6.47 pp versus 2024",
+      "text": "Eurostat reports 19.95% in 2025 versus 13.48% in 2024, an increase of 6.47 percentage points. This is adoption, not realized ROI.",
+      "source_ids": [
+        "eurostat_enterprise_ai_adoption"
+      ]
+    },
+    {
+      "kind": "observed",
+      "topic": "enterprise",
+      "title": "Surveyed organizations' reported AI use changed +10.00 pp versus 2024",
+      "text": "The OWID/McKinsey all-geographies survey reports 88.00% in 2025 versus 78.00% in 2024. It covers use in at least one function and is not directly comparable with Eurostat.",
+      "source_ids": [
+        "owid_business_ai_adoption"
+      ]
+    },
+    {
+      "kind": "observed",
+      "topic": "enterprise",
+      "title": "Regional survey spread: 9.0 pp in 2025",
+      "text": "Within the same OWID/McKinsey organization-use survey, Europe records 91.0% and Asia-Pacific records 82.0%, a 9.0 percentage-point observed range. Regional definitions overlap and sampling/weighting differ; this does not establish causality or representative country-level demand.",
+      "source_ids": [
+        "owid_business_ai_adoption"
+      ]
+    },
+    {
+      "kind": "coverage",
+      "topic": "publications",
+      "title": "458 indexed links; 239 from core publisher feeds",
+      "text": "Counts reflect the configured RSS/Atom feeds and article classifications, not global research investment or market demand. Source-mix changes can alter topic proportions.",
+      "source_ids": [
+        "article_index"
+      ]
+    },
+    {
+      "kind": "proxy",
+      "topic": "engineering",
+      "title": "github:openai/codex: +260 github.stars",
+      "text": "Between 2026-10-27 and 2026-10-28, this tracked platform measure changed from 131062 to 131322. This is not commercial adoption or company revenue.",
+      "source_ids": [
+        "github_openai_codex"
+      ]
+    },
+    {
+      "kind": "coverage",
+      "topic": "infrastructure",
+      "title": "SEC cash PPE coverage: 4 of 6 tracked issuers",
+      "text": "Available revenue and operating cash-flow statements remain visible. No directly equivalent US-GAAP PPE-cash-payments concept was captured for AMZN, NVDA; company-specific cash investment definitions need separate research before comparison.",
+      "source_ids": [
+        "sec_edgar"
+      ],
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces"
+    },
+    {
+      "kind": "observed",
+      "topic": "infrastructure",
+      "title": "ORCL reported PPE cash purchases changed +162.4%",
+      "text": "Latest reported fiscal year ended 2026-05-31 versus 2025-05-31: $55.66b vs $21.21b company-wide PPE cash payments. Source: SEC 10-K US-GAAP concept. This is not AI-attributable CAPEX.",
+      "source_ids": [
+        "sec_edgar"
+      ],
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+    }
+  ],
+  "charts": [
+    {
+      "id": "eurostat_adoption",
+      "type": "line",
+      "title": "EU27 business AI use · Eurostat",
+      "unit": "percent",
+      "period_type": "calendar_year",
+      "scope": "European Union - 27 countries (from 2020)",
+      "source_id": "eurostat_enterprise_ai_adoption",
+      "source_url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table",
+      "series": [
+        {
+          "label": "European Union - 27 countries (from 2020)",
+          "points": [
+            {
+              "period": "2021",
+              "value": 7.65
+            },
+            {
+              "period": "2023",
+              "value": 8.06
+            },
+            {
+              "period": "2024",
+              "value": 13.48
+            },
+            {
+              "period": "2025",
+              "value": 19.95
+            }
+          ]
+        }
+      ],
+      "caveat": "Official ICT survey, enterprises with 10+ employed persons, percentage using at least one AI technology.",
+      "delta": {
+        "previous_period": "2024",
+        "latest_period": "2025",
+        "previous": 13.48,
+        "latest": 19.95,
+        "change_pp": 6.47
+      }
+    },
+    {
+      "id": "survey_adoption",
+      "type": "line",
+      "title": "AI use within surveyed organizations · OWID/McKinsey",
+      "unit": "percent",
+      "period_type": "calendar_year",
+      "scope": "All geographies",
+      "source_id": "owid_business_ai_adoption",
+      "source_url": "https://ourworldindata.org/grapher/share-companies-using-artificial-intelligence",
+      "series": [
+        {
+          "label": "All geographies",
+          "points": [
+            {
+              "period": "2021",
+              "value": 56.0
+            },
+            {
+              "period": "2022",
+              "value": 50.0
+            },
+            {
+              "period": "2023",
+              "value": 55.0
+            },
+            {
+              "period": "2024",
+              "value": 78.0
+            },
+            {
+              "period": "2025",
+              "value": 88.0
+            }
+          ]
+        }
+      ],
+      "caveat": "Self-reported AI use in any business function, across surveyed organizations; includes experimentation/pilots. Not the same population as Eurostat.",
+      "delta": {
+        "previous_period": "2024",
+        "latest_period": "2025",
+        "previous": 78.0,
+        "latest": 88.0,
+        "change_pp": 10.0
+      }
+    },
+    {
+      "id": "regional_survey_adoption",
+      "type": "bar",
+      "title": "Regional AI use · same organization survey",
+      "unit": "percent",
+      "period_type": "calendar_year",
+      "scope": "2025 · McKinsey/OWID",
+      "source_id": "owid_business_ai_adoption",
+      "source_url": "https://ourworldindata.org/grapher/share-companies-using-artificial-intelligence",
+      "points": [
+        {
+          "label": "Europe",
+          "value": 91.0
+        },
+        {
+          "label": "North America",
+          "value": 90.0
+        },
+        {
+          "label": "Greater China",
+          "value": 88.0
+        },
+        {
+          "label": "Asia-Pacific",
+          "value": 82.0
+        }
+      ],
+      "caveat": "Same survey and year; regions can overlap (Greater China is part of Asia-Pacific). Not a census, not production ROI; regional percentages are not additive."
+    },
+    {
+      "source_id": "sec_edgar",
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "period_type": "latest_available_fiscal_year_by_issuer",
+      "id": "sec_company_revenue",
+      "type": "bar",
+      "title": "Consolidated revenue · latest reported fiscal year",
+      "unit": "USD billions",
+      "points": [
+        {
+          "label": "AMZN · FY end 2025-12-31",
+          "value": 716.924,
+          "period": "2025-12-31",
+          "accession": "0001018724-26-000004",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/"
+        },
+        {
+          "label": "GOOGL · FY end 2025-12-31",
+          "value": 402.836,
+          "period": "2025-12-31",
+          "accession": "0001652044-26-000018",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+        },
+        {
+          "label": "META · FY end 2025-12-31",
+          "value": 200.966,
+          "period": "2025-12-31",
+          "accession": "0001628280-26-003942",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+        },
+        {
+          "label": "MSFT · FY end 2026-06-30",
+          "value": 331.839,
+          "period": "2026-06-30",
+          "accession": "0001193125-26-323660",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+        },
+        {
+          "label": "NVDA · FY end 2026-01-25",
+          "value": 215.938,
+          "period": "2026-01-25",
+          "accession": "0001045810-26-000021",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/"
+        },
+        {
+          "label": "ORCL · FY end 2026-05-31",
+          "value": 67.357,
+          "period": "2026-05-31",
+          "accession": "0001193125-26-277521",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+        }
+      ],
+      "caveat": "Issuer-wide SEC reported revenue, NOT AI product revenue. Fiscal year ends may differ; original filing and periods are linked."
+    },
+    {
+      "source_id": "sec_edgar",
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "period_type": "latest_available_fiscal_year_by_issuer",
+      "id": "sec_company_operating_cashflow",
+      "type": "bar",
+      "title": "Consolidated operating cash flow · latest fiscal year",
+      "unit": "USD billions",
+      "points": [
+        {
+          "label": "AMZN · FY end 2025-12-31",
+          "value": 139.514,
+          "period": "2025-12-31",
+          "accession": "0001018724-26-000004",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/"
+        },
+        {
+          "label": "GOOGL · FY end 2025-12-31",
+          "value": 164.713,
+          "period": "2025-12-31",
+          "accession": "0001652044-26-000018",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+        },
+        {
+          "label": "META · FY end 2025-12-31",
+          "value": 115.8,
+          "period": "2025-12-31",
+          "accession": "0001628280-26-003942",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+        },
+        {
+          "label": "MSFT · FY end 2026-06-30",
+          "value": 182.935,
+          "period": "2026-06-30",
+          "accession": "0001193125-26-323660",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+        },
+        {
+          "label": "NVDA · FY end 2026-01-25",
+          "value": 102.718,
+          "period": "2026-01-25",
+          "accession": "0001045810-26-000021",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/"
+        },
+        {
+          "label": "ORCL · FY end 2026-05-31",
+          "value": 31.977,
+          "period": "2026-05-31",
+          "accession": "0001193125-26-277521",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+        }
+      ],
+      "caveat": "Issuer-wide annual cash generated by operating activities (US GAAP). Includes non-AI activities and changes in working capital; not AI profit."
+    },
+    {
+      "source_id": "sec_edgar",
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "period_type": "latest_available_fiscal_year_by_issuer",
+      "id": "sec_company_capex",
+      "type": "bar",
+      "title": "Cash payments for property & equipment · annual",
+      "unit": "USD billions",
+      "points": [
+        {
+          "label": "GOOGL · FY end 2025-12-31",
+          "value": 91.447,
+          "period": "2025-12-31",
+          "accession": "0001652044-26-000018",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+        },
+        {
+          "label": "META · FY end 2025-12-31",
+          "value": 69.691,
+          "period": "2025-12-31",
+          "accession": "0001628280-26-003942",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+        },
+        {
+          "label": "MSFT · FY end 2026-06-30",
+          "value": 115.948,
+          "period": "2026-06-30",
+          "accession": "0001193125-26-323660",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+        },
+        {
+          "label": "ORCL · FY end 2026-05-31",
+          "value": 55.663,
+          "period": "2026-05-31",
+          "accession": "0001193125-26-277521",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+        }
+      ],
+      "omitted_issuers": [
+        "AMZN",
+        "NVDA"
+      ],
+      "caveat": "Company-wide GAAP PaymentsToAcquirePropertyPlantAndEquipment, not AI-only/data-center spend. Excludes some lease financing; missing concept is not zero. Excluded without an equivalent verified US-GAAP PPE-purchases tag: AMZN, NVDA."
+    },
+    {
+      "source_id": "sec_edgar",
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "period_type": "latest_available_fiscal_year_by_issuer",
+      "id": "sec_company_capex_to_sales",
+      "type": "bar",
+      "title": "PPE cash investment as a share of consolidated revenue",
+      "unit": "percent",
+      "points": [
+        {
+          "label": "GOOGL · FY end 2025-12-31",
+          "value": 22.7,
+          "period": "2025-12-31",
+          "capex_accession": "0001652044-26-000018",
+          "revenue_accession": "0001652044-26-000018",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+        },
+        {
+          "label": "META · FY end 2025-12-31",
+          "value": 34.68,
+          "period": "2025-12-31",
+          "capex_accession": "0001628280-26-003942",
+          "revenue_accession": "0001628280-26-003942",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+        },
+        {
+          "label": "MSFT · FY end 2026-06-30",
+          "value": 34.94,
+          "period": "2026-06-30",
+          "capex_accession": "0001193125-26-323660",
+          "revenue_accession": "0001193125-26-323660",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+        },
+        {
+          "label": "ORCL · FY end 2026-05-31",
+          "value": 82.64,
+          "period": "2026-05-31",
+          "capex_accession": "0001193125-26-277521",
+          "revenue_accession": "0001193125-26-277521",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+        }
+      ],
+      "omitted_issuers": [
+        "AMZN",
+        "NVDA"
+      ],
+      "caveat": "PPE cash payments divided by same-year consolidated revenue for the same issuer; not AI ROI. Missing ratios are omitted, never imputed. Excluded without an equivalent verified US-GAAP PPE-purchases tag: AMZN, NVDA."
+    },
+    {
+      "id": "price_input",
+      "type": "bar",
+      "title": "Input model list prices by provider",
+      "unit": "USD per 1M tokens",
+      "source_id": "openrouter_models",
+      "source_url": "https://openrouter.ai/models",
+      "period_type": "latest_catalog_snapshot",
+      "points": [
+        {
+          "label": "anthropic",
+          "value": 2.0,
+          "n": 12
+        },
+        {
+          "label": "deepseek",
+          "value": 0.2328,
+          "n": 12
+        },
+        {
+          "label": "google",
+          "value": 0.5625,
+          "n": 12
+        },
+        {
+          "label": "openai",
+          "value": 1.0,
+          "n": 16
+        },
+        {
+          "label": "qwen",
+          "value": 0.265,
+          "n": 12
+        }
+      ],
+      "caveat": "Unweighted median of the most recently-created model entries sampled per provider (up to 12), excluding free prices. This is neither realized transaction pricing nor market share, and differs by model mix."
+    },
+    {
+      "id": "price_output",
+      "type": "bar",
+      "title": "Output model list prices by provider",
+      "unit": "USD per 1M tokens",
+      "source_id": "openrouter_models",
+      "source_url": "https://openrouter.ai/models",
+      "period_type": "latest_catalog_snapshot",
+      "points": [
+        {
+          "label": "anthropic",
+          "value": 10.0,
+          "n": 12
+        },
+        {
+          "label": "deepseek",
+          "value": 0.51,
+          "n": 12
+        },
+        {
+          "label": "google",
+          "value": 3.125,
+          "n": 12
+        },
+        {
+          "label": "openai",
+          "value": 5.0,
+          "n": 16
+        },
+        {
+          "label": "qwen",
+          "value": 1.265,
+          "n": 12
+        }
+      ],
+      "caveat": "Unweighted median of the most recently-created model entries sampled per provider (up to 12), excluding free prices. This is neither realized transaction pricing nor market share, and differs by model mix."
+    },
+    {
+      "id": "price_output_to_input",
+      "type": "bar",
+      "title": "Model output/input list-price multiples",
+      "unit": "times",
+      "period_type": "latest_catalog_snapshot",
+      "source_id": "openrouter_models",
+      "source_url": "https://openrouter.ai/models",
+      "points": [
+        {
+          "label": "anthropic",
+          "value": 5.0,
+          "n": 12
+        },
+        {
+          "label": "deepseek",
+          "value": 3.0,
+          "n": 12
+        },
+        {
+          "label": "google",
+          "value": 5.0,
+          "n": 12
+        },
+        {
+          "label": "openai",
+          "value": 5.0,
+          "n": 16
+        },
+        {
+          "label": "qwen",
+          "value": 3.567,
+          "n": 12
+        }
+      ],
+      "caveat": "Median of output price divided by input price for matched model IDs with positive prices. This is a posted tariff asymmetry, not inference cost, usage volume, or company margin."
+    },
+    {
+      "id": "article_topics",
+      "type": "bar",
+      "title": "Research archive coverage by topic",
+      "unit": "indexed article records",
+      "period_type": "archive_to_date",
+      "source_id": "article_index",
+      "source_url": "https://github.com/BestNathan/ai-industry-research/tree/main/data/articles",
+      "points": [
+        {
+          "label": "models-research",
+          "value": 74
+        },
+        {
+          "label": "consumer",
+          "value": 45
+        },
+        {
+          "label": "engineering",
+          "value": 29
+        },
+        {
+          "label": "usage-agents",
+          "value": 29
+        },
+        {
+          "label": "infrastructure",
+          "value": 23
+        },
+        {
+          "label": "policy",
+          "value": 12
+        },
+        {
+          "label": "enterprise",
+          "value": 8
+        },
+        {
+          "label": "workforce",
+          "value": 6
+        },
+        {
+          "label": "capital",
+          "value": 5
+        },
+        {
+          "label": "commercialization",
+          "value": 4
+        }
+      ],
+      "all_feed_total": 458,
+      "core_total": 239,
+      "publisher_count": 11,
+      "caveat": "Core-feeds-only article counts are **coverage of configured feeds**. They are not an industry topic-share survey, and publisher publication volume varies."
+    },
+    {
+      "id": "github_stars",
+      "type": "bar",
+      "title": "Tracked AI engineering repositories · GitHub stars",
+      "unit": "GitHub stars",
+      "period_type": "latest_platform_snapshot",
+      "source_id": "github",
+      "source_url": "https://github.com/",
+      "points": [
+        {
+          "label": "openclaw/openclaw",
+          "value": 393234
+        },
+        {
+          "label": "huggingface/transformers",
+          "value": 168266
+        },
+        {
+          "label": "anthropics/claude-code",
+          "value": 153636
+        },
+        {
+          "label": "langchain-ai/langchain",
+          "value": 148591
+        },
+        {
+          "label": "openai/codex",
+          "value": 131322
+        },
+        {
+          "label": "vllm-project/vllm",
+          "value": 95729
+        },
+        {
+          "label": "sgl-project/sglang",
+          "value": 38294
+        },
+        {
+          "label": "BestNathan/nession",
+          "value": 1
+        }
+      ],
+      "caveat": "Cumulative developer-interest signal in a selected set of repositories, not unique users, adoption, revenue, or an unbiased ecosystem ranking."
+    }
+  ],
+  "company_fiscal_capex_changes": [
+    {
+      "ticker": "GOOGL",
+      "current_period": "2025-12-31",
+      "previous_period": "2024-12-31",
+      "current_capex_usd_b": 91.447,
+      "previous_capex_usd_b": 52.535,
+      "capex_change_pct": 74.07,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/"
+    },
+    {
+      "ticker": "META",
+      "current_period": "2025-12-31",
+      "previous_period": "2024-12-31",
+      "current_capex_usd_b": 69.691,
+      "previous_capex_usd_b": 37.256,
+      "capex_change_pct": 87.06,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/"
+    },
+    {
+      "ticker": "MSFT",
+      "current_period": "2026-06-30",
+      "previous_period": "2025-06-30",
+      "current_capex_usd_b": 115.948,
+      "previous_capex_usd_b": 64.551,
+      "capex_change_pct": 79.62,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/"
+    },
+    {
+      "ticker": "ORCL",
+      "current_period": "2026-05-31",
+      "previous_period": "2025-05-31",
+      "current_capex_usd_b": 55.663,
+      "previous_capex_usd_b": 21.215,
+      "capex_change_pct": 162.38,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1341439/000119312526277521/"
+    }
+  ],
+  "daily_changes": [
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:autogluon/chronos-2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 17206393,
+      "current": 18471347,
+      "absolute_change": 1264954,
+      "relative_change_pct": 7.35,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:google/electra-base-discriminator",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 31308093,
+      "current": 29588737,
+      "absolute_change": -1719356,
+      "relative_change_pct": -5.49,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:openai-community/gpt2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 21781667,
+      "current": 22968298,
+      "absolute_change": 1186631,
+      "relative_change_pct": 5.45,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:timm/mobilenetv3_small_100.lamb_in1k",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 16445496,
+      "current": 15984811,
+      "absolute_change": -460685,
+      "relative_change_pct": -2.8,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:sentence-transformers/all-mpnet-base-v2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 18515166,
+      "current": 18907358,
+      "absolute_change": 392192,
+      "relative_change_pct": 2.12,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:openai/clip-vit-base-patch32",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 16773168,
+      "current": 17110640,
+      "absolute_change": 337472,
+      "relative_change_pct": 2.01,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:Comfy-Org/MiniMax-H3",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 27042104,
+      "current": 27548704,
+      "absolute_change": 506600,
+      "relative_change_pct": 1.87,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 39228036,
+      "current": 38712784,
+      "absolute_change": -515252,
+      "relative_change_pct": -1.31,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:Qwen/Qwen3-0.6B",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 23729057,
+      "current": 24034480,
+      "absolute_change": 305423,
+      "relative_change_pct": 1.29,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:google/vit-base-patch16-224",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 14692823,
+      "current": 14864966,
+      "absolute_change": 172143,
+      "relative_change_pct": 1.17,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:google-bert/bert-base-uncased",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 29039388,
+      "current": 29311111,
+      "absolute_change": 271723,
+      "relative_change_pct": 0.94,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:jonatasgrosman/wav2vec2-large-xlsr-53-japanese",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 16031309,
+      "current": 16161032,
+      "absolute_change": 129723,
+      "relative_change_pct": 0.81,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:BAAI/bge-m3",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 29675435,
+      "current": 29899098,
+      "absolute_change": 223663,
+      "relative_change_pct": 0.75,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:amazon/chronos-2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 13395742,
+      "current": 13318281,
+      "absolute_change": -77461,
+      "relative_change_pct": -0.58,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:BAAI/bge-reranker-v2-m3",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 14577113,
+      "current": 14641478,
+      "absolute_change": 64365,
+      "relative_change_pct": 0.44,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:sentence-transformers/all-MiniLM-L6-v2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 190188384,
+      "current": 190761871,
+      "absolute_change": 573487,
+      "relative_change_pct": 0.3,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_openai_codex",
+      "entity_id": "github:openai/codex",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 131062,
+      "current": 131322,
+      "absolute_change": 260,
+      "relative_change_pct": 0.2,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:google-t5/t5-small",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 24892291,
+      "current": 24843615,
+      "absolute_change": -48676,
+      "relative_change_pct": -0.2,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_sgl_project_sglang",
+      "entity_id": "github:sgl-project/sglang",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 38232,
+      "current": 38294,
+      "absolute_change": 62,
+      "relative_change_pct": 0.16,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_anthropics_claude_code",
+      "entity_id": "github:anthropics/claude-code",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 153493,
+      "current": 153636,
+      "absolute_change": 143,
+      "relative_change_pct": 0.09,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_vllm_project_vllm",
+      "entity_id": "github:vllm-project/vllm",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 95645,
+      "current": 95729,
+      "absolute_change": 84,
+      "relative_change_pct": 0.09,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:BAAI/bge-small-en-v1.5",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 53066972,
+      "current": 53024555,
+      "absolute_change": -42417,
+      "relative_change_pct": -0.08,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:nomic-ai/nomic-embed-text-v1.5",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 12212750,
+      "current": 12203372,
+      "absolute_change": -9378,
+      "relative_change_pct": -0.08,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_langchain_ai_langchain",
+      "entity_id": "github:langchain-ai/langchain",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 148532,
+      "current": 148591,
+      "absolute_change": 59,
+      "relative_change_pct": 0.04,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_huggingface_transformers",
+      "entity_id": "github:huggingface/transformers",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 168222,
+      "current": 168266,
+      "absolute_change": 44,
+      "relative_change_pct": 0.03,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:cross-encoder/ms-marco-MiniLM-L6-v2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 70640218,
+      "current": 70661788,
+      "absolute_change": 21570,
+      "relative_change_pct": 0.03,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_openclaw_openclaw",
+      "entity_id": "github:openclaw/openclaw",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 393167,
+      "current": 393234,
+      "absolute_change": 67,
+      "relative_change_pct": 0.02,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_bestnathan_nession",
+      "entity_id": "github:BestNathan/nession",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 1,
+      "current": 1,
+      "absolute_change": 0,
+      "relative_change_pct": 0.0,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "openrouter_models",
+      "entity_id": "openrouter:qwen/qwen3.8-27b",
+      "metric_id": "openrouter.list_price_input_usd_per_million",
+      "unit": "USD per 1M tokens",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 0.2,
+      "current": 0.039,
+      "absolute_change": -0.161,
+      "relative_change_pct": -80.5,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "openrouter_models",
+      "entity_id": "openrouter:qwen/qwen3.8-27b",
+      "metric_id": "openrouter.list_price_output_usd_per_million",
+      "unit": "USD per 1M tokens",
+      "previous_period": "2026-10-27",
+      "current_period": "2026-10-28",
+      "previous": 2.5,
+      "current": 1.25,
+      "absolute_change": -1.25,
+      "relative_change_pct": -50.0,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    }
+  ],
+  "coverage_gaps": [
+    {
+      "id": "actual_ai_revenue",
+      "title": "Verified AI-specific revenue",
+      "reason": "No audited AI-only revenue series is connected. Cloud segment revenue is not equivalent to AI revenue."
+    },
+    {
+      "id": "paid_enterprise_use",
+      "title": "Representative enterprise AI payments",
+      "reason": "Ramp and private purchase/payment data remain licensed or sample-limited."
+    },
+    {
+      "id": "agent_transactions",
+      "title": "Completed agent actions and transactions",
+      "reason": "No comparable transaction/fulfillment outcomes dataset is connected."
+    },
+    {
+      "id": "infrastructure_roi",
+      "title": "AI infrastructure return on invested capital",
+      "reason": "Even with company-wide audited PPE cash spending, AI-specific expenditure, leasing, contribution profits and segment revenue are not isolated."
+    }
+  ],
+  "health": {
+    "registered_automatic": 32,
+    "successful": 32,
+    "failed": 0,
+    "skipped_config": 0,
+    "failures": [],
+    "distinct_snapshot_days": 3
+  },
+  "research_note": "Adoption surveys, API model list prices, selected repository popularity, and publisher article counts measure different populations and outcomes. No causal claims or cross-dataset market shares can be made without compatible denominators."
+}
