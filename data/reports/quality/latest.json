@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-13T06:39:30+00:00",
+  "generated_at": "2026-11-14T06:16:34+00:00",
   "sources": {
     "registered": 32,
     "ok": 32,
@@ -10,128 +10,128 @@
     "empty_feeds": 2
   },
   "records": {
-    "platform_daily": 3496,
+    "platform_daily": 3680,
     "historical_survey": 34,
     "sec_financial": 165,
-    "indexed_articles": 1508,
-    "immutable_raw_snapshots": 530
+    "indexed_articles": 1534,
+    "immutable_raw_snapshots": 552
   },
   "sources_detail": [
     {
       "source_id": "openai_news",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 90,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/openai_news-5962b585c650564e.xml.gz"
+      "raw_path": "data/raw/immutable/openai_news-3ea1ab5e58c5ac15.xml.gz"
     },
     {
       "source_id": "deepmind_blog",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
-      "records": 12,
+      "records": 13,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/deepmind_blog-7e3b1380c7943f56.xml.gz"
+      "raw_path": "data/raw/immutable/deepmind_blog-37de692ea70fa1d2.xml.gz"
     },
     {
       "source_id": "huggingface_blog",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
-      "records": 32,
+      "records": 31,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/huggingface_blog-b4afeebe9c0712c4.xml.gz"
+      "raw_path": "data/raw/immutable/huggingface_blog-de6765923c535d06.xml.gz"
     },
     {
       "source_id": "aws_ml_blog",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 20,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/aws_ml_blog-d2256702c7779e4b.xml.gz"
+      "raw_path": "data/raw/immutable/aws_ml_blog-98af85a960dd8afe.xml.gz"
     },
     {
       "source_id": "microsoft_research",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 10,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/microsoft_research-6f2bbb4e056efe78.xml.gz"
+      "raw_path": "data/raw/immutable/microsoft_research-cefc713deba90559.xml.gz"
     },
     {
       "source_id": "google_research",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
-      "records": 11,
+      "records": 9,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/google_research-c00410cde3fe3eb7.xml.gz"
+      "raw_path": "data/raw/immutable/google_research-3dfec58998032efb.xml.gz"
     },
     {
       "source_id": "arxiv_ai",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 0,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/arxiv_ai-aa102cb73834fabb.xml.gz"
+      "raw_path": "data/raw/immutable/arxiv_ai-5240b2c417ea6e47.xml.gz"
     },
     {
       "source_id": "simon_willison",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 30,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/simon_willison-9ae011eb3c4a3f02.xml.gz"
+      "raw_path": "data/raw/immutable/simon_willison-d48d8776fe53da9a.xml.gz"
     },
     {
       "source_id": "anthropic_engineering",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
-      "records": 1,
+      "records": 2,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/anthropic_engineering-8d2d2605b924fcae.xml.gz"
+      "raw_path": "data/raw/immutable/anthropic_engineering-7ce830442c067c90.xml.gz"
     },
     {
       "source_id": "anthropic_research",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
-      "records": 17,
+      "records": 18,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/anthropic_research-08d1e62f6430a2aa.xml.gz"
+      "raw_path": "data/raw/immutable/anthropic_research-83fdd4cf1723b1a0.xml.gz"
     },
     {
       "source_id": "nvidia_blog",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 18,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/nvidia_blog-37cd81e23771edb2.xml.gz"
+      "raw_path": "data/raw/immutable/nvidia_blog-eddb961d91761914.xml.gz"
     },
     {
       "source_id": "google_ai_keyword",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 11,
       "age_days": 0.0,
@@ -141,7 +141,7 @@
       "source_id": "semianalysis",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 0,
       "age_days": 0.0,
@@ -151,117 +151,117 @@
       "source_id": "techcrunch_ai",
       "mode": "feed",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 20,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/techcrunch_ai-3e0ad0535734eba9.xml.gz"
+      "raw_path": "data/raw/immutable/techcrunch_ai-eb0a557ec69b2e28.xml.gz"
     },
     {
       "source_id": "github_openai_codex",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 3,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/github_openai_codex-f741ef89962874ad.json.gz"
+      "raw_path": "data/raw/immutable/github_openai_codex-8a75ebe4dc3f10e3.json.gz"
     },
     {
       "source_id": "github_anthropics_claude_code",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 3,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/github_anthropics_claude_code-b6ac9479a826e970.json.gz"
+      "raw_path": "data/raw/immutable/github_anthropics_claude_code-0a379a8f1798dcd8.json.gz"
     },
     {
       "source_id": "github_vllm_project_vllm",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 3,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/github_vllm_project_vllm-b4a9e9bf50f2214a.json.gz"
+      "raw_path": "data/raw/immutable/github_vllm_project_vllm-99d9ed28e86ff93c.json.gz"
     },
     {
       "source_id": "github_sgl_project_sglang",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 3,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/github_sgl_project_sglang-e27bd80597ac6ce7.json.gz"
+      "raw_path": "data/raw/immutable/github_sgl_project_sglang-b232393ac0592860.json.gz"
     },
     {
       "source_id": "github_huggingface_transformers",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 3,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/github_huggingface_transformers-ccccae3302e65841.json.gz"
+      "raw_path": "data/raw/immutable/github_huggingface_transformers-c1c67f505aeae65e.json.gz"
     },
     {
       "source_id": "github_langchain_ai_langchain",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 3,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/github_langchain_ai_langchain-81d472cad7279bc8.json.gz"
+      "raw_path": "data/raw/immutable/github_langchain_ai_langchain-50089b2c96caca89.json.gz"
     },
     {
       "source_id": "github_openclaw_openclaw",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 3,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/github_openclaw_openclaw-d649d82a0abe569e.json.gz"
+      "raw_path": "data/raw/immutable/github_openclaw_openclaw-e1eb3f26942c5058.json.gz"
     },
     {
       "source_id": "github_bestnathan_nession",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 3,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/github_bestnathan_nession-b8a333067492148a.json.gz"
+      "raw_path": "data/raw/immutable/github_bestnathan_nession-d2678c4f3c23c95e.json.gz"
     },
     {
       "source_id": "huggingface_models",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 40,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/huggingface_models-f7c9bd1208bd8b46.json.gz"
+      "raw_path": "data/raw/immutable/huggingface_models-2a54dabd4270b7e1.json.gz"
     },
     {
       "source_id": "openrouter_models",
       "mode": "api",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 120,
       "age_days": 0.0,
-      "raw_path": "data/raw/immutable/openrouter_models-0dbd6e0b7f3aeda7.json.gz"
+      "raw_path": "data/raw/immutable/openrouter_models-6a61565879b544d6.json.gz"
     },
     {
       "source_id": "owid_business_ai_adoption",
       "mode": "dataset",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 30,
       "age_days": 0.0,
@@ -271,7 +271,7 @@
       "source_id": "eurostat_enterprise_ai_adoption",
       "mode": "dataset",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 4,
       "age_days": 0.0,
@@ -281,7 +281,7 @@
       "source_id": "sec_msft_companyfacts",
       "mode": "financial",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 32,
       "age_days": 0.0,
@@ -291,7 +291,7 @@
       "source_id": "sec_googl_companyfacts",
       "mode": "financial",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 28,
       "age_days": 0.0,
@@ -301,7 +301,7 @@
       "source_id": "sec_amzn_companyfacts",
       "mode": "financial",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 21,
       "age_days": 0.0,
@@ -311,7 +311,7 @@
       "source_id": "sec_meta_companyfacts",
       "mode": "financial",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 28,
       "age_days": 0.0,
@@ -321,7 +321,7 @@
       "source_id": "sec_nvda_companyfacts",
       "mode": "financial",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 24,
       "age_days": 0.0,
@@ -331,7 +331,7 @@
       "source_id": "sec_orcl_companyfacts",
       "mode": "financial",
       "status": "ok",
-      "last_success_at": "2026-11-13T06:39:30+00:00",
+      "last_success_at": "2026-11-14T06:16:34+00:00",
       "freshness": "fresh",
       "records": 32,
       "age_days": 0.0,
