@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "report_date": "2026-11-24",
-  "generated_at": "2026-11-24T09:50:18+00:00",
+  "report_date": "2026-11-25",
+  "generated_at": "2026-11-25T08:27:10+00:00",
   "title": "AI Industry Evidence Monitor",
   "method": "Deterministic, source-bound aggregation. No LLM-generated numeric assertions.",
   "cards": [
@@ -25,16 +25,16 @@
     },
     {
       "label": "Daily data source health",
-      "value": 31,
+      "value": 32,
       "suffix": "/32",
-      "period": "2026-11-24",
-      "delta": "1 failures · 0 awaiting setup",
+      "period": "2026-11-25",
+      "delta": "0 failures · 0 awaiting setup",
       "source_id": "collection_status",
       "description": "Only registered automatic sources, not all AI research websites."
     },
     {
       "label": "Core publication coverage",
-      "value": 670,
+      "value": 680,
       "suffix": " links",
       "period": "indexed archive",
       "delta": "11 publishers",
@@ -73,7 +73,7 @@
     {
       "kind": "coverage",
       "topic": "publications",
-      "title": "2337 indexed links; 670 from core publisher feeds",
+      "title": "2450 indexed links; 680 from core publisher feeds",
       "text": "Counts reflect the configured RSS/Atom feeds and article classifications, not global research investment or market demand. Source-mix changes can alter topic proportions.",
       "source_ids": [
         "article_index"
@@ -82,8 +82,8 @@
     {
       "kind": "proxy",
       "topic": "engineering",
-      "title": "github:sgl-project/sglang: +51 github.stars",
-      "text": "Between 2026-11-23 and 2026-11-24, this tracked platform measure changed from 38957 to 39008. This is not commercial adoption or company revenue.",
+      "title": "github:sgl-project/sglang: +35 github.stars",
+      "text": "Between 2026-11-24 and 2026-11-25, this tracked platform measure changed from 39008 to 39043. This is not commercial adoption or company revenue.",
       "source_ids": [
         "github_sgl_project_sglang"
       ]
@@ -441,7 +441,7 @@
         },
         {
           "label": "deepseek",
-          "value": 0.165,
+          "value": 0.195,
           "n": 14
         },
         {
@@ -478,7 +478,7 @@
         },
         {
           "label": "deepseek",
-          "value": 0.395,
+          "value": 0.415,
           "n": 14
         },
         {
@@ -547,19 +547,19 @@
       "points": [
         {
           "label": "models-research",
-          "value": 173
+          "value": 175
         },
         {
           "label": "usage-agents",
-          "value": 117
+          "value": 119
         },
         {
           "label": "consumer",
-          "value": 104
+          "value": 107
         },
         {
           "label": "engineering",
-          "value": 99
+          "value": 101
         },
         {
           "label": "infrastructure",
@@ -575,7 +575,7 @@
         },
         {
           "label": "commercialization",
-          "value": 16
+          "value": 17
         },
         {
           "label": "capital",
@@ -586,8 +586,8 @@
           "value": 13
         }
       ],
-      "all_feed_total": 2337,
-      "core_total": 670,
+      "all_feed_total": 2450,
+      "core_total": 680,
       "publisher_count": 11,
       "caveat": "Core-feeds-only article counts are **coverage of configured feeds**. They are not an industry topic-share survey, and publisher publication volume varies."
     },
@@ -602,31 +602,31 @@
       "points": [
         {
           "label": "openclaw/openclaw",
-          "value": 395138
+          "value": 395171
         },
         {
           "label": "huggingface/transformers",
-          "value": 169280
+          "value": 169299
         },
         {
           "label": "anthropics/claude-code",
-          "value": 156875
+          "value": 156993
         },
         {
           "label": "langchain-ai/langchain",
-          "value": 149968
+          "value": 149964
         },
         {
           "label": "openai/codex",
-          "value": 136296
+          "value": 136378
         },
         {
           "label": "vllm-project/vllm",
-          "value": 97458
+          "value": 97530
         },
         {
           "label": "sgl-project/sglang",
-          "value": 39008
+          "value": 39043
         },
         {
           "label": "BestNathan/nession",
@@ -677,19 +677,6 @@
   "daily_changes": [
     {
       "source_id": "huggingface_models",
-      "entity_id": "huggingface:autogluon/chronos-2",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 41548376,
-      "current": 49531026,
-      "absolute_change": 7982650,
-      "relative_change_pct": 19.21,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
       "entity_id": "huggingface:google/electra-base-discriminator",
       "metric_id": "huggingface.downloads",
       "unit": "downloads",
@@ -719,77 +706,12 @@
       "entity_id": "huggingface:argmaxinc/whisperkit-coreml",
       "metric_id": "huggingface.downloads",
       "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 95140913,
-      "current": 101073863,
-      "absolute_change": 5932950,
-      "relative_change_pct": 6.24,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:microsoft/Florence-2-base",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 22090590,
-      "current": 23415911,
-      "absolute_change": 1325321,
-      "relative_change_pct": 6.0,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:Qwen/Qwen3-0.6B",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 15210762,
-      "current": 14676443,
-      "absolute_change": -534319,
-      "relative_change_pct": -3.51,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:hexgrad/Kokoro-82M",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 13293265,
-      "current": 13642880,
-      "absolute_change": 349615,
-      "relative_change_pct": 2.63,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:Qwen/Qwen3-14B",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 13099181,
-      "current": 13419327,
-      "absolute_change": 320146,
-      "relative_change_pct": 2.44,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:google-t5/t5-small",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 16985695,
-      "current": 16654807,
-      "absolute_change": -330888,
-      "relative_change_pct": -1.95,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 101073863,
+      "current": 104060257,
+      "absolute_change": 2986394,
+      "relative_change_pct": 2.95,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
@@ -810,129 +732,12 @@
       "entity_id": "huggingface:BAAI/bge-m3",
       "metric_id": "huggingface.downloads",
       "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 34423104,
-      "current": 34874755,
-      "absolute_change": 451651,
-      "relative_change_pct": 1.31,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:openai-community/gpt2",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 33436225,
-      "current": 33180429,
-      "absolute_change": -255796,
-      "relative_change_pct": -0.77,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:google-bert/bert-base-uncased",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 32844273,
-      "current": 33034234,
-      "absolute_change": 189961,
-      "relative_change_pct": 0.58,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:cross-encoder/ms-marco-MiniLM-L6-v2",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 54750400,
-      "current": 54459434,
-      "absolute_change": -290966,
-      "relative_change_pct": -0.53,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:Comfy-Org/MiniMax-H3",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 33261155,
-      "current": 33109486,
-      "absolute_change": -151669,
-      "relative_change_pct": -0.46,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:sentence-transformers/all-mpnet-base-v2",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 19060019,
-      "current": 19140529,
-      "absolute_change": 80510,
-      "relative_change_pct": 0.42,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:BAAI/bge-reranker-v2-m3",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 14684696,
-      "current": 14633206,
-      "absolute_change": -51490,
-      "relative_change_pct": -0.35,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:jonatasgrosman/wav2vec2-large-xlsr-53-japanese",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 15376671,
-      "current": 15430053,
-      "absolute_change": 53382,
-      "relative_change_pct": 0.35,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:google/vit-base-patch16-224",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 14824246,
-      "current": 14867483,
-      "absolute_change": 43237,
-      "relative_change_pct": 0.29,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "huggingface_models",
-      "entity_id": "huggingface:sentence-transformers/all-MiniLM-L6-v2",
-      "metric_id": "huggingface.downloads",
-      "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 164731740,
-      "current": 165041501,
-      "absolute_change": 309761,
-      "relative_change_pct": 0.19,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 34874755,
+      "current": 35333887,
+      "absolute_change": 459132,
+      "relative_change_pct": 1.32,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
@@ -940,25 +745,142 @@
       "entity_id": "huggingface:openai/clip-vit-base-patch32",
       "metric_id": "huggingface.downloads",
       "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 16883285,
-      "current": 16914079,
-      "absolute_change": 30794,
-      "relative_change_pct": 0.18,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 16914079,
+      "current": 16738325,
+      "absolute_change": -175754,
+      "relative_change_pct": -1.04,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
-      "source_id": "github_sgl_project_sglang",
-      "entity_id": "github:sgl-project/sglang",
-      "metric_id": "github.stars",
-      "unit": "count",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 38957,
-      "current": 39008,
-      "absolute_change": 51,
-      "relative_change_pct": 0.13,
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:microsoft/Florence-2-base",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 23415911,
+      "current": 23651722,
+      "absolute_change": 235811,
+      "relative_change_pct": 1.01,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:google-t5/t5-small",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 16654807,
+      "current": 16499347,
+      "absolute_change": -155460,
+      "relative_change_pct": -0.93,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:openai-community/gpt2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 33180429,
+      "current": 32889952,
+      "absolute_change": -290477,
+      "relative_change_pct": -0.88,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:cross-encoder/ms-marco-MiniLM-L6-v2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 54459434,
+      "current": 54151815,
+      "absolute_change": -307619,
+      "relative_change_pct": -0.56,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:sentence-transformers/all-mpnet-base-v2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 19140529,
+      "current": 19228367,
+      "absolute_change": 87838,
+      "relative_change_pct": 0.46,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:jonatasgrosman/wav2vec2-large-xlsr-53-japanese",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 15430053,
+      "current": 15481677,
+      "absolute_change": 51624,
+      "relative_change_pct": 0.33,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 24898002,
+      "current": 24832706,
+      "absolute_change": -65296,
+      "relative_change_pct": -0.26,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:google-bert/bert-base-uncased",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 33034234,
+      "current": 33110968,
+      "absolute_change": 76734,
+      "relative_change_pct": 0.23,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:sentence-transformers/all-MiniLM-L6-v2",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 165041501,
+      "current": 164730408,
+      "absolute_change": -311093,
+      "relative_change_pct": -0.19,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:BAAI/bge-reranker-v2-m3",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 14633206,
+      "current": 14606223,
+      "absolute_change": -26983,
+      "relative_change_pct": -0.18,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
@@ -966,12 +888,25 @@
       "entity_id": "huggingface:BAAI/bge-small-en-v1.5",
       "metric_id": "huggingface.downloads",
       "unit": "downloads",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 42863227,
-      "current": 42917569,
-      "absolute_change": 54342,
-      "relative_change_pct": 0.13,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 42917569,
+      "current": 42857435,
+      "absolute_change": -60134,
+      "relative_change_pct": -0.14,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_sgl_project_sglang",
+      "entity_id": "github:sgl-project/sglang",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 39008,
+      "current": 39043,
+      "absolute_change": 35,
+      "relative_change_pct": 0.09,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
@@ -979,24 +914,11 @@
       "entity_id": "github:anthropics/claude-code",
       "metric_id": "github.stars",
       "unit": "count",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 156749,
-      "current": 156875,
-      "absolute_change": 126,
-      "relative_change_pct": 0.08,
-      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
-    },
-    {
-      "source_id": "github_openai_codex",
-      "entity_id": "github:openai/codex",
-      "metric_id": "github.stars",
-      "unit": "count",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 136183,
-      "current": 136296,
-      "absolute_change": 113,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 156875,
+      "current": 156993,
+      "absolute_change": 118,
       "relative_change_pct": 0.08,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
@@ -1005,25 +927,38 @@
       "entity_id": "github:vllm-project/vllm",
       "metric_id": "github.stars",
       "unit": "count",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 97383,
-      "current": 97458,
-      "absolute_change": 75,
-      "relative_change_pct": 0.08,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 97458,
+      "current": 97530,
+      "absolute_change": 72,
+      "relative_change_pct": 0.07,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
-      "source_id": "github_huggingface_transformers",
-      "entity_id": "github:huggingface/transformers",
+      "source_id": "github_openai_codex",
+      "entity_id": "github:openai/codex",
       "metric_id": "github.stars",
       "unit": "count",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 169400,
-      "current": 169280,
-      "absolute_change": -120,
-      "relative_change_pct": -0.07,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 136296,
+      "current": 136378,
+      "absolute_change": 82,
+      "relative_change_pct": 0.06,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:google/vit-base-patch16-224",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 14867483,
+      "current": 14875231,
+      "absolute_change": 7748,
+      "relative_change_pct": 0.05,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
@@ -1040,16 +975,42 @@
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
+      "source_id": "github_huggingface_transformers",
+      "entity_id": "github:huggingface/transformers",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 169280,
+      "current": 169299,
+      "absolute_change": 19,
+      "relative_change_pct": 0.01,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
       "source_id": "github_openclaw_openclaw",
       "entity_id": "github:openclaw/openclaw",
       "metric_id": "github.stars",
       "unit": "count",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 395071,
-      "current": 395138,
-      "absolute_change": 67,
-      "relative_change_pct": 0.02,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 395138,
+      "current": 395171,
+      "absolute_change": 33,
+      "relative_change_pct": 0.01,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "github_bestnathan_nession",
+      "entity_id": "github:BestNathan/nession",
+      "metric_id": "github.stars",
+      "unit": "count",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 2,
+      "current": 2,
+      "absolute_change": 0,
+      "relative_change_pct": 0.0,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     },
     {
@@ -1057,12 +1018,51 @@
       "entity_id": "github:langchain-ai/langchain",
       "metric_id": "github.stars",
       "unit": "count",
-      "previous_period": "2026-11-23",
-      "current_period": "2026-11-24",
-      "previous": 149985,
-      "current": 149968,
-      "absolute_change": -17,
-      "relative_change_pct": -0.01,
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 149968,
+      "current": 149964,
+      "absolute_change": -4,
+      "relative_change_pct": -0.0,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:Comfy-Org/MiniMax-H3",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 33109486,
+      "current": 33109486,
+      "absolute_change": 0,
+      "relative_change_pct": 0.0,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:Qwen/Qwen3-0.6B",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 14676443,
+      "current": 14676443,
+      "absolute_change": 0,
+      "relative_change_pct": 0.0,
+      "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
+    },
+    {
+      "source_id": "huggingface_models",
+      "entity_id": "huggingface:Qwen/Qwen3-14B",
+      "metric_id": "huggingface.downloads",
+      "unit": "downloads",
+      "previous_period": "2026-11-24",
+      "current_period": "2026-11-25",
+      "previous": 13419327,
+      "current": 13419327,
+      "absolute_change": 0,
+      "relative_change_pct": 0.0,
       "caveat": "Same source/metric/entity; a change in platform reporting or selected model mix may affect comparability."
     }
   ],
@@ -1090,17 +1090,11 @@
   ],
   "health": {
     "registered_automatic": 32,
-    "successful": 31,
-    "failed": 1,
+    "successful": 32,
+    "failed": 0,
     "skipped_config": 0,
-    "failures": [
-      {
-        "source_id": "deepmind_blog",
-        "error": "RuntimeError: https://deepmind.google/blog/rss.xml: ParseError not well-formed (invalid token): line 1, column 0 | https://deepmind.com/blog/feed/basic/: ParseError not well-formed (invalid token): line 1, column 0",
-        "last_success_at": "2026-11-23T07:31:25+00:00"
-      }
-    ],
-    "distinct_snapshot_days": 30
+    "failures": [],
+    "distinct_snapshot_days": 31
   },
   "research_note": "Adoption surveys, API model list prices, selected repository popularity, and publisher article counts measure different populations and outcomes. No causal claims or cross-dataset market shares can be made without compatible denominators."
 }
